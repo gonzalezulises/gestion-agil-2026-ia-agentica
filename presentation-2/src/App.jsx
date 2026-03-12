@@ -1328,8 +1328,7 @@ export default function App() {
         <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: 'rgba(255,255,255,0.04)', zIndex: 10 }}>
           <div style={{ height: '100%', background: C.accent, transition: 'width 400ms ease-out', width: `${((current + 1) / TOTAL) * 100}%` }} />
         </div>
-        <div style={{ position: 'absolute', top: 20, left: MARGIN, right: MARGIN, zIndex: 10, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <span style={{ fontSize: 20, color: C.dim, fontWeight: 500 }}>{String(current + 1).padStart(2, '0')} / {String(TOTAL).padStart(2, '0')}</span>
+        <div style={{ position: 'absolute', top: 20, left: MARGIN, right: MARGIN, zIndex: 10, display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
           <LiveClock />
         </div>
         <AnimatePresence mode="wait">
@@ -1349,6 +1348,9 @@ export default function App() {
             <button key={i} onClick={() => goTo(i)} title={`Slide ${i + 1}`}
               style={{ width: i === current ? 20 : 5, height: 5, borderRadius: 3, border: 'none', cursor: 'pointer', transition: 'all 300ms', background: i === current ? C.accent : s.type === 'quiz' ? 'rgba(34,197,94,0.35)' : 'rgba(255,255,255,0.1)' }} />
           ))}
+        </div>
+        <div style={{ position: 'absolute', bottom: 20, left: MARGIN, zIndex: 10, fontSize: 16, color: 'rgba(255,255,255,0.15)' }}>
+          ulises.gonzalez@iesa.edu.ve
         </div>
         <div style={{ position: 'absolute', bottom: 20, right: MARGIN, zIndex: 10, fontSize: 16, color: 'rgba(255,255,255,0.15)' }}>
           <kbd style={{ padding: '2px 8px', borderRadius: 4, border: '1px solid rgba(255,255,255,0.1)', fontSize: 14 }}>N</kbd> takeaway{' · '}

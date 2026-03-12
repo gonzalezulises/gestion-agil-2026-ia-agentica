@@ -1568,11 +1568,8 @@ export default function App() {
           <div style={{ height: '100%', background: C.accent, transition: 'width 400ms ease-out', width: `${((current + 1) / TOTAL) * 100}%` }} />
         </div>
 
-        {/* Header: counter + clock */}
-        <div style={{ position: 'absolute', top: 20, left: MARGIN, right: MARGIN, zIndex: 10, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <span style={{ fontSize: 20, color: C.dim, fontWeight: 500 }}>
-            {String(current + 1).padStart(2, '0')} / {String(TOTAL).padStart(2, '0')}
-          </span>
+        {/* Header: clock */}
+        <div style={{ position: 'absolute', top: 20, left: MARGIN, right: MARGIN, zIndex: 10, display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
           <LiveClock />
         </div>
 
@@ -1602,7 +1599,12 @@ export default function App() {
           ))}
         </div>
 
-        {/* N key hint */}
+        {/* Email */}
+        <div style={{ position: 'absolute', bottom: 20, left: MARGIN, zIndex: 10, fontSize: 16, color: 'rgba(255,255,255,0.15)' }}>
+          ulises.gonzalez@iesa.edu.ve
+        </div>
+
+        {/* Key hints */}
         <div style={{ position: 'absolute', bottom: 20, right: MARGIN, zIndex: 10, fontSize: 16, color: 'rgba(255,255,255,0.15)' }}>
           <kbd style={{ padding: '2px 8px', borderRadius: 4, border: '1px solid rgba(255,255,255,0.1)', fontSize: 14 }}>N</kbd> takeaway{' · '}
           <kbd style={{ padding: '2px 8px', borderRadius: 4, border: '1px solid rgba(255,255,255,0.1)', fontSize: 14 }}>F</kbd> pantalla completa

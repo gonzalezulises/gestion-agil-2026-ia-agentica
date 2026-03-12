@@ -1399,10 +1399,10 @@ function SlideRenderer({ data, quizState, onQuizAnswer }) {
                 </div>
                 <div style={{ display: 'grid', gridTemplateColumns: '140px 1fr', gap: '6px 12px' }}>
                   {s.tools.map((t, j) => (
-                    <React.Fragment key={j}>
+                    <div key={j} style={{ display: 'contents' }}>
                       <p style={{ fontSize: 15, fontWeight: 600, color: 'rgba(255,255,255,0.9)', lineHeight: 1.35, paddingTop: 2 }}>{t.practice}</p>
                       <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.6)', lineHeight: 1.4, borderLeft: `2px solid ${s.color}25`, paddingLeft: 10 }}>{t.ai}</p>
-                    </React.Fragment>
+                    </div>
                   ))}
                 </div>
               </motion.div>

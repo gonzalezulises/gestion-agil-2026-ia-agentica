@@ -116,13 +116,8 @@ const TAKEAWAYS = [
   /* 65 checklist 1 */    'Antes de comprar herramientas: ¿hay liderazgo protector? ¿Equipos multifuncionales reales? ¿Cadencias de inspección? Sin esto, la IA amplifica la disfunción existente.',
   /* 66 checklist 2 */    'EU AI Act entra en vigor progresivamente 2025-2027. Definir guardrails ahora no es anticipación — es cumplimiento. Las obligaciones para GPAI aplican desde agosto 2025.',
   /* 67 cierre */         'Mensaje final: la IA agéntica amplifica lo que ya tienen. Si invierten en fundamentos antes que en herramientas, cada dólar en IA rinde exponencialmente más.',
-  /* 68 section bib */    '17 fuentes verificables respaldan esta presentación. Cada dato tiene trazabilidad a su fuente primaria para que puedas validarlo con tu propio equipo.',
-  /* 69 bib 1 */          '',
-  /* 70 bib 2 */          '',
-  /* 71 bib 3 */          '',
-  /* 72 bib 4 */          '',
-  /* 73 bib 5 */          '',
-  /* 74 end */            '',
+  /* 68 bibfull */        '19 fuentes verificables. Cada dato tiene trazabilidad a su fuente primaria para validarlo con tu equipo.',
+  /* 69 end */            '',
 ]
 
 /* ═══════════════════════════════════════════
@@ -403,41 +398,27 @@ const slides = [
   // ── CLOSING QUOTE ──
   { type: 'quote', text: 'La IA agéntica amplifica\nlo que ya tienen.\nSi los fundamentos son sólidos,\namplifica valor.\nSi son frágiles,\namplifica disfunción.', source: '' },
 
-  // ── BIBLIOGRAPHY ──
-  { type: 'section', title: 'Bibliografía', subtitle: 'Fuentes y referencias' },
-
-  { type: 'bib', entries: [
-    'DORA / Google Cloud. "Accelerate State of DevOps Report 2024". Google Cloud Blog, 2024.',
-    'DORA. "Impact of Generative AI in Software Development". Google, 2025.',
-    'McKinsey & Company. "The state of AI in early 2024". McKinsey Global Survey, 2024.',
-    'McKinsey & Company. "The state of AI: How organizations are rewiring to capture value". Mar 2025.',
-  ]},
-
-  { type: 'bib', entries: [
-    'McKinsey & Company. "The state of AI in 2025: Agents, innovation, and transformation". Nov 2025.',
-    'Gartner. "Gartner Predicts 40% of Enterprise Apps Will Have AI Agents by 2026". Press Release, 2025.',
-    'Microsoft. "Work Trend Index 2025: The Year the Frontier Firm is Born". Microsoft, 2025.',
-    'Schwaber, K. & Sutherland, J. "La Guía de Scrum 2020". Scrum.org (Español LatAm).',
-  ]},
-
-  { type: 'bib', entries: [
-    'NIST. "AI Risk Management Framework 1.0 (AI RMF)". National Institute of Standards and Technology, 2023.',
-    'OWASP. "Top 10 for Large Language Model Applications". OWASP Foundation, 2024.',
-    'Noy, S. & Zhang, W. "Experimental evidence on the productivity effects of generative AI". Science, 2023.',
-    'Brynjolfsson, E. et al. "Generative AI at Work". NBER Working Paper 31161, 2023.',
-  ]},
-
-  { type: 'bib', entries: [
-    'Peng, S. et al. "The Impact of AI on Developer Productivity". arXiv:2302.06590, 2023.',
-    'METR. "Measuring the Impact of Early AI Assistance on Open-Source Developers". RCT, 2025.',
-    'OpenAI. "Klarna: AI Assistant Case Study". OpenAI Customer Stories, 2024.',
-    'PMI Sweden Chapter. "Navigating AI in Project Management". Survey Report, 2024.',
-  ]},
-
-  { type: 'bib', entries: [
-    'EU. "AI Act (Regulation 2024/1689)". Official Journal of the European Union, 2024.',
-    'GitHub. "Research: Quantifying Copilot\'s impact on code quality and developer productivity". GitHub Blog + Accenture, 2024.',
-    'Stack Overflow. "Developer Survey 2024". Stack Overflow, 2024.',
+  // ── BIBLIOGRAPHY (single slide, 2 columns) ──
+  { type: 'bibfull', entries: [
+    'DORA / Google Cloud. "Accelerate State of DevOps Report 2024". 2024.',
+    'DORA. "Impact of Generative AI in Software Development". 2025.',
+    'McKinsey. "The state of AI in early 2024". Global Survey, 2024.',
+    'McKinsey. "How organizations are rewiring to capture value". 2025.',
+    'McKinsey. "The state of AI in 2025: Agents, innovation". 2025.',
+    'Gartner. "40% of Enterprise Apps Will Have AI Agents by 2026". 2025.',
+    'Microsoft. "Work Trend Index 2025: The Frontier Firm". 2025.',
+    'Schwaber & Sutherland. "La Guía de Scrum 2020". Scrum.org.',
+    'NIST. "AI Risk Management Framework 1.0". 2023.',
+    'OWASP. "Top 10 for LLM Applications". 2024.',
+    'Noy & Zhang. "Productivity effects of generative AI". Science, 2023.',
+    'Brynjolfsson et al. "Generative AI at Work". NBER, 2023.',
+    'Peng et al. "Impact of AI on Developer Productivity". arXiv, 2023.',
+    'METR. "AI Assistance on Open-Source Developers". RCT, 2025.',
+    'OpenAI. "Klarna: AI Assistant Case Study". 2024.',
+    'PMI Sweden. "Navigating AI in Project Management". 2024.',
+    'EU. "AI Act (Regulation 2024/1689)". 2024.',
+    'GitHub + Accenture. "Copilot impact on code quality". 2024.',
+    'Stack Overflow. "Developer Survey 2024". 2024.',
   ]},
 
   // ── FINAL ──
@@ -652,6 +633,8 @@ function SlideRenderer({ data, quizState, onQuizAnswer }) {
         <div className="anim-fade d1"><Logos height={128} /></div>
         <p className="anim-fade d2" style={{ fontSize: T.subtitle, color: C.dim, fontWeight: 500 }}>Gestión Ágil de Proyectos</p>
         <p className="anim-fade d3" style={{ fontSize: T.title, fontWeight: 700, color: C.white }}>¡Gracias!</p>
+        <a href="https://www.linkedin.com/in/ulisesgonzalez/" target="_blank" rel="noopener noreferrer" className="anim-fade d4" style={{ fontSize: T.caption, color: C.dim, fontWeight: 400, textDecoration: 'none', transition: 'color 200ms' }} onMouseEnter={e => e.currentTarget.style.color = C.white} onMouseLeave={e => e.currentTarget.style.color = C.dim}>Profesor: Ulises González</a>
+        <p className="anim-fade d5" style={{ fontSize: 16, color: 'rgba(255,255,255,0.25)', fontWeight: 400 }}>© 2026 Ulises González · Preparado con IA generativa como herramienta de investigación y diseño</p>
       </div>
     )
 
@@ -861,14 +844,27 @@ function SlideRenderer({ data, quizState, onQuizAnswer }) {
       </div>
     )
 
-    case 'bib': return (
-      <div style={{ ...inner, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 20 }}>
-        <h3 className="anim-fade d1" style={{ fontSize: T.caption, color: C.dim, textTransform: 'uppercase', letterSpacing: 3, fontWeight: 600 }}>Referencias</h3>
-        {data.entries.map((e, i) => (
-          <p key={i} className={`anim-fade d${i + 2}`} style={{ fontSize: 24, color: 'rgba(255,255,255,0.7)', lineHeight: 1.6, maxWidth: 1300, borderLeft: `3px solid ${C.border}`, paddingLeft: 20 }}>{e}</p>
-        ))}
-      </div>
-    )
+    case 'bib': return null
+
+    case 'bibfull': {
+      const half = Math.ceil(data.entries.length / 2)
+      const col1 = data.entries.slice(0, half)
+      const col2 = data.entries.slice(half)
+      return (
+        <div style={{ ...inner, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 24 }}>
+          <h3 className="anim-fade d1" style={{ fontSize: T.caption, color: C.dim, textTransform: 'uppercase', letterSpacing: 3, fontWeight: 600 }}>Bibliografía</h3>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px 48px' }}>
+            {[col1, col2].map((col, ci) => (
+              <div key={ci} style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                {col.map((e, i) => (
+                  <p key={i} className="anim-fade d2" style={{ fontSize: 17, color: 'rgba(255,255,255,0.55)', lineHeight: 1.45, borderLeft: `2px solid ${C.border}`, paddingLeft: 12 }}>{e}</p>
+                ))}
+              </div>
+            ))}
+          </div>
+        </div>
+      )
+    }
 
     default: return null
   }

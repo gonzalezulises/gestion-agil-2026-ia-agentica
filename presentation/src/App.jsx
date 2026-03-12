@@ -51,6 +51,7 @@ function LiveClock() {
 const TAKEAWAYS = [
   /* 0  hero */           'La competencia en 2026 no es entre marcos (Scrum vs Kanban) sino entre sistemas de entrega capaces de absorber incertidumbre y rediseñar trabajo cuando la IA acelera la ejecución.',
   /* 0b agenda */         'Este módulo combina fundamentos ágiles con evidencia de IA en 2026. Al final tendrás herramientas concretas para aplicar el lunes en tu proyecto y tu equipo.',
+  /* 0c objectives */     'Las 6 competencias siguen la taxonomía de Bloom: de recordar conceptos (N1) a crear tu propio plan de implementación (N6). Cada bloque del módulo sube un nivel.',
   /* 1  contexto */       'La agilidad no es solo para equipos de software. Cualquier proyecto con incertidumbre — lanzar un producto, abrir una planta, rediseñar logística — se beneficia de ciclos cortos con retroalimentación.',
   /* 2  stats */          '71% ya usa IA, pero solo 17% ve impacto financiero. La diferencia no es la herramienta sino cómo se integra al flujo de trabajo del equipo. Eso aplica igual en calidad, finanzas o comercial.',
   /* 3  evidencia */      'Para un gerente: la IA mejora tareas individuales pero puede empeorar la coordinación. Tu rol cambia de ejecutar a diseñar cómo trabajan personas + IA juntos.',
@@ -143,15 +144,18 @@ const slides = [
   // ── 0: TITLE ──
   { type: 'hero' },
 
-  // ── 1: AGENDA + OBJETIVOS ──
+  // ── 1: AGENDA ──
   { type: 'agenda' },
 
-  // ── 2: CONTEXTO NARRATIVO — conectado con el grupo ──
+  // ── 2: OBJETIVO + COMPETENCIAS BLOOM ──
+  { type: 'objectives' },
+
+  // ── 3: CONTEXTO NARRATIVO — conectado con el grupo ──
   { type: 'content', title: '¿Qué tiene que ver la agilidad con nosotros?', bullets: [
     'Alimentos, farma, banca, retail, construcción —\ntodos gestionan proyectos con incertidumbre creciente',
     'La IA ya está en sus procesos: reportes, análisis,\nplanificación — aunque no la llamen "agente"',
     'El reto no es adoptar un marco (Scrum, Kanban)\nsino mejorar cómo entregan resultados sus equipos',
-    'Solo 21% de empresas ha rediseñado cómo trabaja\n— el resto insertó herramientas en procesos viejos',
+    'Solo 21% ha rediseñado cómo trabaja (McKinsey 2025)\n— el resto insertó herramientas en procesos viejos',
   ], note: 'El contexto para logística, finanzas, calidad, RRHH, comercial y marketing' },
 
   // ── 3: CONTEXTO DATOS — con lectura para gerentes ──
@@ -906,7 +910,7 @@ function SlideRenderer({ data, quizState, onQuizAnswer }) {
         { sector: 'Farmacéutica', color: '#06b6d4', orgs: 'Calox · Corp. JSL', areas: [
           { area: 'Ciclo de desarrollo', metric: '−40%', metricLabel: 'concepto→ensayo', useCase: 'Gestión de proyecto de registro sanitario con backlog priorizado por impacto regulatorio', source: 'McKinsey Life Sciences' },
           { area: 'Costos de proyecto', metric: '−25%', metricLabel: 'reducción', useCase: 'Proyecto de transferencia tecnológica con revisiones cada 2 semanas y decisiones tempranas de go/no-go', source: 'McKinsey Pharma' },
-          { area: 'Gestión de CAPA', metric: 'Continua', metricLabel: 'medición', useCase: 'Ciclos cortos para análisis de desviaciones: causa raíz + plan correctivo en días, no meses', source: 'McKinsey/Roche' },
+          { area: 'Acciones correctivas', metric: 'Continua', metricLabel: 'medición', useCase: 'Desviación de calidad → causa raíz → plan correctivo en días, no meses (CAPA ágil)', source: 'McKinsey/Roche' },
         ]},
         { sector: 'Banca y Servicios', color: C.highlight, orgs: 'Bancrecer · Fulldata · Damasco', areas: [
           { area: 'Productividad', metric: '+25-35%', metricLabel: 'equipos', useCase: 'Proyecto de mejora de proceso de crédito: sprint de 2 semanas, entregable medible por ciclo', source: 'Hiperdrive Agile' },
@@ -957,35 +961,59 @@ function SlideRenderer({ data, quizState, onQuizAnswer }) {
         { num: '06', title: 'Casos y evidencia', desc: 'Datos cuantificados, productividad y contracasos', color: '#A855F7' },
         { num: '07', title: 'Aplicación práctica', desc: 'Herramientas por sector, checklist 30 días', color: C.accent },
       ]
-      const competencies = [
-        { icon: '🎯', text: 'Distinguir cuándo aplicar agilidad, estabilidad o automatización en tu contexto' },
-        { icon: '📊', text: 'Evaluar impacto real de IA con métricas — no con percepciones' },
-        { icon: '🛡️', text: 'Diseñar gobernanza mínima viable para adopción responsable de IA' },
-        { icon: '👥', text: 'Configurar equipos con roles claros en el modelo humano-agente' },
-        { icon: '🔄', text: 'Aplicar el ciclo empírico (inspección → adaptación) a proyectos con IA' },
-        { icon: '📋', text: 'Implementar un proyecto piloto ágil con IA en tu área funcional' },
+      return (
+        <motion.div variants={stagger} initial="hidden" animate="visible" style={{ ...inner, height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 16, maxWidth: 1100 }}>
+            <motion.h2 variants={fadeUp} style={{ fontSize: T.title, fontWeight: 700, color: C.white, marginBottom: 8 }}>Índice del módulo</motion.h2>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14 }}>
+              {modules.map((m, i) => (
+                <motion.div key={i} variants={fadeUp} style={{ display: 'flex', alignItems: 'center', gap: 18, padding: '16px 20px', borderRadius: 12, background: C.surface, border: `1px solid ${C.border}`, borderLeft: `4px solid ${m.color}` }}>
+                  <span style={{ fontSize: 28, fontWeight: 800, color: m.color, fontFamily: "'JetBrains Mono', monospace", minWidth: 44 }}>{m.num}</span>
+                  <div>
+                    <p style={{ fontSize: 21, fontWeight: 600, color: C.white, lineHeight: 1.3 }}>{m.title}</p>
+                    <p style={{ fontSize: 16, color: C.dim, lineHeight: 1.35 }}>{m.desc}</p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </motion.div>
+      )
+    }
+
+    case 'objectives': {
+      const bloomLevels = [
+        { level: 'Recordar', color: C.dim, verb: 'Identificar', competency: 'Los 5 fundamentos ágiles y su relevancia en contextos de manufactura, servicios y banca', bloom: 1 },
+        { level: 'Comprender', color: '#06b6d4', verb: 'Explicar', competency: 'Por qué la IA amplifica tanto aciertos como errores, y qué implica para la gestión de proyectos', bloom: 2 },
+        { level: 'Aplicar', color: C.highlight, verb: 'Utilizar', competency: 'El ciclo empírico (inspección → adaptación) para gestionar un proyecto con asistencia de IA', bloom: 3 },
+        { level: 'Analizar', color: '#F59E0B', verb: 'Distinguir', competency: 'Cuándo aplicar agilidad, estabilidad o automatización según el tipo de proyecto y sector', bloom: 4 },
+        { level: 'Evaluar', color: '#A855F7', verb: 'Juzgar', competency: 'El impacto real de IA en un equipo usando métricas (no percepciones) y evidencia cuantificada', bloom: 5 },
+        { level: 'Crear', color: C.accent, verb: 'Diseñar', competency: 'Un plan de implementación de proyecto piloto ágil con IA en tu área funcional (checklist 30 días)', bloom: 6 },
       ]
       return (
-        <motion.div variants={stagger} initial="hidden" animate="visible" style={{ ...inner, height: '100%', display: 'flex', gap: 48, alignItems: 'center' }}>
-          <div style={{ flex: 1.1, display: 'flex', flexDirection: 'column', gap: 12 }}>
-            <motion.h2 variants={fadeUp} style={{ fontSize: T.title, fontWeight: 700, color: C.white, marginBottom: 8 }}>Índice del módulo</motion.h2>
-            {modules.map((m, i) => (
-              <motion.div key={i} variants={fadeUp} style={{ display: 'flex', alignItems: 'center', gap: 16, padding: '10px 16px', borderRadius: 10, background: 'rgba(255,255,255,0.02)', borderLeft: `3px solid ${m.color}` }}>
-                <span style={{ fontSize: 22, fontWeight: 800, color: m.color, fontFamily: "'JetBrains Mono', monospace", minWidth: 36 }}>{m.num}</span>
-                <div>
-                  <p style={{ fontSize: 19, fontWeight: 600, color: C.white, lineHeight: 1.3 }}>{m.title}</p>
-                  <p style={{ fontSize: 15, color: C.dim, lineHeight: 1.3 }}>{m.desc}</p>
-                </div>
-              </motion.div>
-            ))}
+        <motion.div variants={stagger} initial="hidden" animate="visible" style={{ ...inner, height: '100%', display: 'flex', gap: 56, alignItems: 'center' }}>
+          <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 20 }}>
+            <motion.h2 variants={fadeUp} style={{ fontSize: T.title, fontWeight: 700, color: C.white }}>Objetivo del módulo</motion.h2>
+            <motion.div variants={fadeUp} style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 14, padding: '28px 32px', borderLeft: `4px solid ${C.accent}` }}>
+              <p style={{ fontSize: 22, color: 'rgba(255,255,255,0.9)', lineHeight: 1.6, fontWeight: 400 }}>
+                Desarrollar la capacidad de <span style={{ color: C.white, fontWeight: 700 }}>gestionar proyectos con enfoque ágil</span> en contextos donde la IA transforma la ejecución, aplicando fundamentos de inspección, adaptación y gobernanza para <span style={{ color: C.white, fontWeight: 700 }}>generar resultados medibles</span> en manufactura, servicios, banca y operaciones.
+              </p>
+            </motion.div>
+            <motion.p variants={fadeUp} style={{ fontSize: 15, color: C.dim, marginTop: 4 }}>Taxonomía de Bloom: de recordar conceptos a crear tu propio plan de implementación</motion.p>
           </div>
-          <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 14 }}>
-            <motion.h3 variants={fadeUp} style={{ fontSize: T.subtitle, fontWeight: 700, color: C.white, marginBottom: 4 }}>Objetivos y competencias</motion.h3>
-            <motion.p variants={fadeUp} style={{ fontSize: 16, color: C.dim, marginBottom: 4 }}>Al completar este módulo serás capaz de:</motion.p>
-            {competencies.map((c, i) => (
-              <motion.div key={i} variants={popIn} style={{ display: 'flex', alignItems: 'flex-start', gap: 14, padding: '12px 16px', borderRadius: 10, background: C.surface, border: `1px solid ${C.border}` }}>
-                <span style={{ fontSize: 22, lineHeight: 1 }}>{c.icon}</span>
-                <p style={{ fontSize: 17, color: 'rgba(255,255,255,0.85)', lineHeight: 1.45 }}>{c.text}</p>
+          <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 10 }}>
+            <motion.h3 variants={fadeUp} style={{ fontSize: T.subtitle, fontWeight: 700, color: C.white, marginBottom: 4 }}>Competencias clave</motion.h3>
+            {bloomLevels.map((b, i) => (
+              <motion.div key={i} variants={popIn} style={{ display: 'flex', alignItems: 'flex-start', gap: 14, padding: '12px 16px', borderRadius: 10, background: C.surface, border: `1px solid ${C.border}`, borderLeft: `3px solid ${b.color}` }}>
+                <div style={{ minWidth: 80, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>
+                  <span style={{ fontSize: 14, fontWeight: 700, color: b.color, fontFamily: "'JetBrains Mono', monospace" }}>N{b.bloom}</span>
+                  <span style={{ fontSize: 13, color: b.color, fontWeight: 600 }}>{b.level}</span>
+                </div>
+                <div>
+                  <p style={{ fontSize: 16, color: 'rgba(255,255,255,0.85)', lineHeight: 1.4 }}>
+                    <span style={{ fontWeight: 700, color: b.color }}>{b.verb}</span> {b.competency}
+                  </p>
+                </div>
               </motion.div>
             ))}
           </div>
@@ -1273,7 +1301,7 @@ function SlideRenderer({ data, quizState, onQuizAnswer }) {
         </motion.p>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20, marginTop: 4 }}>
           {[
-            { role: 'Calidad / Operaciones', color: C.accent, items: ['Análisis de causa raíz con IA: alimenta datos de no conformidades\ny obtén patrones, Paretos y borradores de CAPA en minutos', 'Gestión de riesgos del proyecto: matriz de riesgos\ngenerada por IA, revisada por el equipo cada ciclo', 'Dashboards automáticos: % avance, SLA, defectos\n— IA arma el tablero, tú tomas decisiones'] },
+            { role: 'Calidad / Operaciones', color: C.accent, items: ['Análisis de causa raíz con IA: alimenta datos de no conformidades\ny obtén patrones, Paretos y borradores de acción correctiva en minutos', 'Gestión de riesgos del proyecto: matriz de riesgos\ngenerada por IA, revisada por el equipo cada ciclo', 'Dashboards automáticos: % avance, SLA, defectos\n— IA arma el tablero, tú tomas decisiones'] },
             { role: 'Finanzas / Administración', color: C.highlight, items: ['Estimación y costeo de proyectos: IA analiza históricos\ny genera rangos de estimación con supuestos explícitos', 'Síntesis ejecutiva: de 30 páginas a 1 resumen accionable\n(−40% tiempo documentado) — reporte listo para comité', 'Seguimiento de presupuesto vs. real: IA detecta\ndesviaciones y sugiere acciones correctivas'] },
             { role: 'Producción / Supervisión', color: '#F59E0B', items: ['Sprint de mejora: ciclo de 2 semanas con daily\nde 15 min, entregable medible y retrospectiva', 'Planificación de capacidad: IA cruza carga de trabajo,\ndisponibilidad y prioridades para proponer asignaciones', 'Lecciones aprendidas automatizadas: IA consolida\nretros anteriores y sugiere acciones para el nuevo ciclo'] },
             { role: 'Comercial / Marketing', color: '#A855F7', items: ['Propuestas y licitaciones: IA genera borradores\ncon análisis competitivo y pricing sugerido', 'Roadmap de producto/servicio: IA prioriza backlog\npor impacto estimado en ingreso y satisfacción', 'Seguimiento de pipeline: IA identifica cuellos de botella\nen el embudo y sugiere acciones por etapa'] },
@@ -1304,7 +1332,7 @@ function SlideRenderer({ data, quizState, onQuizAnswer }) {
           { practice: 'Backlog priorizado', ai: 'IA ordena iniciativas por impacto regulatorio, costo y urgencia con trazabilidad' },
           { practice: 'Definition of Done', ai: 'Checklist de calidad generado por IA según normativa GMP/GLP vigente' },
           { practice: 'Sprint Review', ai: 'IA genera resumen ejecutivo de entregables del ciclo para comité de calidad' },
-          { practice: 'CAPA ágil', ai: 'Análisis de desviaciones + plan de acción correctiva en minutos, no semanas' },
+          { practice: 'Acción correctiva', ai: 'Desviación → causa raíz → plan correctivo generado por IA en minutos, no semanas' },
         ]},
         { sector: 'Banca\ny Servicios', color: C.highlight, orgs: 'Bancrecer · Fulldata · Damasco · Netnovation', tools: [
           { practice: 'User Story Mapping', ai: 'IA mapea journey del cliente desde datos de atención y genera historias priorizadas' },

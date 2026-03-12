@@ -7,16 +7,24 @@ const C = { bg: '#0B0F14', white: '#FFFFFF', accent: '#4F8CFF', highlight: '#22C
 const T = { hero: 88, title: 72, subtitle: 44, text: 34, bullet: 32, caption: 26 }
 
 /* ═══════════════════════════════════════════
-   LOGO — Imagen original del programa (blanca)
+   LOGOS — IESA + UniKemia
    ═══════════════════════════════════════════ */
 function Logos({ height = 128 }) {
   return (
-    <img
-      src="./logo-programa.png"
-      alt="IESA — UniKemia"
-      style={{ height, objectFit: 'contain', filter: 'brightness(0) invert(1)' }}
-      draggable={false}
-    />
+    <div style={{ display: 'flex', alignItems: 'center', gap: 32 }}>
+      <img
+        src="./logo-iesa.png"
+        alt="IESA"
+        style={{ height, objectFit: 'contain', filter: 'brightness(0) invert(1)' }}
+        draggable={false}
+      />
+      <img
+        src="./logo-unikemia.webp"
+        alt="UniKemia"
+        style={{ height, objectFit: 'contain', filter: 'brightness(0) invert(1)' }}
+        draggable={false}
+      />
+    </div>
   )
 }
 
@@ -40,75 +48,75 @@ function LiveClock() {
    TAKEAWAY NOTES (per slide)
    ═══════════════════════════════════════════ */
 const TAKEAWAYS = [
-  /* 0  hero */           'Los fundamentos ágiles son prerrequisito para adoptar IA agéntica de forma efectiva.',
-  /* 1  stats */          'La adopción de IA es masiva, pero más del 80% de las organizaciones aún no ven impacto real en EBIT.',
-  /* 2  section fund */   'Sin fundamentos sólidos, la IA amplifica disfunción en lugar de valor.',
-  /* 3  overview */       'Los cinco fundamentos son condiciones necesarias — no suficientes — para operar con IA agéntica.',
-  /* 4  ciclo emp */      'El ciclo empírico (transparencia → inspección → adaptación) es el mecanismo central de control ágil.',
-  /* 5  diagram cycle */  'Sin inspección frecuente, los errores generados por IA se propagan más rápido y se acumulan como deuda.',
-  /* 6  IA amplifica */   'La IA acelera ejecución, pero sin revisión humana, los errores se propagan exponencialmente.',
-  /* 7  cuándo sí */      '¿Cuándo usar agilidad? Cuando hay grandes brechas de satisfacción o cambio rápido.',
-  /* 8  cuándo no */      'No todo requiere agilidad: procesos estables o automatizables tienen su propio espacio.',
-  /* 9  triangle */       'La decisión organizacional en 2026 es un triángulo: ágil vs. estable vs. automatizado.',
-  /* 10 section lid */    'El liderazgo es el mayor predictor de éxito en adopción de IA — más que la tecnología.',
-  /* 11 proteger */       'Sin protección del liderazgo, los equipos son reabsorbidos por la inercia burocrática.',
-  /* 12 crear esp */      'La diversidad de enfoques es fortaleza. No existe un camino único hacia la entrega de valor.',
-  /* 13 confiar */        'El líder da paso atrás en ejecución táctica, pero intensifica en gobernanza y diseño del sistema.',
-  /* 14 gobernar */       'Rediseño de workflows y gobierno ejecutivo visible son los dos factores con mayor correlación con EBIT.',
-  /* 15 diagram lid */    'El liderazgo ágil en 2026 tiene cuatro pilares: proteger, habilitar, soltar y gobernar.',
-  /* 16 >80% */           'Sin gobierno ejecutivo visible, más del 80% de las organizaciones no logra retorno tangible de genAI.',
-  /* 17 equipos */        'Los equipos deben ser multifuncionales y dinámicos — la composición cambia según la etapa.',
-  /* 18 centrado usr */   'Un agente 5x más rápido que degrada la satisfacción del cliente destruye valor, no lo crea.',
-  /* 19 DM base */        'El Delivery Manager configura el entorno que el equipo necesita para iterar.',
-  /* 20 DM 2026 */        'Si el SM no configura prácticas de revisión de outputs IA, la inspección simplemente no ocurre.',
-  /* 21 section quiz1 */  'La autocomprobación permite validar la comprensión de los fundamentos ágiles.',
-  /* 22 quiz 1 */         'El ciclo empírico es más necesario, no menos, cuando la IA acelera la ejecución.',
-  /* 23 quiz 2 */         'El liderazgo debe transferir poder a los equipos, no solo delegar tareas.',
-  /* 24 quiz 3 */         'El apoyo ejecutivo es condición estructural para cualquier transformación ágil.',
-  /* 25 quiz 4 */         'En 2026 la decisión incluye una tercera dimensión: automatización directa.',
-  /* 26 quiz 5 */         'El error es "agilizar" lo que funciona bien, generando fricción sin valor.',
-  /* 27 section era */    'La era agéntica no es un eslogan: los agentes están reconfigurando cómo se organiza el trabajo.',
-  /* 28 qué es agente */  'Un agente planifica y ejecuta múltiples pasos. El riesgo real es agencia excesiva sin control.',
-  /* 29 diagram agen */   'La evolución va de asistente a ecosistema, pero cada nivel agrega riesgo de agency sin control.',
-  /* 30 section roles */  'Los roles Scrum no desaparecen — se reubica la accountability y se expande el contenido.',
-  /* 31 PO */             'El Product Owner maximiza valor y gestiona el Backlog con transparencia.',
-  /* 32 SM */             'El Scrum Master es líder servidor: establece Scrum, coach en autogestión, elimina impedimentos.',
-  /* 33 Devs */           'Los Developers son responsables de crear un Increment utilizable cada Sprint con calidad.',
-  /* 34 section adopt */  'La adopción de IA cruzó el umbral, pero uso no es igual a valor enterprise.',
-  /* 35 bars adopción */  'De 65% a 71% uso regular en un año. 62% ya experimenta con agentes.',
-  /* 36 lo que sube */    'Productividad local sube: +55.8% programación, −40% tiempo escritura, +84% builds exitosos.',
-  /* 37 METR */           'Alerta: los devs expertos tardan 19% más con IA, pese a creer que son 20% más rápidos.',
-  /* 38 DORA mejoras */   'DORA muestra mejoras en calidad de documentación, código y velocidad de review.',
-  /* 39 DORA pérdidas */  'Pero el throughput cae −1.5% y la estabilidad cae −7.2%. Las mejoras locales no son sistémicas.',
-  /* 40 vacuum */         'El tiempo liberado por IA se rellena con burocracia si no hay rediseño intencional.',
-  /* 41 diagram E2E */    'Agentes aceleran cada fase del pipeline. El control se desplaza a reglas, pruebas y políticas.',
-  /* 42 section roles2 */ 'De "hacer" a "orquestar y asegurar": los roles Scrum permanecen, cambia el contenido.',
-  /* 43 PO 2026 */        'El PO diseña value + guardrails: decide qué se delega a agentes y con qué límites.',
-  /* 44 SM/DM 2026 */     'El SM se convierte en "flow & adoption architect": entrena, baja fricción, protege foco.',
-  /* 45 Devs 2026 */      'Los Developers se vuelven "engineer + evaluator": orquestan agentes, revisan, aseguran seguridad.',
-  /* 46 Líderes 2026 */   'Los líderes definen human-agent ratio, work charts y la tensión centralización vs. federación.',
-  /* 47 section quiz2 */  'La autocomprobación permite validar la comprensión de roles y liderazgo agéntico.',
-  /* 48 quiz 6 */         'La autonomía por nivel y work charts dinámicos son la traducción agéntica de "crear espacio".',
-  /* 49 quiz 7 */         'Paso atrás en ejecución, intensificación en gobernanza. Ese es el matiz 2026.',
-  /* 50 quiz 8 */         'Nuevos roles IA (AI Security, AI Agent Specialist) surgen según la madurez organizacional.',
-  /* 51 quiz 9 */         'Los agentes se evalúan por impacto en experiencia de usuario, no solo por eficiencia.',
-  /* 52 quiz 10 */        'En 2026, el entorno ágil que configura el SM incluye agentes IA gobernados.',
-  /* 53 section gob */    'Solo el 18% tenía un council con autoridad para IA responsable en 2024. Gap crítico.',
-  /* 54 centralizado */   'El modelo centralizado prioriza consistencia y cumplimiento, pero crea cuellos de botella.',
-  /* 55 federado */       'El modelo federado balancea velocidad y control, pero riesgo de "shadow AI".',
-  /* 56 product-align */  'Product-aligned conecta IA con outcomes, pero requiere madurez de medición.',
-  /* 57 section metr */   'Medir impacto neto: productividad menos retrabajo menos incidentes menos drift de calidad.',
-  /* 58 metrics 1 */      'Velocidad, estabilidad y calidad son las tres dimensiones sistémicas a monitorear.',
-  /* 59 metrics 2 */      'Productividad percibida no es igual a productividad real. ROI y riesgo completan el tablero.',
-  /* 60 section casos */  'La evidencia cuantificada muestra que la IA funciona cuando hay telemetría y prácticas de calidad.',
-  /* 61 copilot */        'Copilot + Accenture: +84% builds exitosos con telemetría y prácticas de revisión.',
-  /* 62 klarna */         'Klarna: 2.3M conversaciones, resolución en menos de 2 min vs. 11. +$40M en profit.',
-  /* 63 escritura */      'Escritura profesional: −40% tiempo, +18% calidad. Transferible directamente a PO y SM.',
-  /* 64 section impl */   'Implementar en 30 días: verificar fundamentos, medir, definir guardrails, empezar pequeño.',
-  /* 65 checklist 1 */    'Verificar fundamentos, medir baseline y definir guardrails antes de adoptar herramientas IA.',
-  /* 66 checklist 2 */    '64% recomienda iniciar pequeño. Aplicar el ciclo empírico a la propia adopción de IA.',
-  /* 67 cierre */         'La IA agéntica amplifica lo que ya tienen. Fundamentos sólidos = valor amplificado.',
-  /* 68 section bib */    'Toda la evidencia presentada proviene de fuentes verificables y actualizadas.',
+  /* 0  hero */           'La competencia en 2026 no es entre marcos (Scrum vs Kanban) sino entre sistemas de entrega capaces de absorber incertidumbre y rediseñar trabajo cuando la IA acelera la ejecución.',
+  /* 1  stats */          'Adopción masiva no es valor: el 17% que sí logra ≥5% EBIT lo hace porque rediseñó workflows, no porque compró herramientas. El resto está en "AI theater".',
+  /* 2  section fund */   'Estos principios no son "básicos" en el sentido de triviales — son prerrequisitos estructurales. Sin ellos, la IA no se adopta de forma efectiva, solo de forma caótica.',
+  /* 3  overview */       'Los fundamentos son condiciones necesarias pero no suficientes. Una organización sin ellos no puede adoptar IA agéntica — solo puede adoptar herramientas de forma desorganizada.',
+  /* 4  ciclo emp */      'Los equipos que mejoran calidad de documentación y código (+7.5%/+3.4% en DORA) son los que inspeccionan. Los que pierden estabilidad (−7.2%) son los que no revisan.',
+  /* 5  diagram cycle */  'Pregunta clave para tu equipo: ¿tienen cadencias reales de inspección que incluyan la calidad del output generado por IA? Si no, están volando a ciegas a mayor velocidad.',
+  /* 6  IA amplifica */   'DORA 2024 confirma: 39% reporta poca o ninguna confianza en código generado por IA. Si se ignora esa desconfianza, aumentan defectos. Si se atiende sin proceso, aumenta fricción.',
+  /* 7  cuándo sí */      'La capacidad de iterar, validar y pivotar genera ventaja directa. Pero muchas organizaciones "agilizan" procesos que funcionan mejor con estabilidad, generando fricción sin valor.',
+  /* 8  cuándo no */      'La distinción assistant vs agent vs multiagente (Gartner) implica diferentes niveles de estabilidad del workflow. No todo proceso se beneficia de agilidad — algunos se benefician de automatización.',
+  /* 9  triangle */       'Pregunta para tu organización: ¿cada proceso es candidato a iteración ágil, a estabilización, o a automatización con agentes? La respuesta define tu modelo operativo.',
+  /* 10 section lid */    'McKinsey 2025: rediseño de workflows y gobierno ejecutivo visible son los dos atributos con mayor correlación con EBIT atribuible a genAI. La tecnología es secundaria.',
+  /* 11 proteger */       'En era agéntica, "proteger" también significa establecer políticas claras sobre qué pueden y qué no pueden hacer los agentes IA. Las presiones de productividad llevan a delegaciones sin control.',
+  /* 12 crear esp */      'En era agéntica esto se traduce en autonomía por nivel y work charts dinámicos donde cada equipo define su human-agent ratio según contexto, no por mandato central.',
+  /* 13 confiar */        'Matiz crítico 2026: la "inteligencia ascendente" ahora incluye agentes. El líder que no define límites de autonomía (humana Y de agentes) no está "soltando" — está abdicando.',
+  /* 14 gobernar */       'Solo 21% de organizaciones reporta haber hecho rediseño fundamental de workflows (McKinsey 2025). El resto intenta insertar IA en procesos viejos — por eso no ven EBIT.',
+  /* 15 diagram lid */    'El cuarto pilar (gobernar) no existía en agilidad clásica. Es la respuesta al riesgo de que la velocidad de los agentes supere la capacidad de supervisión humana.',
+  /* 16 >80% */           'El dato más incómodo: no es un problema de tecnología sino de liderazgo. Las organizaciones que "delegan sin gobernar" no fallan por la IA, fallan por el vacío de dirección.',
+  /* 17 equipos */        'En 2026 la composición dinámica no es solo por fase de proyecto — es dinámica a nivel de sprint. Nuevos roles como AI Security Specialist surgen según la madurez de la capacidad IA.',
+  /* 18 centrado usr */   'Caso Klarna: la eficiencia es real (2.3M conversaciones, −25% repetición), pero el valor real está en resolución <2 min vs 11 — una métrica de experiencia de usuario, no de eficiencia interna.',
+  /* 19 DM base */        'Conexión directa con el ciclo empírico: si el delivery manager no configura prácticas de revisión de outputs IA, la inspección del fundamento 1 simplemente no ocurre en la práctica.',
+  /* 20 DM 2026 */        'Pregunta reveladora: ¿quién en tu equipo tiene la responsabilidad explícita de configurar cómo se integra IA al flujo de trabajo? Si nadie, tienes un gap de delivery management.',
+  /* 21 section quiz1 */  'Estas preguntas están diseñadas para generar reflexión sobre la base empírica — cada una conecta un principio clásico con su implicación en contexto agéntico.',
+  /* 22 quiz 1 */         'Si todo se vuelve más rápido, el costo de una mala decisión también. El empirismo no es ritual — es el único mecanismo de control cuando la incertidumbre es alta.',
+  /* 23 quiz 2 */         'Transferir poder no es "delegar y olvidar". En contexto agéntico, el liderazgo define los límites de autonomía tanto humana como de agentes. Sin esto, la adopción es caótica.',
+  /* 24 quiz 3 */         'Dato duro: >80% sin gobierno ejecutivo visible no logra retorno tangible. El apoyo ejecutivo no es motivacional — es condición estructural del sistema.',
+  /* 25 quiz 4 */         'Gartner proyecta que el 40% de apps enterprise tendrá agentes específicos por tarea en 2026 (vs <5% en 2025). La automatización ya no es futuro — es el tercer vértice del triángulo.',
+  /* 26 quiz 5 */         'El error más costoso no es "no adoptar agilidad" sino forzarla donde no aporta. Los procesos estables bien ejecutados generan eficiencia predecible sin la fricción de iteración constante.',
+  /* 27 section era */    'Gartner alerta sobre "agentwashing": llamar agente a lo que es solo un chatbot. La distinción matters porque cada nivel de autonomía requiere diferente gobernanza y control.',
+  /* 28 qué es agente */  'OWASP Top 10 para LLM incluye "excessive agency" como riesgo crítico. El problema no es que los agentes ejecuten mal — es que ejecuten cosas que nadie les pidió, con datos que no debían tocar.',
+  /* 29 diagram agen */   'Microsoft formaliza el concepto "agent boss": el 82% de líderes considera 2025-2026 un punto de inflexión. La pregunta no es si adoptar agentes sino cómo gobernarlos.',
+  /* 30 section roles */  'En era agéntica no se elimina la accountability — se reubica. La unidad de trabajo cambia de "tareas humanas" a "tareas orquestadas humano-agente".',
+  /* 31 PO */             'La accountability del PO no cambia pero su contexto sí: priorizar ya no es solo ordenar el backlog, es decidir qué trabajo se diseña para humanos, cuál para agentes y cuál es híbrido.',
+  /* 32 SM */             'El Scrum Master como líder servidor cobra nueva dimensión: "servir" ahora incluye proteger al equipo de la sobreconfianza en outputs de IA y de la presión por adoptar sin evaluar.',
+  /* 33 Devs */           'El Developer como "profesional" incluye juzgar cuándo el código generado por IA cumple el Definition of Done. La calidad no se delega — se verifica.',
+  /* 34 section adopt */  'Stack Overflow 2024: 62% de devs ya usa IA. Pero uso ≠ valor enterprise. La trampa del "tool rollout" es confundir distribución de licencias con transformación.',
+  /* 35 bars adopción */  'De 65% a 71% en un año no es gradual — es aceleración. Pero 88% usando IA en ≥1 función con >80% sin impacto EBIT significa que la brecha adopción-valor se está ampliando, no cerrando.',
+  /* 36 lo que sube */    'La heterogeneidad importa: la mayor ganancia es en perfiles menos expertos (+34% novatos en contact center). Para expertos el efecto puede ser negativo (METR). No hay "efecto uniforme".',
+  /* 37 METR */           'La brecha percepción-realidad es el riesgo de liderazgo más subestimado: si mides solo percepción de productividad, tu equipo puede estar destruyendo valor creyendo que lo crea.',
+  /* 38 DORA mejoras */   'Estas mejoras son "locales" — ocurren a nivel de tarea individual. El error es asumir que sumarlas produce mejora sistémica. DORA demuestra que no es así.',
+  /* 39 DORA pérdidas */  'Aquí está el "porqué" de toda la sesión: la gestión ágil debe convertir mejoras locales en outcomes sistémicos. Sin el ciclo inspección → adaptación, estas mejoras nunca escalan.',
+  /* 40 vacuum */         'DORA confirma que el tiempo en "trabajo valioso" cae (−2.6% estimado) aun cuando suben flow y productividad. El liderazgo debe proteger ese vacío para que se convierta en innovación.',
+  /* 41 diagram E2E */    'El diferencial competitivo ya no está en la ejecución (los agentes la aceleran) sino en el diseño del sistema: gobernanza, plataformas, calidad y seguridad.',
+  /* 42 section roles2 */ 'Los roles Scrum permanecen pero su contenido cambia radicalmente. La accountability no desaparece — se expande hacia la orquestación del trabajo humano-agente.',
+  /* 43 PO 2026 */        'El PO que solo prioriza features se queda corto. En 2026 debe diseñar "value + guardrails": priorizar rediseño de workflow para capturar EBIT, no solo lanzar funcionalidades.',
+  /* 44 SM/DM 2026 */     'El SM que no entiende cómo funcionan los agentes no puede facilitar su adopción. "Flow architect" significa medir, no solo facilitar. Métricas DevEx y confianza medible son su nuevo toolkit.',
+  /* 45 Devs 2026 */      'El Developer que acepta todo lo que genera la IA sin evaluar está externalizando su profesionalismo. Orquestar agentes es la nueva competencia técnica — no usar un chatbot.',
+  /* 46 Líderes 2026 */   'Microsoft describe la transición de org charts a work charts. El human-agent ratio no es reducción de headcount — es rediseño de capacidad organizacional.',
+  /* 47 section quiz2 */  'Estas preguntas conectan los roles clásicos con su evolución agéntica. Cada respuesta correcta debería activar la reflexión: ¿mi equipo ya opera así o sigue en modo pre-2026?',
+  /* 48 quiz 6 */         'No uniformar: si cada equipo define su human-agent ratio según su contexto, la organización evoluciona más rápido que con mandatos centralizados de adopción.',
+  /* 49 quiz 7 */         'El líder que solo "suelta" sin gobernar en 2026 no está siendo ágil — está abdicando. La paradoja: hay que dar más autonomía Y más gobernanza simultáneamente.',
+  /* 50 quiz 8 */         'Los roles emergentes (AI Security, AI Agent Specialist, AI ROI Analyst) no "inflan headcount" — clarifican ownership de decisiones de alto riesgo que nadie estaba tomando.',
+  /* 51 quiz 9 */         'Un agente que "resuelve" tickets 5x más rápido pero degrada la satisfacción del cliente destruye valor. La multifuncionalidad evita que nadie monitoree solo la métrica de eficiencia.',
+  /* 52 quiz 10 */        'Si nadie en el equipo tiene la responsabilidad explícita de configurar la integración de IA, tienes un gap operativo. El SM/DM es la persona natural para cerrarlo.',
+  /* 53 section gob */    'Solo 18% tenía council con autoridad para IA responsable en 2024 (McKinsey). La privacidad/seguridad es preocupación #1 (72%, PMI Sweden). La gobernanza no es burocracia — es supervivencia.',
+  /* 54 centralizado */   'El trade-off real: en industrias reguladas, el costo de un incidente de IA (fuga de datos, sesgo en decisiones) supera con creces el costo de un cuello de botella por aprobación.',
+  /* 55 federado */       'El riesgo de "shadow AI" no es teórico: equipos usando herramientas no autorizadas con datos sensibles ya es realidad en la mayoría de enterprises. El modelo federado lo contiene sin asfixiar.',
+  /* 56 product-align */  'Este modelo solo funciona si ya tienes telemetría madura. Sin datos de impacto, "product-aligned governance" es solo un nombre bonito para "nadie gobierna".',
+  /* 57 section metr */   'El tablero mínimo viable evita "local wins / system losses". Medir solo productividad individual es como medir solo goles sin ver el resultado del partido.',
+  /* 58 metrics 1 */      'Lead time y estabilidad son las métricas que más rápido delatan la deuda oculta por IA. Si "más commits" no se traduce en más throughput, hay retrabajo invisible.',
+  /* 59 metrics 2 */      'METR demostró que la percepción de productividad puede ser opuesta a la realidad (creen +20%, medido −19%). Sin ROI medido, estás en terreno de autoengaño organizacional.',
+  /* 60 section casos */  'Nota metodológica: los efectos varían por especificidad de tarea, experiencia del profesional, madurez del repo y controles de calidad. Esto explica resultados contradictorios.',
+  /* 61 copilot */        'La clave de Accenture no es Copilot — es que tenían telemetría y prácticas de revisión. Sin esos controles, el mismo tool produce "deuda acelerada" (coherente con DORA).',
+  /* 62 klarna */         'Caveat: métricas de "equivalente FTE" dependen de supuestos internos. Para replicar, exige método de cálculo interno. Los "best case" deben auditarse, no copiarse.',
+  /* 63 escritura */      'Transferencia directa a roles ágiles: PO para PRDs y criterios, SM para minutas y riesgos, liderazgo para síntesis ejecutiva. El mayor ROI está en la escritura estructurada.',
+  /* 64 section impl */   'PMI Sweden: 64% recomienda iniciar pequeño y escalar gradualmente. El ciclo empírico aplica a la propia adopción de IA: experimentar, medir, ajustar.',
+  /* 65 checklist 1 */    'Antes de comprar herramientas: ¿hay liderazgo protector? ¿Equipos multifuncionales reales? ¿Cadencias de inspección? Sin esto, la IA amplifica la disfunción existente.',
+  /* 66 checklist 2 */    'EU AI Act entra en vigor progresivamente 2025-2027. Definir guardrails ahora no es anticipación — es cumplimiento. Las obligaciones para GPAI aplican desde agosto 2025.',
+  /* 67 cierre */         'Mensaje final: la IA agéntica amplifica lo que ya tienen. Si invierten en fundamentos antes que en herramientas, cada dólar en IA rinde exponencialmente más.',
+  /* 68 section bib */    '17 fuentes verificables respaldan esta presentación. Cada dato tiene trazabilidad a su fuente primaria para que puedas validarlo con tu propio equipo.',
   /* 69 bib 1 */          '',
   /* 70 bib 2 */          '',
   /* 71 bib 3 */          '',

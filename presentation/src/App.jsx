@@ -55,8 +55,10 @@ const TAKEAWAYS = [
   /* 1  contexto */       'La agilidad no es solo para equipos de software. Cualquier proyecto con incertidumbre — lanzar un producto, abrir una planta, rediseñar logística — se beneficia de ciclos cortos con retroalimentación.',
   /* 2  stats */          '71% ya usa IA, pero solo 17% ve impacto financiero. La diferencia no es la herramienta sino cómo se integra al flujo de trabajo del equipo. Eso aplica igual en calidad, finanzas o comercial.',
   /* 3  evidencia */      'Para un gerente: la IA mejora tareas individuales pero puede empeorar la coordinación. Tu rol cambia de ejecutar a diseñar cómo trabajan personas + IA juntos.',
-  /* 3b agile x sector */ 'La agilidad no es teoría para tu sector: alimentos −55% time-to-market, farma −40% ciclos de desarrollo, banca +25-35% productividad, construcción 3x más probable adelantado. Son datos, no promesas.',
-  /* 4  EU AI Act */      'El EU AI Act no es futuro — ya está en vigor. Cada hito del timeline agrega obligaciones concretas. Definir guardrails ahora es cumplimiento, no anticipación.',
+  /* 3b manufactura */    'Manufactura y alimentos: el mayor impacto ágil está en desarrollo de producto (−55% time-to-market) y eficiencia operacional (+30-40%). Kanban + daily + retro son el punto de entrada más natural.',
+  /* 3c farma */          'Farmacéutica: ciclos de desarrollo −40% y costos −25% con equipos cross-funcionales. El backlog regulatorio priorizado por impacto es la práctica más transferible a cualquier industria regulada.',
+  /* 3d banca */          'Banca y servicios: productividad +25-35%, quejas −50%. ING pasó de 5-6 entregas/año a cada 2-3 semanas. El caso más documentado de transformación ágil fuera de tecnología.',
+  /* 3e construcción */   'Construcción y retail: 3× más probable terminar a tiempo con Lean-Agile. Last Planner + compromisos semanales es el equivalente del daily standup en obra — y funciona.',
   /* 5  section fund */   'Estos principios no son "básicos" en el sentido de triviales — son prerrequisitos estructurales. Sin ellos, la IA no se adopta de forma efectiva, solo de forma caótica.',
   /* 3  overview */       'Los fundamentos son condiciones necesarias pero no suficientes. Una organización sin ellos no puede adoptar IA agéntica — solo puede adoptar herramientas de forma desorganizada.',
   /* 4  ciclo emp */      'Los equipos que mejoran calidad de documentación y código (+7.5%/+3.4% en DORA) son los que inspeccionan. Los que pierden estabilidad (−7.2%) son los que no revisan.',
@@ -174,17 +176,11 @@ const slides = [
     'El rol del gerente cambia: de ejecutar a diseñar\ncómo trabajan las personas junto con la IA',
   ], note: 'Traducción para quien lidera equipos en manufactura, servicios o banca', color: 'accent' },
 
-  // ── 5: OPORTUNIDAD ÁGIL POR SECTOR — datos duros ──
-  { type: 'agileBySector' },
-
-  // ── 6: EU AI ACT TIMELINE ──
-  { type: 'content', title: 'EU AI Act: calendario regulatorio', bullets: [
-    'Ago 2024: en vigor la regulación',
-    'Feb 2025: prohibiciones y alfabetización IA',
-    'Ago 2025: obligaciones para GPAI',
-    'Ago 2026: obligaciones principales',
-    'Ago 2027: high-risk en productos regulados',
-  ], note: 'Regulación 2024/1689' },
+  // ── 5-8: OPORTUNIDAD ÁGIL POR SECTOR — 1 slide por sector ──
+  { type: 'agileBySector', sectorIndex: 0 },
+  { type: 'agileBySector', sectorIndex: 1 },
+  { type: 'agileBySector', sectorIndex: 2 },
+  { type: 'agileBySector', sectorIndex: 3 },
 
   // ── SECTION: FUNDAMENTOS ──
   { type: 'section', title: 'Fundamentos ágiles', subtitle: 'La base que no cambia' },
@@ -901,49 +897,51 @@ function SlideRenderer({ data, quizState, onQuizAnswer }) {
     )
 
     case 'agileBySector': {
-      const sectors = [
-        { sector: 'Manufactura y Alimentos', color: C.accent, orgs: 'Crustissimo · Polar · Botalón', areas: [
+      const allSectors = [
+        { sector: 'Manufactura y Alimentos', color: C.accent, orgs: 'Crustissimo · Polar · Botalón · Cabel', areas: [
           { area: 'Desarrollo de producto', metric: '−55%', metricLabel: 'time-to-market', useCase: 'Lanzamiento de nuevo SKU con equipo multifuncional (calidad + comercial + producción) en ciclos de 2 semanas', source: 'BCG/NielsenIQ' },
-          { area: 'Eficiencia operacional', metric: '+30-40%', metricLabel: 'eficiencia', useCase: 'Optimización de línea de producción: kanban visual + daily de 15 min + retro quincenal', source: 'PA Consulting' },
+          { area: 'Eficiencia operacional', metric: '+30-40%', metricLabel: 'eficiencia', useCase: 'Optimización de línea de producción: kanban visual + daily de 15 min + retrospectiva quincenal', source: 'PA Consulting' },
           { area: 'Entrega a tiempo', metric: '>95%', metricLabel: 'on-time delivery', useCase: 'Planificación de despacho con ciclos cortos y ajuste semanal según demanda real', source: 'Tailor Benchmarks' },
         ]},
         { sector: 'Farmacéutica', color: '#06b6d4', orgs: 'Calox · Corp. JSL', areas: [
-          { area: 'Ciclo de desarrollo', metric: '−40%', metricLabel: 'concepto→ensayo', useCase: 'Gestión de proyecto de registro sanitario con backlog priorizado por impacto regulatorio', source: 'McKinsey Life Sciences' },
+          { area: 'Ciclo de desarrollo', metric: '−40%', metricLabel: 'concepto → ensayo', useCase: 'Gestión de proyecto de registro sanitario con backlog priorizado por impacto regulatorio', source: 'McKinsey Life Sciences' },
           { area: 'Costos de proyecto', metric: '−25%', metricLabel: 'reducción', useCase: 'Proyecto de transferencia tecnológica con revisiones cada 2 semanas y decisiones tempranas de go/no-go', source: 'McKinsey Pharma' },
-          { area: 'Acciones correctivas', metric: 'Continua', metricLabel: 'medición', useCase: 'Desviación de calidad → causa raíz → plan correctivo en días, no meses (CAPA ágil)', source: 'McKinsey/Roche' },
+          { area: 'Acciones correctivas', metric: 'Continua', metricLabel: 'medición', useCase: 'Desviación de calidad → causa raíz → plan correctivo en días, no meses', source: 'McKinsey/Roche' },
         ]},
-        { sector: 'Banca y Servicios', color: C.highlight, orgs: 'Bancrecer · Fulldata · Damasco', areas: [
-          { area: 'Productividad', metric: '+25-35%', metricLabel: 'equipos', useCase: 'Proyecto de mejora de proceso de crédito: sprint de 2 semanas, entregable medible por ciclo', source: 'Hiperdrive Agile' },
-          { area: 'Tiempo al mercado', metric: '−50-70%', metricLabel: 'ciclo entrega', useCase: 'Lanzamiento de producto financiero o campaña con equipo cross-funcional y MVP en 4 semanas', source: 'ING/McKinsey' },
+        { sector: 'Banca y Servicios', color: C.highlight, orgs: 'Bancrecer · Fulldata · Damasco · Netnovation', areas: [
+          { area: 'Productividad de equipos', metric: '+25-35%', metricLabel: 'mejora', useCase: 'Proyecto de mejora de proceso de crédito: sprint de 2 semanas, entregable medible por ciclo', source: 'Hiperdrive Agile' },
+          { area: 'Tiempo al mercado', metric: '−50-70%', metricLabel: 'ciclo de entrega', useCase: 'Lanzamiento de producto financiero o campaña con equipo cross-funcional y MVP en 4 semanas', source: 'ING/McKinsey' },
           { area: 'Servicio al cliente', metric: '−50%', metricLabel: 'quejas', useCase: 'Rediseño de journey de atención con feedback semanal de clientes reales + ajuste iterativo', source: 'BCG 2022' },
         ]},
-        { sector: 'Construcción y Retail', color: '#A855F7', orgs: 'Pilperca · B&P · Tiendas Ciro', areas: [
-          { area: 'Cronograma', metric: '3×', metricLabel: 'más probable a tiempo', useCase: 'Planificación de obra con Last Planner: compromisos semanales del equipo + % plan cumplido', source: 'LCI/Dodge 2021' },
-          { area: 'Ruta crítica', metric: '+51.6%', metricLabel: 'eficiencia', useCase: 'Proyecto de construcción con Scrum adaptado: planning quincenal + coordinación visual de frentes', source: 'MDPI 2025' },
-          { area: 'Inventario', metric: '82→98%', metricLabel: 'precisión', useCase: 'Proyecto de integración omnicanal con ciclos de ajuste cada 2 semanas según rotación real', source: 'Omniful' },
+        { sector: 'Construcción y Retail', color: '#A855F7', orgs: 'Pilperca · B&P · Tiendas Ciro · Promoting', areas: [
+          { area: 'Cumplimiento de cronograma', metric: '3×', metricLabel: 'más probable a tiempo', useCase: 'Planificación de obra con Last Planner: compromisos semanales del equipo + % plan cumplido', source: 'LCI/Dodge 2021' },
+          { area: 'Eficiencia de ruta crítica', metric: '+51.6%', metricLabel: 'mejora', useCase: 'Proyecto de construcción con Scrum adaptado: planning quincenal + coordinación visual de frentes', source: 'MDPI Buildings 2025' },
+          { area: 'Precisión de inventario', metric: '82→98%', metricLabel: 'precisión', useCase: 'Proyecto de integración omnicanal con ciclos de ajuste cada 2 semanas según rotación real', source: 'Omniful' },
         ]},
       ]
+      const s = allSectors[data.sectorIndex] || allSectors[0]
       return (
-        <motion.div variants={stagger} initial="hidden" animate="visible" style={{ ...inner, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 12 }}>
-          <motion.h2 variants={fadeUp} style={{ fontSize: T.title, fontWeight: 700, color: C.white }}>Agilidad en sus sectores: evidencia y casos de uso</motion.h2>
-          <motion.p variants={fadeUp} style={{ fontSize: 17, color: C.dim }}>Datos comprobados + proyectos ideales para implementar — McKinsey, BCG, PMI, LCI</motion.p>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14, marginTop: 2 }}>
-            {sectors.map((s, i) => (
-              <motion.div key={i} variants={popIn} style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 14, padding: '16px 18px', borderLeft: `3px solid ${s.color}` }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 10 }}>
-                  <p style={{ fontSize: 18, fontWeight: 700, color: s.color }}>{s.sector}</p>
-                  <p style={{ fontSize: 12, color: C.dim }}>{s.orgs}</p>
+        <motion.div variants={stagger} initial="hidden" animate="visible" style={{ ...inner, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 28 }}>
+          <div>
+            <motion.p variants={fadeUp} style={{ fontSize: T.caption, color: C.dim, textTransform: 'uppercase', letterSpacing: 3, fontWeight: 600, marginBottom: 8 }}>Evidencia ágil por sector · {data.sectorIndex + 1}/4</motion.p>
+            <motion.h2 variants={fadeUp} style={{ fontSize: 52, fontWeight: 700, color: s.color }}>{s.sector}</motion.h2>
+            <motion.p variants={fadeUp} style={{ fontSize: 20, color: C.dim, marginTop: 6 }}>{s.orgs}</motion.p>
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+            {s.areas.map((a, j) => (
+              <motion.div key={j} variants={popIn} style={{ display: 'grid', gridTemplateColumns: '220px 160px 1fr', gap: 24, alignItems: 'center', background: C.surface, border: `1px solid ${C.border}`, borderRadius: 14, padding: '24px 28px', borderLeft: `4px solid ${s.color}` }}>
+                <div>
+                  <p style={{ fontSize: 22, fontWeight: 600, color: C.white, lineHeight: 1.3 }}>{a.area}</p>
+                  <p style={{ fontSize: 14, color: C.dim, marginTop: 4 }}>{a.source}</p>
                 </div>
-                {s.areas.map((a, j) => (
-                  <div key={j} style={{ marginBottom: 10, paddingBottom: j < s.areas.length - 1 ? 10 : 0, borderBottom: j < s.areas.length - 1 ? `1px solid ${C.border}` : 'none' }}>
-                    <div style={{ display: 'flex', alignItems: 'baseline', gap: 10, marginBottom: 4 }}>
-                      <p style={{ fontSize: 15, fontWeight: 600, color: 'rgba(255,255,255,0.9)' }}>{a.area}</p>
-                      <span style={{ fontSize: 15, fontWeight: 700, color: s.color, fontFamily: "'JetBrains Mono', monospace" }}>{a.metric}</span>
-                      <span style={{ fontSize: 12, color: C.dim }}>{a.metricLabel} · {a.source}</span>
-                    </div>
-                    <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.55)', lineHeight: 1.35, paddingLeft: 12, borderLeft: `2px solid ${s.color}25` }}>{a.useCase}</p>
-                  </div>
-                ))}
+                <div style={{ textAlign: 'center' }}>
+                  <p style={{ fontSize: 36, fontWeight: 800, color: s.color, fontFamily: "'JetBrains Mono', monospace", lineHeight: 1 }}>{a.metric}</p>
+                  <p style={{ fontSize: 14, color: C.dim, marginTop: 4 }}>{a.metricLabel}</p>
+                </div>
+                <div style={{ paddingLeft: 20, borderLeft: `2px solid ${s.color}30` }}>
+                  <p style={{ fontSize: 12, color: s.color, fontWeight: 600, textTransform: 'uppercase', letterSpacing: 1, marginBottom: 4 }}>Caso de uso ideal</p>
+                  <p style={{ fontSize: 19, color: 'rgba(255,255,255,0.8)', lineHeight: 1.5 }}>{a.useCase}</p>
+                </div>
               </motion.div>
             ))}
           </div>

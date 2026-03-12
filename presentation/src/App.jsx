@@ -3,7 +3,7 @@ import { useState, useEffect, useCallback } from 'react'
 /* ═══════════════════════════════════════════
    DESIGN SYSTEM — 1920×1080 Keynote
    ═══════════════════════════════════════════ */
-const C = { bg: '#0B0F14', white: '#FFFFFF', accent: '#4F8CFF', highlight: '#22C55E', dim: '#64748B', surface: '#141A23', border: '#1E293B', red: '#EF4444' }
+const C = { bg: '#0B0F14', white: '#FFFFFF', accent: '#811937', highlight: '#22C55E', dim: '#64748B', surface: '#141A23', border: '#1E293B', red: '#EF4444' }
 const T = { hero: 88, title: 72, subtitle: 44, text: 34, bullet: 32, caption: 26 }
 
 /* ═══════════════════════════════════════════

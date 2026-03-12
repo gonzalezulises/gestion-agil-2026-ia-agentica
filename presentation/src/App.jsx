@@ -51,7 +51,6 @@ function LiveClock() {
 const TAKEAWAYS = [
   /* 0  hero */           'La competencia en 2026 no es entre marcos (Scrum vs Kanban) sino entre sistemas de entrega capaces de absorber incertidumbre y rediseñar trabajo cuando la IA acelera la ejecución.',
   /* 0b agenda */         'Este módulo combina fundamentos ágiles con evidencia de IA en 2026. Al final tendrás herramientas concretas para aplicar el lunes en tu proyecto y tu equipo.',
-  /* 0c objectives */     'Las 6 competencias siguen la taxonomía de Bloom: de recordar conceptos (N1) a crear tu propio plan de implementación (N6). Cada bloque del módulo sube un nivel.',
   /* 1  contexto */       'La agilidad no es solo para equipos de software. Cualquier proyecto con incertidumbre — lanzar un producto, abrir una planta, rediseñar logística — se beneficia de ciclos cortos con retroalimentación.',
   /* 2  stats */          '71% ya usa IA, pero solo 17% ve impacto financiero. La diferencia no es la herramienta sino cómo se integra al flujo de trabajo del equipo. Eso aplica igual en calidad, finanzas o comercial.',
   /* 3  evidencia */      'Para un gerente: la IA mejora tareas individuales pero puede empeorar la coordinación. Tu rol cambia de ejecutar a diseñar cómo trabajan personas + IA juntos.',
@@ -147,10 +146,7 @@ const slides = [
   // ── 1: AGENDA ──
   { type: 'agenda' },
 
-  // ── 2: OBJETIVO + COMPETENCIAS BLOOM ──
-  { type: 'objectives' },
-
-  // ── 3: CONTEXTO NARRATIVO — conectado con el grupo ──
+  // ── 2: CONTEXTO NARRATIVO — conectado con el grupo ──
   { type: 'content', title: '¿Qué tiene que ver la agilidad con nosotros?', bullets: [
     'Alimentos, farma, banca, retail, construcción —\ntodos gestionan proyectos con incertidumbre creciente',
     'La IA ya está en sus procesos: reportes, análisis,\nplanificación — aunque no la llamen "agente"',
@@ -378,13 +374,13 @@ const slides = [
   // ── ROLES REDEFINIDOS (EMPHASIS) ──
   { type: 'section', title: 'Roles redefinidos', subtitle: 'De "hacer" a "dirigir y verificar"', emphasis: true },
 
-  { type: 'role', role: 'Resp. de prioridades', base: 'Maximizar valor;\ngestionar lista de trabajo', upgrade: 'Diseñar valor + límites:\ndecidir qué se delega a IA\ny con qué controles', artifacts: 'Políticas de uso,\ncriterios de calidad verificables', color: C.accent },
+  { type: 'role', role: 'Resp. de prioridades', base: 'Maximizar valor;\ngestionar lista de trabajo;\ncomunicar objetivo al equipo', upgrade: 'Ya no solo ordena tareas:\ndecide qué trabajo se diseña\npara humanos, cuál para IA\ny cuál es híbrido', genai: 'IA genera borradores de criterios\nde aceptación, analiza impacto\nde cada item del backlog,\ny sugiere priorización por ROI\n→ Tú decides, la IA informa', color: C.accent },
 
-  { type: 'role', role: 'Facilitador / Líder de proceso', base: 'Configurar cómo trabaja\nel equipo; lograr efectividad;\neliminar obstáculos', upgrade: 'Arquitecto de flujo:\nentrenar uso/validación de IA,\nbajar fricción, proteger foco', artifacts: 'Guías de uso, checklists,\nmétricas de satisfacción del equipo', color: C.highlight },
+  { type: 'role', role: 'Facilitador / Líder de proceso', base: 'Configurar cómo trabaja\nel equipo; lograr efectividad;\neliminar obstáculos', upgrade: 'Mide flow real del equipo,\nno solo facilita reuniones.\nProtege al equipo de la\nsobreconfianza en outputs de IA', genai: 'IA genera resúmenes de retro,\ndetecta patrones en bloqueos,\npropone mejoras basadas en datos.\nNuevo: medir confianza del equipo\nen los resultados generados por IA', color: C.highlight },
 
-  { type: 'role', role: 'Equipo de ejecución', base: 'Entregar resultados;\ncuidar calidad;\nplanificar el ciclo', upgrade: 'Ejecutor + evaluador:\nusar IA como herramienta, revisar,\nasegurar calidad de resultados', artifacts: 'Checklists de calidad,\nrevisión de resultados IA', color: C.accent },
+  { type: 'role', role: 'Equipo de ejecución', base: 'Entregar resultados;\ncuidar calidad;\nplanificar el ciclo', upgrade: 'No acepta outputs de IA\nsin evaluarlos. Orquestar\nagentes es la nueva\ncompetencia profesional', genai: 'IA genera borradores, análisis,\nreportes — pero el equipo verifica.\nNuevo: Definition of Done incluye\n"¿se revisó el output de IA?"\ncomo criterio obligatorio', color: C.accent },
 
-  { type: 'role', role: 'Líderes / Gerentes', base: 'Crear condiciones;\nproteger equipos;\ntransferir poder', upgrade: 'Director del sistema:\nproporción automatización vs. humano,\ncentralización vs. autonomía', artifacts: 'Modelo de gobernanza,\nmétricas de retorno, controles', color: C.highlight },
+  { type: 'role', role: 'Líderes / Gerentes', base: 'Crear condiciones;\nproteger equipos;\ntransferir poder', upgrade: 'Define la proporción\nautomatización vs. humano.\nGobierna qué puede hacer\nla IA y qué no', genai: 'IA genera dashboards de impacto,\nidentifica riesgos de adopción.\nNuevo: decidir el human-agent ratio\npor equipo — no reducir headcount\nsino rediseñar capacidad', color: C.highlight },
 
   // ── QUIZ 2 ──
   { type: 'section', title: 'Autocomprobación', subtitle: 'Roles y liderazgo', quiz: true },
@@ -1225,12 +1221,12 @@ function SlideRenderer({ data, quizState, onQuizAnswer }) {
         <motion.h2 variants={fadeUp} style={{ fontSize: T.title, fontWeight: 700, color: data.color }}>{data.role}</motion.h2>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 32, marginTop: 8 }}>
           {[
-            { label: 'Base', content: data.base },
-            { label: 'Upgrade 2026', content: data.upgrade },
-            { label: 'Artefactos nuevos', content: data.artifacts },
+            { label: 'Rol base', content: data.base, accent: C.dim },
+            { label: 'Qué cambia en 2026', content: data.upgrade, accent: data.color },
+            { label: 'Con genAI en la práctica', content: data.genai, accent: '#06b6d4' },
           ].map((col, i) => (
-            <motion.div key={i} variants={popIn} whileHover={{ y: -4, transition: { duration: 0.2 } }} style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 16, padding: 32 }}>
-              <p style={{ fontSize: 20, color: C.dim, textTransform: 'uppercase', letterSpacing: 2, marginBottom: 12, fontWeight: 600 }}>{col.label}</p>
+            <motion.div key={i} variants={popIn} whileHover={{ y: -4, transition: { duration: 0.2 } }} style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 16, padding: 32, borderTop: `3px solid ${col.accent}` }}>
+              <p style={{ fontSize: 18, color: col.accent, textTransform: 'uppercase', letterSpacing: 2, marginBottom: 14, fontWeight: 600 }}>{col.label}</p>
               <p style={{ fontSize: T.caption, color: 'rgba(255,255,255,0.85)', lineHeight: 1.6, whiteSpace: 'pre-line' }}>{col.content}</p>
             </motion.div>
           ))}

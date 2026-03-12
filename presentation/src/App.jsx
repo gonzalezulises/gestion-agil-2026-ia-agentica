@@ -1,18 +1,5 @@
 import { useState, useEffect, useCallback } from 'react'
-import { DotLottieReact } from '@lottiefiles/dotlottie-react'
-
-/* ═══════════════════════════════════════════
-   LOTTIE ANIMATION URLS (free from LottieFiles)
-   ═══════════════════════════════════════════ */
-const LOTTIE = {
-  aiRobot: 'https://assets-v2.lottiefiles.com/a/431279d2-118a-11ee-afa8-f7fbc4c05a63/bsM1mDTFOD.lottie',
-  cycle: 'https://assets-v2.lottiefiles.com/a/58c0ecce-1152-11ee-bb74-676f81cc9d80/WXubkGXGGK.lottie',
-  analytics: 'https://assets-v2.lottiefiles.com/a/68e7dfd6-1152-11ee-a771-670bcee1276f/Ix7fZPMdV7.lottie',
-  clock: 'https://assets-v2.lottiefiles.com/a/bb71d0c6-1171-11ee-83df-ab233474cd1f/GHWjSOvp3O.lottie',
-  teamwork: 'https://assets-v2.lottiefiles.com/a/a6615afa-1179-11ee-8303-7fd0b341f999/cJa13o17od.lottie',
-  confetti: 'https://assets-v2.lottiefiles.com/a/45dc9d20-1179-11ee-bc01-8bf34a2dfcf1/EcAtIfhj1J.lottie',
-  robot: 'https://assets-v2.lottiefiles.com/a/7d4f4568-1152-11ee-8717-efe6c49323b2/GSkGx9NpAv.lottie',
-}
+import { motion, AnimatePresence } from 'motion/react'
 
 /* ═══════════════════════════════════════════
    DESIGN SYSTEM — 1920×1080 Keynote
@@ -702,61 +689,74 @@ const DIAGRAMS = { cycle: CycleDiagram, triangle: TriangleDiagram, leadership: L
 const MARGIN = 120
 const inner = { paddingLeft: MARGIN, paddingRight: MARGIN }
 
+/* ─── Motion Variants ─── */
+const fadeUp = {
+  hidden: { opacity: 0, y: 24 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] } },
+}
+const popIn = {
+  hidden: { opacity: 0, scale: 0.92 },
+  visible: { opacity: 1, scale: 1, transition: { duration: 0.4, ease: [0.16, 1, 0.3, 1] } },
+}
+const fadeIn = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { duration: 0.5 } },
+}
+const stagger = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.1, delayChildren: 0.05 } },
+}
+const staggerFast = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.06, delayChildren: 0.02 } },
+}
+const slideTransition = {
+  initial: { opacity: 0, y: 40 },
+  animate: { opacity: 1, y: 0, transition: { duration: 0.4, ease: [0.16, 1, 0.3, 1] } },
+  exit: { opacity: 0, y: -20, transition: { duration: 0.15 } },
+}
+
 function SlideRenderer({ data, quizState, onQuizAnswer }) {
   switch (data.type) {
 
     case 'hero': return (
-      <div style={{ ...inner, height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 60 }}>
+      <motion.div variants={stagger} initial="hidden" animate="visible" style={{ ...inner, height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 60 }}>
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 36 }}>
-          <div className="anim-fade d1"><Logos height={128} /></div>
-          <p className="anim-fade d2" style={{ fontSize: T.caption, color: C.dim, letterSpacing: 4, textTransform: 'uppercase', fontWeight: 500 }}>Gestión Ágil de Proyectos</p>
-          <h1 className="anim-fade d3" style={{ fontSize: T.hero, fontWeight: 800, lineHeight: 1.1, color: C.white, maxWidth: 900 }}>
+          <motion.div variants={fadeUp}><Logos height={128} /></motion.div>
+          <motion.p variants={fadeUp} style={{ fontSize: T.caption, color: C.dim, letterSpacing: 4, textTransform: 'uppercase', fontWeight: 500 }}>Gestión Ágil de Proyectos</motion.p>
+          <motion.h1 variants={fadeUp} style={{ fontSize: T.hero, fontWeight: 800, lineHeight: 1.1, color: C.white, maxWidth: 900 }}>
             Roles y <span style={{ color: C.accent }}>Liderazgo</span>
-          </h1>
-          <a href="https://www.linkedin.com/in/ulisesgonzalez/" target="_blank" rel="noopener noreferrer" className="anim-fade d4" style={{ fontSize: T.caption, color: C.dim, fontWeight: 400, textDecoration: 'none', cursor: 'pointer', transition: 'color 200ms' }} onMouseEnter={e => e.currentTarget.style.color = C.white} onMouseLeave={e => e.currentTarget.style.color = C.dim}>Profesor: Ulises González</a>
+          </motion.h1>
+          <motion.a variants={fadeUp} href="https://www.linkedin.com/in/ulisesgonzalez/" target="_blank" rel="noopener noreferrer" style={{ fontSize: T.caption, color: C.dim, fontWeight: 400, textDecoration: 'none', cursor: 'pointer', transition: 'color 200ms' }} onMouseEnter={e => e.currentTarget.style.color = C.white} onMouseLeave={e => e.currentTarget.style.color = C.dim}>Profesor: Ulises González</motion.a>
         </div>
-        <div className="anim-fade d3" style={{ width: 400, height: 400, opacity: 0.7 }}>
-          <DotLottieReact src={LOTTIE.aiRobot} loop autoplay style={{ width: '100%', height: '100%' }} />
-        </div>
-      </div>
+      </motion.div>
     )
 
     case 'end': return (
-      <div style={{ ...inner, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', textAlign: 'center', gap: 48, position: 'relative' }}>
-        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, pointerEvents: 'none', opacity: 0.6 }}>
-          <DotLottieReact src={LOTTIE.confetti} loop autoplay style={{ width: '100%', height: '100%' }} />
-        </div>
-        <div className="anim-fade d1"><Logos height={128} /></div>
-        <p className="anim-fade d2" style={{ fontSize: T.subtitle, color: C.dim, fontWeight: 500 }}>Gestión Ágil de Proyectos</p>
-        <p className="anim-fade d3" style={{ fontSize: T.title, fontWeight: 700, color: C.white }}>¡Gracias!</p>
-        <a href="https://www.linkedin.com/in/ulisesgonzalez/" target="_blank" rel="noopener noreferrer" className="anim-fade d4" style={{ fontSize: T.caption, color: C.dim, fontWeight: 400, textDecoration: 'none', transition: 'color 200ms' }} onMouseEnter={e => e.currentTarget.style.color = C.white} onMouseLeave={e => e.currentTarget.style.color = C.dim}>Profesor: Ulises González</a>
-        <p className="anim-fade d5" style={{ fontSize: 16, color: 'rgba(255,255,255,0.25)', fontWeight: 400 }}>© 2026 Ulises González · Preparado con IA generativa como herramienta de investigación y diseño</p>
-      </div>
+      <motion.div variants={stagger} initial="hidden" animate="visible" style={{ ...inner, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', textAlign: 'center', gap: 48 }}>
+        <motion.div variants={fadeUp}><Logos height={128} /></motion.div>
+        <motion.p variants={fadeUp} style={{ fontSize: T.subtitle, color: C.dim, fontWeight: 500 }}>Gestión Ágil de Proyectos</motion.p>
+        <motion.p variants={popIn} style={{ fontSize: T.title, fontWeight: 700, color: C.white }}>¡Gracias!</motion.p>
+        <motion.a variants={fadeUp} href="https://www.linkedin.com/in/ulisesgonzalez/" target="_blank" rel="noopener noreferrer" style={{ fontSize: T.caption, color: C.dim, fontWeight: 400, textDecoration: 'none', transition: 'color 200ms' }} onMouseEnter={e => e.currentTarget.style.color = C.white} onMouseLeave={e => e.currentTarget.style.color = C.dim}>Profesor: Ulises González</motion.a>
+        <motion.p variants={fadeUp} style={{ fontSize: 16, color: 'rgba(255,255,255,0.25)', fontWeight: 400 }}>© 2026 Ulises González · Preparado con IA generativa como herramienta de investigación y diseño</motion.p>
+      </motion.div>
     )
 
-    case 'section': {
-      const sectionLottie = data.emphasis ? LOTTIE.teamwork : data.quiz ? null : (data.title === 'Era agéntica' ? LOTTIE.robot : null)
-      return (
-        <div style={{ ...inner, height: '100%', display: 'flex', justifyContent: 'flex-start', alignItems: 'center', gap: 60 }}>
-          <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 20 }}>
-            {data.emphasis && <div className="anim-fade d1" style={{ width: 60, height: 4, background: C.accent, borderRadius: 2 }} />}
-            {data.quiz && <div className="anim-fade d1" style={{ width: 60, height: 4, background: C.highlight, borderRadius: 2 }} />}
-            <h2 className="anim-fade d2" style={{ fontSize: T.title, fontWeight: 700, color: C.white, lineHeight: 1.15 }}>{data.title}</h2>
-            {data.subtitle && <p className="anim-fade d3" style={{ fontSize: T.subtitle, color: C.dim, fontWeight: 400 }}>{data.subtitle}</p>}
-          </div>
-          {sectionLottie && (
-            <div className="anim-fade d3" style={{ width: 340, height: 340, opacity: 0.5, flexShrink: 0 }}>
-              <DotLottieReact src={sectionLottie} loop autoplay style={{ width: '100%', height: '100%' }} />
-            </div>
-          )}
+    case 'section': return (
+      <motion.div variants={stagger} initial="hidden" animate="visible" style={{ ...inner, height: '100%', display: 'flex', justifyContent: 'flex-start', alignItems: 'center', gap: 60 }}>
+        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 20 }}>
+          {data.emphasis && <motion.div variants={fadeUp} style={{ width: 60, height: 4, background: C.accent, borderRadius: 2 }} />}
+          {data.quiz && <motion.div variants={fadeUp} style={{ width: 60, height: 4, background: C.highlight, borderRadius: 2 }} />}
+          <motion.h2 variants={fadeUp} style={{ fontSize: T.title, fontWeight: 700, color: C.white, lineHeight: 1.15 }}>{data.title}</motion.h2>
+          {data.subtitle && <motion.p variants={fadeUp} style={{ fontSize: T.subtitle, color: C.dim, fontWeight: 400 }}>{data.subtitle}</motion.p>}
         </div>
-      )
-    }
+      </motion.div>
+    )
 
     case 'overview': return (
-      <div style={{ ...inner, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 20 }}>
-        <p className="anim-fade d1" style={{ fontSize: 20, color: C.dim, textTransform: 'uppercase', letterSpacing: 3, fontWeight: 600 }}>Agenda</p>
-        <h2 className="anim-fade d1" style={{ fontSize: T.subtitle, fontWeight: 700, color: C.white, marginBottom: 12 }}>Cinco fundamentos</h2>
+      <motion.div variants={stagger} initial="hidden" animate="visible" style={{ ...inner, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 20 }}>
+        <motion.p variants={fadeUp} style={{ fontSize: 20, color: C.dim, textTransform: 'uppercase', letterSpacing: 3, fontWeight: 600 }}>Agenda</motion.p>
+        <motion.h2 variants={fadeUp} style={{ fontSize: T.subtitle, fontWeight: 700, color: C.white, marginBottom: 12 }}>Cinco fundamentos</motion.h2>
         {[
           { n: '01', title: 'El ciclo empírico', sub: 'Transparencia → inspección → adaptación' },
           { n: '02', title: '¿Cuándo sí, cuándo no?', sub: 'Ágil vs. estable vs. automatizado' },
@@ -764,50 +764,45 @@ function SlideRenderer({ data, quizState, onQuizAnswer }) {
           { n: '04', title: 'Equipos multifuncionales', sub: 'Centrados en el usuario, no en eficiencia' },
           { n: '05', title: 'El Delivery Manager', sub: 'Configurar el entorno — ahora con agentes IA' },
         ].map((f, i) => (
-          <div key={i} className={`anim-fade d${i + 2}`} style={{ display: 'flex', alignItems: 'center', gap: 24 }}>
+          <motion.div key={i} variants={fadeUp} style={{ display: 'flex', alignItems: 'center', gap: 24 }}>
             <span style={{ fontSize: 36, fontWeight: 800, color: C.accent, opacity: 0.4, minWidth: 60 }}>{f.n}</span>
             <div>
               <p style={{ fontSize: T.bullet, fontWeight: 600, color: C.white }}>{f.title}</p>
               <p style={{ fontSize: 22, color: C.dim }}>{f.sub}</p>
             </div>
-          </div>
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
     )
 
     case 'stats': return (
-      <div style={{ ...inner, height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 40 }}>
-        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 40, alignItems: 'center' }}>
-          {data.title && <h2 className="anim-fade d1" style={{ fontSize: T.subtitle, fontWeight: 700, color: C.white }}>{data.title}</h2>}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 28, width: '100%', maxWidth: 1100 }}>
-            {data.items.map((s, i) => (
-              <div key={i} className={`anim-pop d${i + 1}`} style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 16, padding: '36px 28px', textAlign: 'center' }}>
-                <p style={{ fontSize: 64, fontWeight: 800, color: C.accent, lineHeight: 1 }}>{s.value}</p>
-                <p style={{ fontSize: T.caption, color: C.white, marginTop: 12 }}>{s.label}</p>
-                <p style={{ fontSize: 16, color: C.dim, marginTop: 6 }}>{s.source}</p>
-              </div>
-            ))}
-          </div>
+      <motion.div variants={stagger} initial="hidden" animate="visible" style={{ ...inner, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', gap: 40 }}>
+        {data.title && <motion.h2 variants={fadeUp} style={{ fontSize: T.subtitle, fontWeight: 700, color: C.white }}>{data.title}</motion.h2>}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 28, width: '100%', maxWidth: 1200 }}>
+          {data.items.map((s, i) => (
+            <motion.div key={i} variants={popIn} whileHover={{ scale: 1.03, transition: { duration: 0.2 } }} style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 16, padding: '36px 28px', textAlign: 'center' }}>
+              <p style={{ fontSize: 64, fontWeight: 800, color: C.accent, lineHeight: 1 }}>{s.value}</p>
+              <p style={{ fontSize: T.caption, color: C.white, marginTop: 12 }}>{s.label}</p>
+              <p style={{ fontSize: 16, color: C.dim, marginTop: 6 }}>{s.source}</p>
+            </motion.div>
+          ))}
         </div>
-        <div className="anim-fade d4" style={{ width: 320, height: 320, opacity: 0.6, flexShrink: 0 }}>
-          <DotLottieReact src={LOTTIE.analytics} loop autoplay style={{ width: '100%', height: '100%' }} />
-        </div>
-      </div>
+      </motion.div>
     )
 
     case 'content': return (
-      <div style={{ ...inner, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 32 }}>
-        {data.note && <p className="anim-fade d1" style={{ fontSize: 20, color: data.color === 'highlight' ? C.highlight : data.color === 'accent' ? C.accent : C.dim, textTransform: 'uppercase', letterSpacing: 3, fontWeight: 600 }}>{data.note}</p>}
-        <h2 className="anim-fade d2" style={{ fontSize: T.title, fontWeight: 700, color: C.white, lineHeight: 1.15, maxWidth: 900 }}>{data.title}</h2>
-        <ul style={{ listStyle: 'none', padding: 0, maxWidth: 900 }}>
+      <motion.div variants={stagger} initial="hidden" animate="visible" style={{ ...inner, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 32 }}>
+        {data.note && <motion.p variants={fadeUp} style={{ fontSize: 20, color: data.color === 'highlight' ? C.highlight : data.color === 'accent' ? C.accent : C.dim, textTransform: 'uppercase', letterSpacing: 3, fontWeight: 600 }}>{data.note}</motion.p>}
+        <motion.h2 variants={fadeUp} style={{ fontSize: T.title, fontWeight: 700, color: C.white, lineHeight: 1.15, maxWidth: 900 }}>{data.title}</motion.h2>
+        <motion.ul variants={stagger} style={{ listStyle: 'none', padding: 0, maxWidth: 900 }}>
           {data.bullets.map((b, i) => (
-            <li key={i} className={`anim-fade d${i + 3}`} style={{ fontSize: T.bullet, color: 'rgba(255,255,255,0.85)', lineHeight: 1.5, paddingLeft: 36, position: 'relative', marginBottom: 12 }}>
+            <motion.li key={i} variants={fadeUp} style={{ fontSize: T.bullet, color: 'rgba(255,255,255,0.85)', lineHeight: 1.5, paddingLeft: 36, position: 'relative', marginBottom: 12 }}>
               <span style={{ position: 'absolute', left: 0, top: 6, width: 10, height: 10, borderRadius: '50%', background: data.color === 'highlight' ? C.highlight : C.accent, opacity: 0.6 }} />
               {b}
-            </li>
+            </motion.li>
           ))}
-        </ul>
-      </div>
+        </motion.ul>
+      </motion.div>
     )
 
     case 'diagram': {
@@ -816,148 +811,148 @@ function SlideRenderer({ data, quizState, onQuizAnswer }) {
     }
 
     case 'bigstat': return (
-      <div style={{ ...inner, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', textAlign: 'center', gap: 30 }}>
-        <p className="anim-pop d1" style={{ fontSize: 120, fontWeight: 800, color: data.warn ? C.red : C.accent, lineHeight: 1 }}>{data.value}</p>
-        <p className="anim-fade d2" style={{ fontSize: T.text, color: 'rgba(255,255,255,0.8)', maxWidth: 700, lineHeight: 1.5, whiteSpace: 'pre-line' }}>{data.label}</p>
-        {data.source && <p className="anim-fade d3" style={{ fontSize: T.caption, color: C.dim }}>{data.source}</p>}
-      </div>
+      <motion.div variants={stagger} initial="hidden" animate="visible" style={{ ...inner, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', textAlign: 'center', gap: 30 }}>
+        <motion.p variants={popIn} style={{ fontSize: 120, fontWeight: 800, color: data.warn ? C.red : C.accent, lineHeight: 1 }}>{data.value}</motion.p>
+        <motion.p variants={fadeUp} style={{ fontSize: T.text, color: 'rgba(255,255,255,0.8)', maxWidth: 700, lineHeight: 1.5, whiteSpace: 'pre-line' }}>{data.label}</motion.p>
+        {data.source && <motion.p variants={fadeUp} style={{ fontSize: T.caption, color: C.dim }}>{data.source}</motion.p>}
+      </motion.div>
     )
 
     case 'quote': return (
-      <div style={{ ...inner, height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 60 }}>
+      <motion.div variants={stagger} initial="hidden" animate="visible" style={{ ...inner, height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 60 }}>
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 40 }}>
-          {data.source && <p className="anim-fade d1" style={{ fontSize: T.caption, color: C.accent, textTransform: 'uppercase', letterSpacing: 3, fontWeight: 600 }}>{data.source}</p>}
-          <p className="anim-fade d2" style={{ fontSize: T.subtitle, color: C.white, fontWeight: 500, lineHeight: 1.6, maxWidth: 800, whiteSpace: 'pre-line' }}>{data.text}</p>
+          {data.source && <motion.p variants={fadeUp} style={{ fontSize: T.caption, color: C.accent, textTransform: 'uppercase', letterSpacing: 3, fontWeight: 600 }}>{data.source}</motion.p>}
+          <motion.p variants={fadeUp} style={{ fontSize: T.subtitle, color: C.white, fontWeight: 500, lineHeight: 1.6, maxWidth: 800, whiteSpace: 'pre-line' }}>{data.text}</motion.p>
         </div>
-        <div className="anim-fade d3" style={{ width: 280, height: 280, opacity: 0.5, flexShrink: 0 }}>
-          <DotLottieReact src={LOTTIE.clock} loop autoplay style={{ width: '100%', height: '100%' }} />
-        </div>
-      </div>
+        <motion.div variants={fadeIn} style={{ width: 200, flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <span style={{ fontSize: 200, fontWeight: 800, color: C.accent, opacity: 0.08, lineHeight: 1 }}>"</span>
+        </motion.div>
+      </motion.div>
     )
 
     case 'bars': return (
-      <div style={{ ...inner, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 28 }}>
-        {data.note && <p className="anim-fade d1" style={{ fontSize: 20, color: data.warn ? C.red : C.dim, textTransform: 'uppercase', letterSpacing: 3, fontWeight: 600 }}>{data.note}</p>}
-        <h2 className="anim-fade d1" style={{ fontSize: T.subtitle, fontWeight: 700, color: C.white }}>{data.title}</h2>
+      <motion.div variants={stagger} initial="hidden" animate="visible" style={{ ...inner, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 28 }}>
+        {data.note && <motion.p variants={fadeUp} style={{ fontSize: 20, color: data.warn ? C.red : C.dim, textTransform: 'uppercase', letterSpacing: 3, fontWeight: 600 }}>{data.note}</motion.p>}
+        <motion.h2 variants={fadeUp} style={{ fontSize: T.subtitle, fontWeight: 700, color: C.white }}>{data.title}</motion.h2>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 24, maxWidth: 1200 }}>
           {data.items.map((item, i) => <BarRow key={i} item={item} delay={i} />)}
         </div>
-        {data.source && <p className="anim-fade d6" style={{ fontSize: 20, color: C.dim }}>{data.source}</p>}
-      </div>
+        {data.source && <motion.p variants={fadeUp} style={{ fontSize: 20, color: C.dim }}>{data.source}</motion.p>}
+      </motion.div>
     )
 
     case 'quiz': {
       const state = quizState[data.idx]
       return (
-        <div style={{ ...inner, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 32 }}>
-          <p className="anim-fade d1" style={{ fontSize: 20, color: C.highlight, textTransform: 'uppercase', letterSpacing: 3, fontWeight: 600 }}>Pregunta {data.idx + 1} de 10 — ¿Verdadero o falso?</p>
-          <p className="anim-fade d2" style={{ fontSize: T.text, color: C.white, lineHeight: 1.6, maxWidth: 900, whiteSpace: 'pre-line', fontWeight: 500 }}>{data.q}</p>
+        <motion.div variants={stagger} initial="hidden" animate="visible" style={{ ...inner, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 32 }}>
+          <motion.p variants={fadeUp} style={{ fontSize: 20, color: C.highlight, textTransform: 'uppercase', letterSpacing: 3, fontWeight: 600 }}>Pregunta {data.idx + 1} de 10 — ¿Verdadero o falso?</motion.p>
+          <motion.p variants={fadeUp} style={{ fontSize: T.text, color: C.white, lineHeight: 1.6, maxWidth: 900, whiteSpace: 'pre-line', fontWeight: 500 }}>{data.q}</motion.p>
           {state === null ? (
-            <div className="anim-fade d3" style={{ display: 'flex', gap: 24, marginTop: 20 }}>
-              <button onClick={() => onQuizAnswer(data.idx, true)}
+            <motion.div variants={fadeUp} style={{ display: 'flex', gap: 24, marginTop: 20 }}>
+              <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.97 }} onClick={() => onQuizAnswer(data.idx, true)}
                 style={{ padding: '20px 64px', borderRadius: 14, border: `2px solid ${C.highlight}`, background: 'rgba(34,197,94,0.08)', color: C.highlight, fontSize: T.bullet, fontWeight: 600, cursor: 'pointer', fontFamily: 'Inter', transition: 'all 300ms' }}>
                 Verdadero
-              </button>
-              <button onClick={() => onQuizAnswer(data.idx, false)}
+              </motion.button>
+              <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.97 }} onClick={() => onQuizAnswer(data.idx, false)}
                 style={{ padding: '20px 64px', borderRadius: 14, border: `2px solid ${C.red}`, background: 'rgba(239,68,68,0.08)', color: C.red, fontSize: T.bullet, fontWeight: 600, cursor: 'pointer', fontFamily: 'Inter', transition: 'all 300ms' }}>
                 Falso
-              </button>
-            </div>
+              </motion.button>
+            </motion.div>
           ) : (
-            <div className="anim-fade" style={{ marginTop: 20 }}>
+            <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }} style={{ marginTop: 20 }}>
               <p style={{ fontSize: T.bullet, fontWeight: 700, color: state ? C.highlight : C.red, marginBottom: 16 }}>
                 {state ? '✓ ¡Correcto!' : '✗ Incorrecto'} — La respuesta es Verdadero
               </p>
               <p style={{ fontSize: T.caption, color: 'rgba(255,255,255,0.7)', whiteSpace: 'pre-line', lineHeight: 1.6, maxWidth: 800 }}>{data.explanation}</p>
-            </div>
+            </motion.div>
           )}
-        </div>
+        </motion.div>
       )
     }
 
     case 'role': return (
-      <div style={{ ...inner, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 28 }}>
-        <div className="anim-fade d1" style={{ width: 60, height: 4, background: data.color, borderRadius: 2 }} />
-        <h2 className="anim-fade d1" style={{ fontSize: T.title, fontWeight: 700, color: data.color }}>{data.role}</h2>
+      <motion.div variants={stagger} initial="hidden" animate="visible" style={{ ...inner, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 28 }}>
+        <motion.div variants={fadeUp} style={{ width: 60, height: 4, background: data.color, borderRadius: 2 }} />
+        <motion.h2 variants={fadeUp} style={{ fontSize: T.title, fontWeight: 700, color: data.color }}>{data.role}</motion.h2>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 32, marginTop: 8 }}>
           {[
             { label: 'Base', content: data.base },
             { label: 'Upgrade 2026', content: data.upgrade },
             { label: 'Artefactos nuevos', content: data.artifacts },
           ].map((col, i) => (
-            <div key={i} className={`anim-pop d${i + 2}`} style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 16, padding: 32 }}>
+            <motion.div key={i} variants={popIn} whileHover={{ y: -4, transition: { duration: 0.2 } }} style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 16, padding: 32 }}>
               <p style={{ fontSize: 20, color: C.dim, textTransform: 'uppercase', letterSpacing: 2, marginBottom: 12, fontWeight: 600 }}>{col.label}</p>
               <p style={{ fontSize: T.caption, color: 'rgba(255,255,255,0.85)', lineHeight: 1.6, whiteSpace: 'pre-line' }}>{col.content}</p>
-            </div>
+            </motion.div>
           ))}
         </div>
-      </div>
+      </motion.div>
     )
 
     case 'governance': return (
-      <div style={{ ...inner, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 32 }}>
-        <div className="anim-fade d1" style={{ width: 60, height: 4, background: data.color, borderRadius: 2 }} />
-        <h2 className="anim-fade d1" style={{ fontSize: T.title, fontWeight: 700, color: data.color }}>{data.model}</h2>
-        <p className="anim-fade d2" style={{ fontSize: T.text, color: 'rgba(255,255,255,0.7)' }}>{data.subtitle}</p>
+      <motion.div variants={stagger} initial="hidden" animate="visible" style={{ ...inner, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 32 }}>
+        <motion.div variants={fadeUp} style={{ width: 60, height: 4, background: data.color, borderRadius: 2 }} />
+        <motion.h2 variants={fadeUp} style={{ fontSize: T.title, fontWeight: 700, color: data.color }}>{data.model}</motion.h2>
+        <motion.p variants={fadeUp} style={{ fontSize: T.text, color: 'rgba(255,255,255,0.7)' }}>{data.subtitle}</motion.p>
         <div style={{ display: 'flex', gap: 40, marginTop: 16 }}>
           {[
             { label: 'Ventajas', content: data.pros, color: C.highlight },
             { label: 'Riesgos', content: data.cons, color: C.red },
             { label: '¿Cuándo usar?', content: data.when, color: C.accent },
           ].map((col, i) => (
-            <div key={i} className={`anim-pop d${i + 3}`} style={{ flex: 1, background: C.surface, borderRadius: 16, padding: 32, border: `1px solid ${C.border}` }}>
+            <motion.div key={i} variants={popIn} whileHover={{ y: -4, transition: { duration: 0.2 } }} style={{ flex: 1, background: C.surface, borderRadius: 16, padding: 32, border: `1px solid ${C.border}` }}>
               <p style={{ fontSize: 20, color: col.color, textTransform: 'uppercase', letterSpacing: 2, marginBottom: 12, fontWeight: 600 }}>{col.label}</p>
               <p style={{ fontSize: T.caption, color: 'rgba(255,255,255,0.85)', lineHeight: 1.6 }}>{col.content}</p>
-            </div>
+            </motion.div>
           ))}
         </div>
-      </div>
+      </motion.div>
     )
 
     case 'metrics': return (
-      <div style={{ ...inner, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 28 }}>
-        {data.title && <h2 className="anim-fade d1" style={{ fontSize: T.subtitle, fontWeight: 700, color: C.white }}>{data.title}</h2>}
+      <motion.div variants={stagger} initial="hidden" animate="visible" style={{ ...inner, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 28 }}>
+        {data.title && <motion.h2 variants={fadeUp} style={{ fontSize: T.subtitle, fontWeight: 700, color: C.white }}>{data.title}</motion.h2>}
         <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
           {data.items.map((m, i) => (
-            <div key={i} className={`anim-fade d${i + 1}`} style={{ display: 'flex', alignItems: 'center', gap: 32, background: C.surface, border: `1px solid ${C.border}`, borderRadius: 16, padding: '28px 40px' }}>
+            <motion.div key={i} variants={fadeUp} style={{ display: 'flex', alignItems: 'center', gap: 32, background: C.surface, border: `1px solid ${C.border}`, borderRadius: 16, padding: '28px 40px' }}>
               <p style={{ fontSize: T.text, fontWeight: 700, color: C.accent, minWidth: 240 }}>{m.dim}</p>
               <p style={{ fontSize: T.caption, color: 'rgba(255,255,255,0.8)', flex: 1 }}>{m.metric}</p>
               <p style={{ fontSize: 20, color: C.red, fontWeight: 500 }}>⚠ {m.alert}</p>
-            </div>
+            </motion.div>
           ))}
         </div>
-      </div>
+      </motion.div>
     )
 
     case 'case': return (
-      <div style={{ ...inner, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 28 }}>
-        <div className="anim-fade d1" style={{ width: 60, height: 4, background: data.color, borderRadius: 2 }} />
-        <h2 className="anim-fade d1" style={{ fontSize: T.title, fontWeight: 700, color: data.color }}>{data.title}</h2>
-        <p className="anim-fade d2" style={{ fontSize: T.caption, color: C.dim }}>{data.subtitle}</p>
+      <motion.div variants={stagger} initial="hidden" animate="visible" style={{ ...inner, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 28 }}>
+        <motion.div variants={fadeUp} style={{ width: 60, height: 4, background: data.color, borderRadius: 2 }} />
+        <motion.h2 variants={fadeUp} style={{ fontSize: T.title, fontWeight: 700, color: data.color }}>{data.title}</motion.h2>
+        <motion.p variants={fadeUp} style={{ fontSize: T.caption, color: C.dim }}>{data.subtitle}</motion.p>
         <div style={{ display: 'flex', gap: 32, marginTop: 8 }}>
           {data.items.map((item, i) => (
-            <div key={i} className={`anim-pop d${i + 2}`} style={{ flex: 1, background: C.surface, border: `1px solid ${C.border}`, borderRadius: 16, padding: '32px 24px', textAlign: 'center' }}>
+            <motion.div key={i} variants={popIn} whileHover={{ scale: 1.04, transition: { duration: 0.2 } }} style={{ flex: 1, background: C.surface, border: `1px solid ${C.border}`, borderRadius: 16, padding: '32px 24px', textAlign: 'center' }}>
               <p style={{ fontSize: 48, fontWeight: 800, color: data.color, lineHeight: 1 }}>{item.value}</p>
               <p style={{ fontSize: 22, color: 'rgba(255,255,255,0.7)', marginTop: 12 }}>{item.label}</p>
-            </div>
+            </motion.div>
           ))}
         </div>
-        {data.note && <p className="anim-fade d6" style={{ fontSize: 22, color: C.dim, fontStyle: 'italic' }}>{data.note}</p>}
-      </div>
+        {data.note && <motion.p variants={fadeUp} style={{ fontSize: 22, color: C.dim, fontStyle: 'italic' }}>{data.note}</motion.p>}
+      </motion.div>
     )
 
     case 'checklist': return (
-      <div style={{ ...inner, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 32 }}>
-        {data.title && <h2 className="anim-fade d1" style={{ fontSize: T.subtitle, fontWeight: 700, color: C.white, marginBottom: 8 }}>{data.title}</h2>}
+      <motion.div variants={stagger} initial="hidden" animate="visible" style={{ ...inner, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 32 }}>
+        {data.title && <motion.h2 variants={fadeUp} style={{ fontSize: T.subtitle, fontWeight: 700, color: C.white, marginBottom: 8 }}>{data.title}</motion.h2>}
         {data.items.map((item, i) => (
-          <div key={i} className={`anim-fade d${i + 1}`} style={{ display: 'flex', alignItems: 'flex-start', gap: 28, maxWidth: 900 }}>
+          <motion.div key={i} variants={fadeUp} style={{ display: 'flex', alignItems: 'flex-start', gap: 28, maxWidth: 900 }}>
             <div style={{ width: 64, height: 64, borderRadius: 14, background: C.surface, border: `2px solid ${C.accent}`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
               <span style={{ fontSize: 36, fontWeight: 800, color: C.accent }}>{item.step}</span>
             </div>
             <p style={{ fontSize: T.bullet, color: 'rgba(255,255,255,0.85)', lineHeight: 1.5, whiteSpace: 'pre-line', paddingTop: 8 }}>{item.text}</p>
-          </div>
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
     )
 
     case 'autonomy': {
@@ -968,23 +963,23 @@ function SlideRenderer({ data, quizState, onQuizAnswer }) {
         { level: 'Autonomía alta', agent: 'Decide y ejecuta E2E', human: 'Supervisión post-hoc', risk: 'Cumplimiento difuso', color: C.red },
       ]
       return (
-        <div style={{ ...inner, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 20 }}>
-          <h3 className="anim-fade d1" style={{ fontSize: T.subtitle, fontWeight: 700, color: C.white }}>Niveles de autonomía humano-agente</h3>
-          <div style={{ display: 'grid', gridTemplateColumns: '180px 1fr 1fr 1fr', gap: '0', border: `1px solid ${C.border}`, borderRadius: 12, overflow: 'hidden' }}>
+        <motion.div variants={stagger} initial="hidden" animate="visible" style={{ ...inner, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 20 }}>
+          <motion.h3 variants={fadeUp} style={{ fontSize: T.subtitle, fontWeight: 700, color: C.white }}>Niveles de autonomía humano-agente</motion.h3>
+          <motion.div variants={fadeIn} style={{ display: 'grid', gridTemplateColumns: '180px 1fr 1fr 1fr', gap: '0', border: `1px solid ${C.border}`, borderRadius: 12, overflow: 'hidden' }}>
             {['Nivel', 'Agente hace', 'Humano hace', 'Riesgo'].map((h, i) => (
               <div key={i} style={{ padding: '14px 16px', background: 'rgba(255,255,255,0.04)', fontSize: 18, fontWeight: 600, color: C.dim, borderBottom: `1px solid ${C.border}` }}>{h}</div>
             ))}
             {levels.map((l, i) => (
               [
-                <div key={`n${i}`} className={`anim-fade d${i + 2}`} style={{ padding: '14px 16px', fontSize: 19, fontWeight: 600, color: l.color, borderBottom: i < 3 ? `1px solid ${C.border}` : 'none' }}>{l.level}</div>,
-                <div key={`a${i}`} className={`anim-fade d${i + 2}`} style={{ padding: '14px 16px', fontSize: 18, color: 'rgba(255,255,255,0.7)', borderBottom: i < 3 ? `1px solid ${C.border}` : 'none' }}>{l.agent}</div>,
-                <div key={`h${i}`} className={`anim-fade d${i + 2}`} style={{ padding: '14px 16px', fontSize: 18, color: 'rgba(255,255,255,0.7)', borderBottom: i < 3 ? `1px solid ${C.border}` : 'none' }}>{l.human}</div>,
-                <div key={`r${i}`} className={`anim-fade d${i + 2}`} style={{ padding: '14px 16px', fontSize: 18, color: l.color, fontWeight: 500, borderBottom: i < 3 ? `1px solid ${C.border}` : 'none' }}>{l.risk}</div>,
+                <div key={`n${i}`} style={{ padding: '14px 16px', fontSize: 19, fontWeight: 600, color: l.color, borderBottom: i < 3 ? `1px solid ${C.border}` : 'none' }}>{l.level}</div>,
+                <div key={`a${i}`} style={{ padding: '14px 16px', fontSize: 18, color: 'rgba(255,255,255,0.7)', borderBottom: i < 3 ? `1px solid ${C.border}` : 'none' }}>{l.agent}</div>,
+                <div key={`h${i}`} style={{ padding: '14px 16px', fontSize: 18, color: 'rgba(255,255,255,0.7)', borderBottom: i < 3 ? `1px solid ${C.border}` : 'none' }}>{l.human}</div>,
+                <div key={`r${i}`} style={{ padding: '14px 16px', fontSize: 18, color: l.color, fontWeight: 500, borderBottom: i < 3 ? `1px solid ${C.border}` : 'none' }}>{l.risk}</div>,
               ]
             ))}
-          </div>
-          <p className="anim-fade d6" style={{ fontSize: 16, color: C.dim }}>Autonomía alta es rara en 2026 — la mayoría opera en delegación con revisión</p>
-        </div>
+          </motion.div>
+          <motion.p variants={fadeUp} style={{ fontSize: 16, color: C.dim }}>Autonomía alta es rara en 2026 — la mayoría opera en delegación con revisión</motion.p>
+        </motion.div>
       )
     }
 
@@ -995,18 +990,18 @@ function SlideRenderer({ data, quizState, onQuizAnswer }) {
       const col1 = data.entries.slice(0, half)
       const col2 = data.entries.slice(half)
       return (
-        <div style={{ ...inner, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 24 }}>
-          <h3 className="anim-fade d1" style={{ fontSize: T.caption, color: C.dim, textTransform: 'uppercase', letterSpacing: 3, fontWeight: 600 }}>Bibliografía</h3>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px 48px' }}>
+        <motion.div variants={stagger} initial="hidden" animate="visible" style={{ ...inner, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 24 }}>
+          <motion.h3 variants={fadeUp} style={{ fontSize: T.caption, color: C.dim, textTransform: 'uppercase', letterSpacing: 3, fontWeight: 600 }}>Bibliografía</motion.h3>
+          <motion.div variants={fadeIn} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px 48px' }}>
             {[col1, col2].map((col, ci) => (
               <div key={ci} style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
                 {col.map((e, i) => (
-                  <p key={i} className="anim-fade d2" style={{ fontSize: 17, color: 'rgba(255,255,255,0.55)', lineHeight: 1.45, borderLeft: `2px solid ${C.border}`, paddingLeft: 12 }}>{e}</p>
+                  <p key={i} style={{ fontSize: 17, color: 'rgba(255,255,255,0.55)', lineHeight: 1.45, borderLeft: `2px solid ${C.border}`, paddingLeft: 12 }}>{e}</p>
                 ))}
               </div>
             ))}
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       )
     }
 
@@ -1035,14 +1030,23 @@ function BarRow({ item, delay }) {
    TAKEAWAY OVERLAY
    ═══════════════════════════════════════════ */
 function TakeawayOverlay({ text, visible }) {
-  if (!visible || !text) return null
   return (
-    <div style={{ position: 'absolute', bottom: 60, left: MARGIN, right: MARGIN, zIndex: 20, display: 'flex', justifyContent: 'center' }}>
-      <div className="anim-fade" style={{ background: 'rgba(79,140,255,0.12)', border: `1px solid rgba(79,140,255,0.3)`, borderRadius: 16, padding: '20px 40px', maxWidth: 1200, backdropFilter: 'blur(16px)' }}>
-        <p style={{ fontSize: 22, color: C.accent, fontWeight: 600, marginBottom: 4, textTransform: 'uppercase', letterSpacing: 2 }}>Takeaway</p>
-        <p style={{ fontSize: T.caption, color: 'rgba(255,255,255,0.9)', lineHeight: 1.5 }}>{text}</p>
-      </div>
-    </div>
+    <AnimatePresence>
+      {visible && text && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: 20 }}
+          transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+          style={{ position: 'absolute', bottom: 60, left: MARGIN, right: MARGIN, zIndex: 20, display: 'flex', justifyContent: 'center' }}
+        >
+          <div style={{ background: 'rgba(79,140,255,0.12)', border: `1px solid rgba(79,140,255,0.3)`, borderRadius: 16, padding: '20px 40px', maxWidth: 1200, backdropFilter: 'blur(16px)' }}>
+            <p style={{ fontSize: 22, color: C.accent, fontWeight: 600, marginBottom: 4, textTransform: 'uppercase', letterSpacing: 2 }}>Takeaway</p>
+            <p style={{ fontSize: T.caption, color: 'rgba(255,255,255,0.9)', lineHeight: 1.5 }}>{text}</p>
+          </div>
+        </motion.div>
+      )}
+    </AnimatePresence>
   )
 }
 
@@ -1110,23 +1114,21 @@ export default function App() {
         </div>
 
         {/* Slide content */}
-        <div key={current} className="slide-enter" style={{ width: 1920, height: 1080 }}>
-          <SlideRenderer data={slides[current]} quizState={quizState} onQuizAnswer={(idx, val) => setQuizState(prev => { const n = [...prev]; n[idx] = val; return n })} />
-        </div>
+        <AnimatePresence mode="wait">
+          <motion.div key={current} {...slideTransition} style={{ width: 1920, height: 1080 }}>
+            <SlideRenderer data={slides[current]} quizState={quizState} onQuizAnswer={(idx, val) => setQuizState(prev => { const n = [...prev]; n[idx] = val; return n })} />
+          </motion.div>
+        </AnimatePresence>
 
         {/* Takeaway overlay */}
         <TakeawayOverlay text={TAKEAWAYS[current]} visible={showTakeaway} />
 
         {/* Nav arrows */}
         {current > 0 && (
-          <button onClick={() => go(-1)} style={{ position: 'absolute', left: 32, top: '50%', transform: 'translateY(-50%)', width: 56, height: 56, borderRadius: 14, border: `1px solid ${C.border}`, background: 'rgba(255,255,255,0.03)', color: C.dim, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 28, transition: 'all 300ms', zIndex: 10 }}
-            onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.08)'; e.currentTarget.style.color = C.white }}
-            onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.03)'; e.currentTarget.style.color = C.dim }}>‹</button>
+          <motion.button whileHover={{ scale: 1.1, backgroundColor: 'rgba(255,255,255,0.08)' }} whileTap={{ scale: 0.95 }} onClick={() => go(-1)} style={{ position: 'absolute', left: 32, top: '50%', transform: 'translateY(-50%)', width: 56, height: 56, borderRadius: 14, border: `1px solid ${C.border}`, background: 'rgba(255,255,255,0.03)', color: C.dim, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 28, zIndex: 10 }}>‹</motion.button>
         )}
         {current < TOTAL - 1 && (
-          <button onClick={() => go(1)} style={{ position: 'absolute', right: 32, top: '50%', transform: 'translateY(-50%)', width: 56, height: 56, borderRadius: 14, border: `1px solid ${C.border}`, background: 'rgba(255,255,255,0.03)', color: C.dim, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 28, transition: 'all 300ms', zIndex: 10 }}
-            onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.08)'; e.currentTarget.style.color = C.white }}
-            onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.03)'; e.currentTarget.style.color = C.dim }}>›</button>
+          <motion.button whileHover={{ scale: 1.1, backgroundColor: 'rgba(255,255,255,0.08)' }} whileTap={{ scale: 0.95 }} onClick={() => go(1)} style={{ position: 'absolute', right: 32, top: '50%', transform: 'translateY(-50%)', width: 56, height: 56, borderRadius: 14, border: `1px solid ${C.border}`, background: 'rgba(255,255,255,0.03)', color: C.dim, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 28, zIndex: 10 }}>›</motion.button>
         )}
 
         {/* Dot nav */}

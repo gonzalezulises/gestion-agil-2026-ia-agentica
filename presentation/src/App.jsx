@@ -50,9 +50,11 @@ function LiveClock() {
    ═══════════════════════════════════════════ */
 const TAKEAWAYS = [
   /* 0  hero */           'La competencia en 2026 no es entre marcos (Scrum vs Kanban) sino entre sistemas de entrega capaces de absorber incertidumbre y rediseñar trabajo cuando la IA acelera la ejecución.',
-  /* 1  contexto */       'La evolución no invalida los fundamentos: retroalimentación, inspección y adaptación son más críticos que nunca. Lo que cambia es la velocidad de los ciclos y el riesgo de amplificación.',
-  /* 2  stats */          'Adopción masiva no es valor: el 17% que sí logra ≥5% EBIT lo hace porque rediseñó workflows, no porque compró herramientas. El resto está en "AI theater".',
-  /* 3  evidencia */      'Los datos convergen en un punto incómodo: la IA eleva productividad local pero no garantiza mejoras end-to-end. 39% no confía en el código que genera la IA.',
+  /* 0b agenda */         'Este módulo combina fundamentos ágiles con evidencia de IA en 2026. Al final tendrás herramientas concretas para aplicar el lunes en tu proyecto y tu equipo.',
+  /* 1  contexto */       'La agilidad no es solo para equipos de software. Cualquier proyecto con incertidumbre — lanzar un producto, abrir una planta, rediseñar logística — se beneficia de ciclos cortos con retroalimentación.',
+  /* 2  stats */          '71% ya usa IA, pero solo 17% ve impacto financiero. La diferencia no es la herramienta sino cómo se integra al flujo de trabajo del equipo. Eso aplica igual en calidad, finanzas o comercial.',
+  /* 3  evidencia */      'Para un gerente: la IA mejora tareas individuales pero puede empeorar la coordinación. Tu rol cambia de ejecutar a diseñar cómo trabajan personas + IA juntos.',
+  /* 3b agile x sector */ 'La agilidad no es teoría para tu sector: alimentos −55% time-to-market, farma −40% ciclos de desarrollo, banca +25-35% productividad, construcción 3x más probable adelantado. Son datos, no promesas.',
   /* 4  EU AI Act */      'El EU AI Act no es futuro — ya está en vigor. Cada hito del timeline agrega obligaciones concretas. Definir guardrails ahora es cumplimiento, no anticipación.',
   /* 5  section fund */   'Estos principios no son "básicos" en el sentido de triviales — son prerrequisitos estructurales. Sin ellos, la IA no se adopta de forma efectiva, solo de forma caótica.',
   /* 3  overview */       'Los fundamentos son condiciones necesarias pero no suficientes. Una organización sin ellos no puede adoptar IA agéntica — solo puede adoptar herramientas de forma desorganizada.',
@@ -122,12 +124,14 @@ const TAKEAWAYS = [
   /* 61 copilot */        'La clave de Accenture no es Copilot — es que tenían telemetría y prácticas de revisión. Sin esos controles, el mismo tool produce "deuda acelerada" (coherente con DORA).',
   /* 62 klarna */         'Caveat: métricas de "equivalente FTE" dependen de supuestos internos. Para replicar, exige método de cálculo interno. Los "best case" deben auditarse, no copiarse.',
   /* 63 escritura */      'Transferencia directa a roles ágiles: PO para PRDs y criterios, SM para minutas y riesgos, liderazgo para síntesis ejecutiva. El mayor ROI está en la escritura estructurada.',
-  /* 63b monday */         'No esperes a que tu empresa lance un programa de IA. Empieza con tu equipo, tu proceso, tu contexto. La ventaja es para quienes actúan primero con criterio.',
+  /* 63b monday */         'Elige un proyecto real, arma un equipo pequeño, define un ciclo corto y mide. No necesitas permiso para empezar — necesitas un entregable concreto y una retrospectiva honesta.',
+  /* 63c tools */          'Kanban, retrospectivas, dailies y backlogs ya no requieren expertise — la IA democratiza estas prácticas. La ventaja competitiva pasa de "saber la herramienta" a "aplicarla con criterio en tu contexto".',
   /* 64 section impl */   'PMI Sweden: 64% recomienda iniciar pequeño y escalar gradualmente. El ciclo empírico aplica a la propia adopción de IA: experimentar, medir, ajustar.',
   /* 65 checklist 1 */    'Antes de comprar herramientas: ¿hay liderazgo protector? ¿Equipos multifuncionales reales? ¿Cadencias de inspección? Sin esto, la IA amplifica la disfunción existente.',
   /* 66 checklist 2 */    'EU AI Act entra en vigor progresivamente 2025-2027. Definir guardrails ahora no es anticipación — es cumplimiento. Las obligaciones para GPAI aplican desde agosto 2025.',
   /* 67 cierre */         'Mensaje final: la IA agéntica amplifica lo que ya tienen. Si invierten en fundamentos antes que en herramientas, cada dólar en IA rinde exponencialmente más.',
   /* 68 bibfull */        '19 fuentes verificables. Cada dato tiene trazabilidad a su fuente primaria para validarlo con tu equipo.',
+  /* 68b recursos */      'Estos recursos están seleccionados para project managers que quieren profundizar. No necesitas leerlos todos — elige uno por categoría y empieza.',
   /* 69 end */            '',
 ]
 
@@ -139,31 +143,37 @@ const slides = [
   // ── 0: TITLE ──
   { type: 'hero' },
 
-  // ── 1: CONTEXTO NARRATIVO ──
-  { type: 'content', title: 'Gestión ágil en 2026', bullets: [
-    'Ya no compite entre marcos (Scrum vs Kanban)',
-    'Compite entre sistemas de entrega capaces de absorber incertidumbre',
-    'La IA acelera ejecución y amplifica errores',
-    'Solo 21% ha rediseñado workflows fundamentalmente',
-  ], note: 'El nuevo panorama' },
+  // ── 1: AGENDA + OBJETIVOS ──
+  { type: 'agenda' },
 
-  // ── 2: CONTEXTO DATOS ──
-  { type: 'stats', title: 'El contexto en números', items: [
-    { value: '71%', label: 'uso regular de genAI', source: 'McKinsey 2025' },
-    { value: '62%', label: 'experimenta con agentes', source: 'McKinsey 2025' },
-    { value: '17%', label: 'logra ≥5% EBIT atribuible', source: 'McKinsey 2025' },
-    { value: '82%', label: 'de líderes: replantear estrategia y operaciones', source: 'Microsoft WTI 2025' },
+  // ── 2: CONTEXTO NARRATIVO — conectado con el grupo ──
+  { type: 'content', title: '¿Qué tiene que ver la agilidad con nosotros?', bullets: [
+    'Alimentos, farma, banca, retail, construcción —\ntodos gestionan proyectos con incertidumbre creciente',
+    'La IA ya está en sus procesos: reportes, análisis,\nplanificación — aunque no la llamen "agente"',
+    'El reto no es adoptar un marco (Scrum, Kanban)\nsino mejorar cómo entregan resultados sus equipos',
+    'Solo 21% de empresas ha rediseñado cómo trabaja\n— el resto insertó herramientas en procesos viejos',
+  ], note: 'El contexto para logística, finanzas, calidad, RRHH, comercial y marketing' },
+
+  // ── 3: CONTEXTO DATOS — con lectura para gerentes ──
+  { type: 'stats', title: 'Lo que dicen los datos — y qué significa para tu empresa', items: [
+    { value: '71%', label: 'ya usa genAI regularmente — incluye finanzas, RRHH, marketing', source: 'McKinsey 2025' },
+    { value: '62%', label: 'experimenta con asistentes IA — no solo tecnología', source: 'McKinsey 2025' },
+    { value: '17%', label: 'logra impacto financiero real — el resto está en "piloto eterno"', source: 'McKinsey 2025' },
+    { value: '82%', label: 'de líderes dice: hay que replantear cómo operamos', source: 'Microsoft WTI 2025' },
   ]},
 
-  // ── 3: CONTEXTO EVIDENCIA SISTÉMICA ──
-  { type: 'content', title: 'Lo que dice la evidencia', bullets: [
-    'DORA 2024: IA mejora calidad local pero estabilidad cae −7.2%',
-    '39% reporta poca o ninguna confianza en resultados generados por IA (DORA)',
-    'Gartner: 40% de apps tendrá agentes por tarea en 2026',
-    '62% de profesionales ya usa IA en su proceso (Stack Overflow)',
-  ], note: 'Datos duros', color: 'accent' },
+  // ── 4: CONTEXTO EVIDENCIA — traducido para no-tech ──
+  { type: 'content', title: 'Lo que la evidencia le dice a un gerente', bullets: [
+    'IA mejora tareas individuales (reportes, análisis)\npero puede empeorar la coordinación del equipo (−7.2% estabilidad)',
+    '39% no confía en los resultados que genera la IA\n— sin revisión, los errores se multiplican',
+    'En 2026, la IA ejecutará tareas rutinarias en todas las áreas:\nno solo en tecnología sino en operaciones, compras, calidad',
+    'El rol del gerente cambia: de ejecutar a diseñar\ncómo trabajan las personas junto con la IA',
+  ], note: 'Traducción para quien lidera equipos en manufactura, servicios o banca', color: 'accent' },
 
-  // ── 4: EU AI ACT TIMELINE ──
+  // ── 5: OPORTUNIDAD ÁGIL POR SECTOR — datos duros ──
+  { type: 'agileBySector' },
+
+  // ── 6: EU AI ACT TIMELINE ──
   { type: 'content', title: 'EU AI Act: calendario regulatorio', bullets: [
     'Ago 2024: en vigor la regulación',
     'Feb 2025: prohibiciones y alfabetización IA',
@@ -471,6 +481,8 @@ const slides = [
   // ── ¿Y YO QUÉ HAGO EL LUNES? ──
   { type: 'monday' },
 
+  { type: 'toolsBySector' },
+
   // ── CHECKLIST ──
   { type: 'section', title: 'Implementación', subtitle: 'Checklist de 30 días' },
 
@@ -510,6 +522,9 @@ const slides = [
     'GitHub + Accenture. "Copilot impact on code quality". 2024.',
     'Stack Overflow. "Developer Survey 2024". 2024.',
   ]},
+
+  // ── RECURSOS RECOMENDADOS ──
+  { type: 'resources' },
 
   // ── FINAL ──
   { type: 'end' },
@@ -697,48 +712,64 @@ function SystemDiagram() {
 }
 
 function DORAModelDiagram() {
+  const [focused, setFocused] = useState(null)
+  const toggle = (id) => setFocused(prev => prev === id ? null : id)
+  const dimmed = (id) => focused !== null && focused !== id
+
   const capGroups = [
-    { label: 'Técnicas', color: C.accent, items: ['CI/CD', 'Trunk-based dev', 'Arquitectura desacoplada', 'Automatización de tests', 'Monitoreo y observabilidad', 'Calidad de documentación'] },
-    { label: 'Proceso', color: C.highlight, items: ['Trabajo en lotes pequeños', 'Feedback de clientes', 'Visibilidad del trabajo', 'Límites de WIP'] },
-    { label: 'Culturales', color: '#A855F7', items: ['Cultura Westrum', 'Liderazgo transformacional', 'Clima de aprendizaje'] },
+    { label: 'Técnicas', color: C.accent, items: ['CI/CD', 'Trunk-based dev', 'Arquitectura desacoplada', 'Automatización de tests', 'Monitoreo y observabilidad', 'Calidad de documentación'], detail: 'Las prácticas técnicas son la base. Sin integración continua, sin pruebas automatizadas y sin monitoreo, cualquier mejora es frágil. Son el "cómo se construye".' },
+    { label: 'Proceso', color: C.highlight, items: ['Trabajo en lotes pequeños', 'Feedback de clientes', 'Visibilidad del trabajo', 'Límites de WIP'], detail: 'Trabajar en lotes pequeños permite detectar errores antes. La visibilidad y los límites de trabajo en proceso evitan la sobrecarga que mata la calidad.' },
+    { label: 'Culturales', color: '#A855F7', items: ['Cultura Westrum', 'Liderazgo transformacional', 'Clima de aprendizaje'], detail: 'La cultura determina si la gente reporta problemas o los oculta. Sin seguridad psicológica y liderazgo que proteja, las capabilities técnicas no se sostienen.' },
   ]
   const metrics = [
-    { label: 'Deployment\nFrequency', sub: 'Velocidad', color: C.accent },
-    { label: 'Lead Time\nfor Changes', sub: 'Velocidad', color: C.accent },
-    { label: 'Change\nFailure Rate', sub: 'Estabilidad', color: '#F59E0B' },
-    { label: 'Time to\nRestore', sub: 'Estabilidad', color: '#F59E0B' },
+    { label: 'Deployment\nFrequency', sub: 'Velocidad', color: C.accent, detail: 'Frecuencia de entrega: ¿cada cuánto tiempo tu equipo entrega algo terminado al cliente? Los mejores equipos entregan bajo demanda; los peores, cada varios meses.' },
+    { label: 'Lead Time\nfor Changes', sub: 'Velocidad', color: C.accent, detail: 'Tiempo de ciclo: desde que se aprueba un cambio hasta que está en manos del cliente. Mide la agilidad real de tu sistema de entrega.' },
+    { label: 'Change\nFailure Rate', sub: 'Estabilidad', color: '#F59E0B', detail: '% de cambios que generan retrabajo o problemas. Con IA, este indicador cae −7.2% — se entrega más rápido pero con más errores.' },
+    { label: 'Time to\nRestore', sub: 'Estabilidad', color: '#F59E0B', detail: 'Tiempo de recuperación: cuando algo falla, ¿cuánto tardas en resolverlo? Es la medida de resiliencia de tu equipo.' },
   ]
   const outcomes = [
-    { label: 'Rendimiento\norganizacional', sub: 'Rentabilidad, productividad', color: C.highlight },
-    { label: 'Bienestar', sub: 'Menos burnout', color: '#A855F7' },
+    { label: 'Rendimiento\norganizacional', sub: 'Rentabilidad, productividad', color: C.highlight, detail: 'Los equipos con mejor delivery performance logran mayor rentabilidad, productividad y cuota de mercado. DORA lo ha comprobado en 10 años de investigación.' },
+    { label: 'Bienestar', sub: 'Menos burnout', color: '#A855F7', detail: 'Equipos con buenas prácticas sufren menos burnout y menor dolor en los despliegues. La calidad del sistema de trabajo afecta directamente a las personas.' },
   ]
+
+  const reliabilityDetail = 'La confiabilidad conecta delivery con operaciones. No basta entregar rápido — el servicio debe funcionar de forma consistente para el usuario final.'
 
   return (
     <motion.div variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.08, delayChildren: 0.1 } } }} initial="hidden" animate="visible"
-      style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 20, width: '100%' }}>
-      <motion.p variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0 } }}
-        style={{ fontSize: 40, fontWeight: 700, color: C.white, marginBottom: 8 }}>DORA Core Model</motion.p>
+      style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 16, width: '100%' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+        <motion.p variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0 } }}
+          style={{ fontSize: 40, fontWeight: 700, color: C.white }}>DORA Core Model</motion.p>
+        {focused && <motion.span initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ fontSize: 16, color: C.dim, cursor: 'pointer' }} onClick={() => setFocused(null)}>✕ cerrar zoom</motion.span>}
+      </div>
 
-      <div style={{ display: 'flex', alignItems: 'center', gap: 0, width: '100%', maxWidth: 1680 }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 0, width: '100%', maxWidth: 1680, position: 'relative' }}>
+
         {/* ── CAPABILITIES ── */}
-        <motion.div variants={{ hidden: { opacity: 0, x: -30 }, visible: { opacity: 1, x: 0, transition: { duration: 0.6 } } }}
-          style={{ flex: '0 0 420px', display: 'flex', flexDirection: 'column', gap: 12 }}>
+        <motion.div
+          animate={{ opacity: dimmed('caps') ? 0.2 : 1, scale: focused === 'caps' ? 1.15 : 1, zIndex: focused === 'caps' ? 10 : 1 }}
+          transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+          onClick={() => toggle('caps')}
+          style={{ flex: '0 0 420px', display: 'flex', flexDirection: 'column', gap: 12, cursor: 'pointer', position: 'relative' }}>
           <p style={{ fontSize: 14, color: C.dim, textTransform: 'uppercase', letterSpacing: 3, fontWeight: 600, textAlign: 'center', marginBottom: 4 }}>Capabilities</p>
           {capGroups.map((g, gi) => (
-            <div key={gi} style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 12, padding: '12px 16px', borderLeft: `3px solid ${g.color}` }}>
+            <div key={gi} style={{ background: focused === 'caps' ? '#1a2233' : C.surface, border: `1px solid ${focused === 'caps' ? g.color + '60' : C.border}`, borderRadius: 12, padding: '12px 16px', borderLeft: `3px solid ${g.color}`, transition: 'all 300ms' }}>
               <p style={{ fontSize: 15, fontWeight: 700, color: g.color, marginBottom: 6 }}>{g.label}</p>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
                 {g.items.map((item, i) => (
                   <span key={i} style={{ fontSize: 12, color: 'rgba(255,255,255,0.6)', background: 'rgba(255,255,255,0.04)', borderRadius: 6, padding: '3px 8px' }}>{item}</span>
                 ))}
               </div>
+              <AnimatePresence>
+                {focused === 'caps' && <motion.p initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }} style={{ fontSize: 13, color: 'rgba(255,255,255,0.7)', marginTop: 8, lineHeight: 1.5, borderTop: `1px solid ${g.color}30`, paddingTop: 8 }}>{g.detail}</motion.p>}
+              </AnimatePresence>
             </div>
           ))}
         </motion.div>
 
         {/* ── ARROW 1 ── */}
-        <motion.div variants={{ hidden: { opacity: 0, scaleX: 0 }, visible: { opacity: 1, scaleX: 1, transition: { duration: 0.5, delay: 0.3 } } }}
-          style={{ flex: '0 0 80px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', transformOrigin: 'left center' }}>
+        <motion.div animate={{ opacity: focused ? 0.15 : 1 }} transition={{ duration: 0.3 }}
+          style={{ flex: '0 0 80px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
           <svg width="80" height="40" viewBox="0 0 80 40">
             <defs><marker id="dora-a1" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8" fill={C.accent} /></marker></defs>
             <line x1="0" y1="20" x2="68" y2="20" stroke={C.accent} strokeWidth="2" markerEnd="url(#dora-a1)" />
@@ -747,31 +778,35 @@ function DORAModelDiagram() {
         </motion.div>
 
         {/* ── SOFTWARE DELIVERY PERFORMANCE ── */}
-        <motion.div variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.6, delay: 0.4 } } }}
-          style={{ flex: '1 1 auto', display: 'flex', flexDirection: 'column', gap: 10, alignItems: 'center' }}>
+        <motion.div
+          animate={{ opacity: dimmed('perf') ? 0.2 : 1, scale: focused === 'perf' ? 1.18 : 1, zIndex: focused === 'perf' ? 10 : 1 }}
+          transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+          onClick={() => toggle('perf')}
+          style={{ flex: '1 1 auto', display: 'flex', flexDirection: 'column', gap: 10, alignItems: 'center', cursor: 'pointer' }}>
           <p style={{ fontSize: 14, color: C.dim, textTransform: 'uppercase', letterSpacing: 3, fontWeight: 600, textAlign: 'center' }}>Software Delivery Performance</p>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, width: '100%' }}>
             {metrics.map((m, i) => (
-              <motion.div key={i}
-                variants={{ hidden: { opacity: 0, scale: 0.9 }, visible: { opacity: 1, scale: 1, transition: { duration: 0.4, delay: 0.5 + i * 0.1 } } }}
-                whileHover={{ scale: 1.05, borderColor: m.color, transition: { duration: 0.2 } }}
-                style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 12, padding: '16px 14px', textAlign: 'center', cursor: 'default' }}>
+              <div key={i} style={{ background: focused === 'perf' ? '#1a2233' : C.surface, border: `1px solid ${focused === 'perf' ? m.color + '60' : C.border}`, borderRadius: 12, padding: '16px 14px', textAlign: 'center', transition: 'all 300ms' }}>
                 <p style={{ fontSize: 16, fontWeight: 700, color: m.color, whiteSpace: 'pre-line', lineHeight: 1.25 }}>{m.label}</p>
                 <p style={{ fontSize: 12, color: C.dim, marginTop: 4 }}>{m.sub}</p>
-              </motion.div>
+                <AnimatePresence>
+                  {focused === 'perf' && <motion.p initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }} style={{ fontSize: 12, color: 'rgba(255,255,255,0.65)', marginTop: 8, lineHeight: 1.5, borderTop: `1px solid ${m.color}30`, paddingTop: 6, textAlign: 'left' }}>{m.detail}</motion.p>}
+                </AnimatePresence>
+              </div>
             ))}
           </div>
-          <motion.div
-            variants={{ hidden: { opacity: 0, scale: 0.9 }, visible: { opacity: 1, scale: 1, transition: { duration: 0.4, delay: 0.9 } } }}
-            style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 12, padding: '10px 24px', textAlign: 'center', width: '100%' }}>
+          <div style={{ background: focused === 'perf' ? '#1a2233' : C.surface, border: `1px solid ${focused === 'perf' ? C.highlight + '60' : C.border}`, borderRadius: 12, padding: '10px 24px', textAlign: 'center', width: '100%', transition: 'all 300ms' }}>
             <p style={{ fontSize: 14, fontWeight: 600, color: C.highlight }}>Reliability</p>
             <p style={{ fontSize: 11, color: C.dim }}>Operational Performance</p>
-          </motion.div>
+            <AnimatePresence>
+              {focused === 'perf' && <motion.p initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }} style={{ fontSize: 12, color: 'rgba(255,255,255,0.65)', marginTop: 6, lineHeight: 1.5, borderTop: `1px solid ${C.highlight}30`, paddingTop: 6 }}>{reliabilityDetail}</motion.p>}
+            </AnimatePresence>
+          </div>
         </motion.div>
 
         {/* ── ARROW 2 ── */}
-        <motion.div variants={{ hidden: { opacity: 0, scaleX: 0 }, visible: { opacity: 1, scaleX: 1, transition: { duration: 0.5, delay: 0.8 } } }}
-          style={{ flex: '0 0 80px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', transformOrigin: 'left center' }}>
+        <motion.div animate={{ opacity: focused ? 0.15 : 1 }} transition={{ duration: 0.3 }}
+          style={{ flex: '0 0 80px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
           <svg width="80" height="40" viewBox="0 0 80 40">
             <defs><marker id="dora-a2" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8" fill={C.highlight} /></marker></defs>
             <line x1="0" y1="20" x2="68" y2="20" stroke={C.highlight} strokeWidth="2" markerEnd="url(#dora-a2)" />
@@ -780,25 +815,30 @@ function DORAModelDiagram() {
         </motion.div>
 
         {/* ── OUTCOMES ── */}
-        <motion.div variants={{ hidden: { opacity: 0, x: 30 }, visible: { opacity: 1, x: 0, transition: { duration: 0.6, delay: 1.0 } } }}
-          style={{ flex: '0 0 280px', display: 'flex', flexDirection: 'column', gap: 10 }}>
+        <motion.div
+          animate={{ opacity: dimmed('out') ? 0.2 : 1, scale: focused === 'out' ? 1.15 : 1, zIndex: focused === 'out' ? 10 : 1 }}
+          transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+          onClick={() => toggle('out')}
+          style={{ flex: '0 0 280px', display: 'flex', flexDirection: 'column', gap: 10, cursor: 'pointer' }}>
           <p style={{ fontSize: 14, color: C.dim, textTransform: 'uppercase', letterSpacing: 3, fontWeight: 600, textAlign: 'center', marginBottom: 4 }}>Outcomes</p>
           {outcomes.map((o, i) => (
-            <motion.div key={i}
-              whileHover={{ scale: 1.04, transition: { duration: 0.2 } }}
-              style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 12, padding: '20px 16px', textAlign: 'center', borderRight: `3px solid ${o.color}` }}>
+            <div key={i} style={{ background: focused === 'out' ? '#1a2233' : C.surface, border: `1px solid ${focused === 'out' ? o.color + '60' : C.border}`, borderRadius: 12, padding: '20px 16px', textAlign: 'center', borderRight: `3px solid ${o.color}`, transition: 'all 300ms' }}>
               <p style={{ fontSize: 18, fontWeight: 700, color: o.color, whiteSpace: 'pre-line', lineHeight: 1.3 }}>{o.label}</p>
               <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.5)', marginTop: 6 }}>{o.sub}</p>
-            </motion.div>
+              <AnimatePresence>
+                {focused === 'out' && <motion.p initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }} style={{ fontSize: 13, color: 'rgba(255,255,255,0.65)', marginTop: 8, lineHeight: 1.5, borderTop: `1px solid ${o.color}30`, paddingTop: 8 }}>{o.detail}</motion.p>}
+              </AnimatePresence>
+            </div>
           ))}
         </motion.div>
       </div>
 
-      {/* ── FOOTER NOTE ── */}
-      <motion.div variants={{ hidden: { opacity: 0 }, visible: { opacity: 1, transition: { delay: 1.2 } } }}
-        style={{ display: 'flex', gap: 32, marginTop: 8 }}>
+      {/* ── FOOTER ── */}
+      <motion.div animate={{ opacity: focused ? 0.3 : 1 }} transition={{ duration: 0.3 }}
+        style={{ display: 'flex', gap: 32, marginTop: 4 }}>
         <span style={{ fontSize: 14, color: C.dim }}>dora.dev/research</span>
-        <span style={{ fontSize: 14, color: C.red }}>⚠ Con IA: +3.4% code, +7.5% docs pero −7.2% estabilidad, −1.5% throughput</span>
+        <span style={{ fontSize: 14, color: C.red }}>⚠ Con IA: +3.4% entregables, +7.5% docs pero −7.2% estabilidad, −1.5% ritmo</span>
+        {!focused && <span style={{ fontSize: 14, color: C.accent }}>Click en cualquier sección para explorar →</span>}
       </motion.div>
     </motion.div>
   )
@@ -855,6 +895,146 @@ function SlideRenderer({ data, quizState, onQuizAnswer }) {
         </div>
       </motion.div>
     )
+
+    case 'agileBySector': {
+      const sectors = [
+        { sector: 'Manufactura y Alimentos', color: C.accent, orgs: 'Crustissimo · Polar · Botalón', areas: [
+          { area: 'Desarrollo de producto', metric: '−55%', metricLabel: 'time-to-market', useCase: 'Lanzamiento de nuevo SKU con equipo multifuncional (calidad + comercial + producción) en ciclos de 2 semanas', source: 'BCG/NielsenIQ' },
+          { area: 'Eficiencia operacional', metric: '+30-40%', metricLabel: 'eficiencia', useCase: 'Optimización de línea de producción: kanban visual + daily de 15 min + retro quincenal', source: 'PA Consulting' },
+          { area: 'Entrega a tiempo', metric: '>95%', metricLabel: 'on-time delivery', useCase: 'Planificación de despacho con ciclos cortos y ajuste semanal según demanda real', source: 'Tailor Benchmarks' },
+        ]},
+        { sector: 'Farmacéutica', color: '#06b6d4', orgs: 'Calox · Corp. JSL', areas: [
+          { area: 'Ciclo de desarrollo', metric: '−40%', metricLabel: 'concepto→ensayo', useCase: 'Gestión de proyecto de registro sanitario con backlog priorizado por impacto regulatorio', source: 'McKinsey Life Sciences' },
+          { area: 'Costos de proyecto', metric: '−25%', metricLabel: 'reducción', useCase: 'Proyecto de transferencia tecnológica con revisiones cada 2 semanas y decisiones tempranas de go/no-go', source: 'McKinsey Pharma' },
+          { area: 'Gestión de CAPA', metric: 'Continua', metricLabel: 'medición', useCase: 'Ciclos cortos para análisis de desviaciones: causa raíz + plan correctivo en días, no meses', source: 'McKinsey/Roche' },
+        ]},
+        { sector: 'Banca y Servicios', color: C.highlight, orgs: 'Bancrecer · Fulldata · Damasco', areas: [
+          { area: 'Productividad', metric: '+25-35%', metricLabel: 'equipos', useCase: 'Proyecto de mejora de proceso de crédito: sprint de 2 semanas, entregable medible por ciclo', source: 'Hiperdrive Agile' },
+          { area: 'Tiempo al mercado', metric: '−50-70%', metricLabel: 'ciclo entrega', useCase: 'Lanzamiento de producto financiero o campaña con equipo cross-funcional y MVP en 4 semanas', source: 'ING/McKinsey' },
+          { area: 'Servicio al cliente', metric: '−50%', metricLabel: 'quejas', useCase: 'Rediseño de journey de atención con feedback semanal de clientes reales + ajuste iterativo', source: 'BCG 2022' },
+        ]},
+        { sector: 'Construcción y Retail', color: '#A855F7', orgs: 'Pilperca · B&P · Tiendas Ciro', areas: [
+          { area: 'Cronograma', metric: '3×', metricLabel: 'más probable a tiempo', useCase: 'Planificación de obra con Last Planner: compromisos semanales del equipo + % plan cumplido', source: 'LCI/Dodge 2021' },
+          { area: 'Ruta crítica', metric: '+51.6%', metricLabel: 'eficiencia', useCase: 'Proyecto de construcción con Scrum adaptado: planning quincenal + coordinación visual de frentes', source: 'MDPI 2025' },
+          { area: 'Inventario', metric: '82→98%', metricLabel: 'precisión', useCase: 'Proyecto de integración omnicanal con ciclos de ajuste cada 2 semanas según rotación real', source: 'Omniful' },
+        ]},
+      ]
+      return (
+        <motion.div variants={stagger} initial="hidden" animate="visible" style={{ ...inner, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 12 }}>
+          <motion.h2 variants={fadeUp} style={{ fontSize: T.title, fontWeight: 700, color: C.white }}>Agilidad en sus sectores: evidencia y casos de uso</motion.h2>
+          <motion.p variants={fadeUp} style={{ fontSize: 17, color: C.dim }}>Datos comprobados + proyectos ideales para implementar — McKinsey, BCG, PMI, LCI</motion.p>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14, marginTop: 2 }}>
+            {sectors.map((s, i) => (
+              <motion.div key={i} variants={popIn} style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 14, padding: '16px 18px', borderLeft: `3px solid ${s.color}` }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 10 }}>
+                  <p style={{ fontSize: 18, fontWeight: 700, color: s.color }}>{s.sector}</p>
+                  <p style={{ fontSize: 12, color: C.dim }}>{s.orgs}</p>
+                </div>
+                {s.areas.map((a, j) => (
+                  <div key={j} style={{ marginBottom: 10, paddingBottom: j < s.areas.length - 1 ? 10 : 0, borderBottom: j < s.areas.length - 1 ? `1px solid ${C.border}` : 'none' }}>
+                    <div style={{ display: 'flex', alignItems: 'baseline', gap: 10, marginBottom: 4 }}>
+                      <p style={{ fontSize: 15, fontWeight: 600, color: 'rgba(255,255,255,0.9)' }}>{a.area}</p>
+                      <span style={{ fontSize: 15, fontWeight: 700, color: s.color, fontFamily: "'JetBrains Mono', monospace" }}>{a.metric}</span>
+                      <span style={{ fontSize: 12, color: C.dim }}>{a.metricLabel} · {a.source}</span>
+                    </div>
+                    <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.55)', lineHeight: 1.35, paddingLeft: 12, borderLeft: `2px solid ${s.color}25` }}>{a.useCase}</p>
+                  </div>
+                ))}
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+      )
+    }
+
+    case 'agenda': {
+      const modules = [
+        { num: '01', title: 'Contexto 2026', desc: 'Datos de adopción, evidencia y regulación', color: C.dim },
+        { num: '02', title: 'Fundamentos ágiles', desc: 'Ciclo empírico, liderazgo, equipos y delivery', color: C.accent },
+        { num: '03', title: 'Era agéntica', desc: 'Niveles de autonomía, roles emergentes y riesgos', color: '#F59E0B' },
+        { num: '04', title: 'Roles redefinidos', desc: 'PO, SM y equipo en contexto humano-agente', color: C.highlight },
+        { num: '05', title: 'Gobernanza y métricas', desc: 'Modelos de gobierno, tablero mínimo viable', color: '#06b6d4' },
+        { num: '06', title: 'Casos y evidencia', desc: 'Datos cuantificados, productividad y contracasos', color: '#A855F7' },
+        { num: '07', title: 'Aplicación práctica', desc: 'Herramientas por sector, checklist 30 días', color: C.accent },
+      ]
+      const competencies = [
+        { icon: '🎯', text: 'Distinguir cuándo aplicar agilidad, estabilidad o automatización en tu contexto' },
+        { icon: '📊', text: 'Evaluar impacto real de IA con métricas — no con percepciones' },
+        { icon: '🛡️', text: 'Diseñar gobernanza mínima viable para adopción responsable de IA' },
+        { icon: '👥', text: 'Configurar equipos con roles claros en el modelo humano-agente' },
+        { icon: '🔄', text: 'Aplicar el ciclo empírico (inspección → adaptación) a proyectos con IA' },
+        { icon: '📋', text: 'Implementar un proyecto piloto ágil con IA en tu área funcional' },
+      ]
+      return (
+        <motion.div variants={stagger} initial="hidden" animate="visible" style={{ ...inner, height: '100%', display: 'flex', gap: 48, alignItems: 'center' }}>
+          <div style={{ flex: 1.1, display: 'flex', flexDirection: 'column', gap: 12 }}>
+            <motion.h2 variants={fadeUp} style={{ fontSize: T.title, fontWeight: 700, color: C.white, marginBottom: 8 }}>Índice del módulo</motion.h2>
+            {modules.map((m, i) => (
+              <motion.div key={i} variants={fadeUp} style={{ display: 'flex', alignItems: 'center', gap: 16, padding: '10px 16px', borderRadius: 10, background: 'rgba(255,255,255,0.02)', borderLeft: `3px solid ${m.color}` }}>
+                <span style={{ fontSize: 22, fontWeight: 800, color: m.color, fontFamily: "'JetBrains Mono', monospace", minWidth: 36 }}>{m.num}</span>
+                <div>
+                  <p style={{ fontSize: 19, fontWeight: 600, color: C.white, lineHeight: 1.3 }}>{m.title}</p>
+                  <p style={{ fontSize: 15, color: C.dim, lineHeight: 1.3 }}>{m.desc}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+          <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 14 }}>
+            <motion.h3 variants={fadeUp} style={{ fontSize: T.subtitle, fontWeight: 700, color: C.white, marginBottom: 4 }}>Objetivos y competencias</motion.h3>
+            <motion.p variants={fadeUp} style={{ fontSize: 16, color: C.dim, marginBottom: 4 }}>Al completar este módulo serás capaz de:</motion.p>
+            {competencies.map((c, i) => (
+              <motion.div key={i} variants={popIn} style={{ display: 'flex', alignItems: 'flex-start', gap: 14, padding: '12px 16px', borderRadius: 10, background: C.surface, border: `1px solid ${C.border}` }}>
+                <span style={{ fontSize: 22, lineHeight: 1 }}>{c.icon}</span>
+                <p style={{ fontSize: 17, color: 'rgba(255,255,255,0.85)', lineHeight: 1.45 }}>{c.text}</p>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+      )
+    }
+
+    case 'resources': {
+      const resources = [
+        { category: 'Libros', color: C.accent, items: [
+          { title: 'Scrum: The Art of Doing Twice the Work in Half the Time', author: 'Jeff Sutherland', note: 'El fundamento — accesible para no técnicos' },
+          { title: 'The Phoenix Project', author: 'Kim, Behr & Spafford', note: 'Novela de gestión que explica DevOps y flujo de valor' },
+          { title: 'Team Topologies', author: 'Skelton & Pais', note: 'Cómo estructurar equipos para flujo rápido' },
+          { title: 'Co-Intelligence: Living and Working with AI', author: 'Ethan Mollick', note: 'Guía práctica de IA para líderes — publicado 2024' },
+        ]},
+        { category: 'Videos y cursos', color: C.highlight, items: [
+          { title: 'Agile Product Ownership in a Nutshell', author: 'Henrik Kniberg · YouTube', note: '15 min — la mejor explicación visual de priorización ágil' },
+          { title: 'DORA Quick Check', author: 'dora.dev/quickcheck', note: 'Evalúa la madurez de entrega de tu equipo en 5 minutos' },
+          { title: 'AI for Project Managers', author: 'PMI Learning · pmi.org', note: 'Curso gratuito de PMI sobre IA en gestión de proyectos' },
+          { title: 'Spotify Engineering Culture', author: 'Henrik Kniberg · YouTube', note: '2 videos — modelo de squads, tribus y autonomía alineada' },
+        ]},
+        { category: 'Sitios web clave', color: '#06b6d4', items: [
+          { title: 'dora.dev', author: 'Google Cloud DORA', note: 'Investigación anual sobre rendimiento de equipos — métricas clave' },
+          { title: 'scrum.org/resources', author: 'Scrum.org', note: 'Guías oficiales, assessments y learning paths gratuitos' },
+          { title: 'agilemanifesto.org', author: 'Los 17 firmantes', note: 'Los 4 valores y 12 principios — lectura obligatoria de 5 minutos' },
+          { title: 'hbr.org/topic/ai', author: 'Harvard Business Review', note: 'Artículos de IA para líderes de negocio — perspectiva gerencial' },
+        ]},
+      ]
+      return (
+        <motion.div variants={stagger} initial="hidden" animate="visible" style={{ ...inner, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 20 }}>
+          <motion.h2 variants={fadeUp} style={{ fontSize: T.title, fontWeight: 700, color: C.white }}>Recursos recomendados</motion.h2>
+          <motion.p variants={fadeUp} style={{ fontSize: 19, color: C.dim }}>Para profundizar después del módulo — seleccionados para project managers</motion.p>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 20, marginTop: 4 }}>
+            {resources.map((r, i) => (
+              <motion.div key={i} variants={popIn} style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 14, padding: '20px 22px', borderTop: `3px solid ${r.color}` }}>
+                <p style={{ fontSize: 20, fontWeight: 700, color: r.color, marginBottom: 14 }}>{r.category}</p>
+                {r.items.map((item, j) => (
+                  <div key={j} style={{ marginBottom: 14, paddingLeft: 14, borderLeft: `2px solid ${r.color}30` }}>
+                    <p style={{ fontSize: 16, fontWeight: 600, color: 'rgba(255,255,255,0.9)', lineHeight: 1.35 }}>{item.title}</p>
+                    <p style={{ fontSize: 14, color: C.dim, lineHeight: 1.3 }}>{item.author}</p>
+                    <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.45)', lineHeight: 1.3, marginTop: 2 }}>{item.note}</p>
+                  </div>
+                ))}
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+      )
+    }
 
     case 'end': return (
       <motion.div variants={stagger} initial="hidden" animate="visible" style={{ ...inner, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', textAlign: 'center', gap: 48 }}>
@@ -1086,25 +1266,84 @@ function SlideRenderer({ data, quizState, onQuizAnswer }) {
     )
 
     case 'monday': return (
-      <motion.div variants={stagger} initial="hidden" animate="visible" style={{ ...inner, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 24 }}>
+      <motion.div variants={stagger} initial="hidden" animate="visible" style={{ ...inner, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 20 }}>
         <motion.h2 variants={fadeUp} style={{ fontSize: T.title, fontWeight: 700, color: C.white }}>¿Y yo qué hago el lunes?</motion.h2>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24, marginTop: 8 }}>
+        <motion.p variants={fadeUp} style={{ fontSize: 22, color: C.dim, maxWidth: 1100, lineHeight: 1.5 }}>
+          Elige <span style={{ color: C.white, fontWeight: 600 }}>un proyecto real</span> de tu área. Define un ciclo corto (2-4 semanas), un entregable medible y un equipo pequeño. Aplica estas acciones dentro de ese proyecto:
+        </motion.p>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20, marginTop: 4 }}>
           {[
-            { role: 'Calidad / Operaciones', color: C.accent, items: ['Identifica 1 proceso repetitivo candidato a IA\n(reportes, checklists, análisis de no conformidades)', 'Establece una métrica de baseline antes de cambiar algo'] },
-            { role: 'Finanzas', color: C.highlight, items: ['Usa IA para análisis y síntesis de reportes\n(−40% tiempo documentado)', 'No automatices aprobaciones ni decisiones de riesgo'] },
-            { role: 'Supervisor / Operativo', color: '#F59E0B', items: ['Propón un ciclo corto (2 semanas) de prueba\nen 1 proyecto', 'Mide: ¿terminamos lo planificado?\n¿El cliente interno quedó satisfecho?'] },
-            { role: 'Comercial / Marketing', color: '#A855F7', items: ['IA en contenido, análisis de mercado,\nborradores de propuestas', 'Mantén criterio humano en decisiones\nde marca y relación con cliente'] },
+            { role: 'Calidad / Operaciones', color: C.accent, items: ['Análisis de causa raíz con IA: alimenta datos de no conformidades\ny obtén patrones, Paretos y borradores de CAPA en minutos', 'Gestión de riesgos del proyecto: matriz de riesgos\ngenerada por IA, revisada por el equipo cada ciclo', 'Dashboards automáticos: % avance, SLA, defectos\n— IA arma el tablero, tú tomas decisiones'] },
+            { role: 'Finanzas / Administración', color: C.highlight, items: ['Estimación y costeo de proyectos: IA analiza históricos\ny genera rangos de estimación con supuestos explícitos', 'Síntesis ejecutiva: de 30 páginas a 1 resumen accionable\n(−40% tiempo documentado) — reporte listo para comité', 'Seguimiento de presupuesto vs. real: IA detecta\ndesviaciones y sugiere acciones correctivas'] },
+            { role: 'Producción / Supervisión', color: '#F59E0B', items: ['Sprint de mejora: ciclo de 2 semanas con daily\nde 15 min, entregable medible y retrospectiva', 'Planificación de capacidad: IA cruza carga de trabajo,\ndisponibilidad y prioridades para proponer asignaciones', 'Lecciones aprendidas automatizadas: IA consolida\nretros anteriores y sugiere acciones para el nuevo ciclo'] },
+            { role: 'Comercial / Marketing', color: '#A855F7', items: ['Propuestas y licitaciones: IA genera borradores\ncon análisis competitivo y pricing sugerido', 'Roadmap de producto/servicio: IA prioriza backlog\npor impacto estimado en ingreso y satisfacción', 'Seguimiento de pipeline: IA identifica cuellos de botella\nen el embudo y sugiere acciones por etapa'] },
           ].map((block, i) => (
-            <motion.div key={i} variants={popIn} style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 16, padding: '24px 28px', borderTop: `3px solid ${block.color}` }}>
-              <p style={{ fontSize: 22, fontWeight: 700, color: block.color, marginBottom: 12 }}>{block.role}</p>
+            <motion.div key={i} variants={popIn} style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 16, padding: '22px 26px', borderTop: `3px solid ${block.color}` }}>
+              <p style={{ fontSize: 21, fontWeight: 700, color: block.color, marginBottom: 10 }}>{block.role}</p>
               {block.items.map((item, j) => (
-                <p key={j} style={{ fontSize: 20, color: 'rgba(255,255,255,0.8)', lineHeight: 1.5, marginBottom: 8, whiteSpace: 'pre-line', paddingLeft: 16, borderLeft: `2px solid ${block.color}30` }}>{item}</p>
+                <p key={j} style={{ fontSize: 19, color: 'rgba(255,255,255,0.8)', lineHeight: 1.45, marginBottom: 8, whiteSpace: 'pre-line', paddingLeft: 16, borderLeft: `2px solid ${block.color}30` }}>{item}</p>
               ))}
             </motion.div>
           ))}
         </div>
+        <motion.p variants={fadeUp} style={{ fontSize: 17, color: C.dim, textAlign: 'center', marginTop: 4 }}>
+          Formato: proyecto acotado → equipo pequeño → ciclo corto → medir → decidir si escalar
+        </motion.p>
       </motion.div>
     )
+
+    case 'toolsBySector': {
+      const sectors = [
+        { sector: 'Manufactura\ny Alimentos', color: C.accent, orgs: 'Crustissimo · Polar · Botalón · Pilperca · Cabel', tools: [
+          { practice: 'Kanban visual', ai: 'IA genera tablero desde lista de tareas y sugiere WIP limits por capacidad del equipo' },
+          { practice: 'Daily 15 min', ai: 'IA resume avances del día anterior y detecta bloqueos antes de la reunión' },
+          { practice: 'Retrospectiva', ai: 'IA consolida incidentes, métricas de ciclo y sugiere 3 acciones priorizadas' },
+          { practice: 'Gestión de riesgos', ai: 'Matriz de riesgos generada desde históricos de planta + análisis de causa raíz automático' },
+        ]},
+        { sector: 'Farmacéutica', color: '#06b6d4', orgs: 'Calox · Laboratorio Calox · Corp. JSL', tools: [
+          { practice: 'Backlog priorizado', ai: 'IA ordena iniciativas por impacto regulatorio, costo y urgencia con trazabilidad' },
+          { practice: 'Definition of Done', ai: 'Checklist de calidad generado por IA según normativa GMP/GLP vigente' },
+          { practice: 'Sprint Review', ai: 'IA genera resumen ejecutivo de entregables del ciclo para comité de calidad' },
+          { practice: 'CAPA ágil', ai: 'Análisis de desviaciones + plan de acción correctiva en minutos, no semanas' },
+        ]},
+        { sector: 'Banca\ny Servicios', color: C.highlight, orgs: 'Bancrecer · Fulldata · Damasco · Netnovation', tools: [
+          { practice: 'User Story Mapping', ai: 'IA mapea journey del cliente desde datos de atención y genera historias priorizadas' },
+          { practice: 'Estimación', ai: 'Rangos de esfuerzo basados en históricos similares — reduce sesgo de planificación' },
+          { practice: 'Métricas de flujo', ai: 'Lead time, cycle time y throughput calculados en tiempo real desde herramientas existentes' },
+          { practice: 'Reporte a stakeholders', ai: 'De 30 páginas a 1 resumen accionable — síntesis ejecutiva lista para comité' },
+        ]},
+        { sector: 'Retail, Educación\ny Comercio', color: '#A855F7', orgs: 'Tiendas Ciro · IESA · Promoting · Link 1720', tools: [
+          { practice: 'Roadmap de producto', ai: 'IA prioriza backlog por impacto en ingreso y satisfacción con datos de mercado' },
+          { practice: 'Ciclo de feedback', ai: 'Encuestas analizadas por IA → insights → backlog actualizado en horas, no semanas' },
+          { practice: 'Planificación de sprint', ai: 'IA cruza capacidad del equipo + prioridades + dependencias para proponer plan' },
+          { practice: 'Lecciones aprendidas', ai: 'IA consolida retros anteriores y sugiere patrones recurrentes a resolver' },
+        ]},
+      ]
+      return (
+        <motion.div variants={stagger} initial="hidden" animate="visible" style={{ ...inner, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 16 }}>
+          <motion.h2 variants={fadeUp} style={{ fontSize: T.title, fontWeight: 700, color: C.white }}>Herramientas ágiles × IA por sector</motion.h2>
+          <motion.p variants={fadeUp} style={{ fontSize: 19, color: C.dim }}>Prácticas que ya se democratizan — aplicadas a los sectores de este grupo</motion.p>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginTop: 4 }}>
+            {sectors.map((s, i) => (
+              <motion.div key={i} variants={popIn} style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 14, padding: '18px 20px', borderLeft: `3px solid ${s.color}` }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 10 }}>
+                  <p style={{ fontSize: 19, fontWeight: 700, color: s.color, whiteSpace: 'pre-line', lineHeight: 1.2 }}>{s.sector}</p>
+                  <p style={{ fontSize: 13, color: C.dim, textAlign: 'right', maxWidth: 260 }}>{s.orgs}</p>
+                </div>
+                <div style={{ display: 'grid', gridTemplateColumns: '140px 1fr', gap: '6px 12px' }}>
+                  {s.tools.map((t, j) => (
+                    <React.Fragment key={j}>
+                      <p style={{ fontSize: 15, fontWeight: 600, color: 'rgba(255,255,255,0.9)', lineHeight: 1.35, paddingTop: 2 }}>{t.practice}</p>
+                      <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.6)', lineHeight: 1.4, borderLeft: `2px solid ${s.color}25`, paddingLeft: 10 }}>{t.ai}</p>
+                    </React.Fragment>
+                  ))}
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+      )
+    }
 
     case 'autonomy': {
       const levels = [

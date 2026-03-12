@@ -109,6 +109,7 @@ const TAKEAWAYS = [
   /* 51 quiz 9 */         'Un agente que "resuelve" tickets 5x más rápido pero degrada la satisfacción del cliente destruye valor. La multifuncionalidad evita que nadie monitoree solo la métrica de eficiencia.',
   /* 52 quiz 10 */        'Si nadie en el equipo tiene la responsabilidad explícita de configurar la integración de IA, tienes un gap operativo. El SM/DM es la persona natural para cerrarlo.',
   /* 53 section gob */    'Solo 18% tenía council con autoridad para IA responsable en 2024 (McKinsey). La privacidad/seguridad es preocupación #1 (72%, PMI Sweden). La gobernanza no es burocracia — es supervivencia.',
+  /* 53b gov questions */  'Si nadie en tu organización puede responder estas tres preguntas, la gobernanza de IA no existe — solo hay improvisación.',
   /* 54 centralizado */   'El trade-off real: en industrias reguladas, el costo de un incidente de IA (fuga de datos, sesgo en decisiones) supera con creces el costo de un cuello de botella por aprobación.',
   /* 55 federado */       'El riesgo de "shadow AI" no es teórico: equipos usando herramientas no autorizadas con datos sensibles ya es realidad en la mayoría de enterprises. El modelo federado lo contiene sin asfixiar.',
   /* 56 product-align */  'Este modelo solo funciona si ya tienes telemetría madura. Sin datos de impacto, "product-aligned governance" es solo un nombre bonito para "nadie gobierna".',
@@ -121,6 +122,7 @@ const TAKEAWAYS = [
   /* 61 copilot */        'La clave de Accenture no es Copilot — es que tenían telemetría y prácticas de revisión. Sin esos controles, el mismo tool produce "deuda acelerada" (coherente con DORA).',
   /* 62 klarna */         'Caveat: métricas de "equivalente FTE" dependen de supuestos internos. Para replicar, exige método de cálculo interno. Los "best case" deben auditarse, no copiarse.',
   /* 63 escritura */      'Transferencia directa a roles ágiles: PO para PRDs y criterios, SM para minutas y riesgos, liderazgo para síntesis ejecutiva. El mayor ROI está en la escritura estructurada.',
+  /* 63b monday */         'No esperes a que tu empresa lance un programa de IA. Empieza con tu equipo, tu proceso, tu contexto. La ventaja es para quienes actúan primero con criterio.',
   /* 64 section impl */   'PMI Sweden: 64% recomienda iniciar pequeño y escalar gradualmente. El ciclo empírico aplica a la propia adopción de IA: experimentar, medir, ajustar.',
   /* 65 checklist 1 */    'Antes de comprar herramientas: ¿hay liderazgo protector? ¿Equipos multifuncionales reales? ¿Cadencias de inspección? Sin esto, la IA amplifica la disfunción existente.',
   /* 66 checklist 2 */    'EU AI Act entra en vigor progresivamente 2025-2027. Definir guardrails ahora no es anticipación — es cumplimiento. Las obligaciones para GPAI aplican desde agosto 2025.',
@@ -156,9 +158,9 @@ const slides = [
   // ── 3: CONTEXTO EVIDENCIA SISTÉMICA ──
   { type: 'content', title: 'Lo que dice la evidencia', bullets: [
     'DORA 2024: IA mejora calidad local pero estabilidad cae −7.2%',
-    '39% reporta poca o ninguna confianza en código IA (DORA)',
+    '39% reporta poca o ninguna confianza en resultados generados por IA (DORA)',
     'Gartner: 40% de apps tendrá agentes por tarea en 2026',
-    '62% de developers ya usa IA en su proceso (Stack Overflow)',
+    '62% de profesionales ya usa IA en su proceso (Stack Overflow)',
   ], note: 'Datos duros', color: 'accent' },
 
   // ── 4: EU AI ACT TIMELINE ──
@@ -181,15 +183,16 @@ const slides = [
     'Retroalimentación frecuente',
     'Inspección de resultados',
     'Adaptación basada en evidencia',
+    'Ejemplo: inspeccionar cada 2 semanas cuesta menos\nque descubrir el problema al final del trimestre',
   ], note: 'Fundamento 1' },
 
   { type: 'diagram', id: 'cycle' },
 
   { type: 'content', title: '¿Qué pasa sin inspección?', bullets: [
     'Los errores de IA se propagan sin freno',
-    '39% tiene poca o nula confianza en código IA (DORA)',
+    '39% tiene poca o nula confianza en resultados de IA (DORA)',
     'Si se ignora: más defectos. Si se atiende sin proceso: más fricción',
-    'La deuda técnica se acumula más rápido',
+    'Los errores y reprocesos se acumulan más rápido',
   ], note: 'Conexión agéntica', color: 'accent' },
 
   // ── CUÁNDO SÍ / CUÁNDO NO ──
@@ -197,12 +200,14 @@ const slides = [
     'Grandes brechas de satisfacción del cliente',
     'Necesidades cambiando rápidamente',
     'Capacidad de iterar genera ventaja directa',
+    '¿Lanzas producto nuevo y no sabes qué quiere\nel cliente? Necesitas iteración ágil',
   ], note: 'Fundamento 2' },
 
   { type: 'content', title: '¿Cuándo no es necesaria?', bullets: [
     'Brechas pequeñas y necesidades estables',
     'Procesos predecibles satisfacen mejor',
     'En 2026: ¡la automatización directa es opción!',
+    '¿Tu despacho logístico funciona bien? Optimízalo,\nno lo "agilices". ¿Mismo reporte mensual? Automatiza',
   ], color: 'highlight' },
 
   { type: 'diagram', id: 'triangle' },
@@ -213,8 +218,8 @@ const slides = [
   { type: 'content', title: 'Proteger', bullets: [
     'Blindar de interferencia burocrática',
     'Eliminar deadlines arbitrarios',
-    'Establecer políticas claras sobre agentes IA',
-    'Sin protección, los equipos son reabsorbidos',
+    'Establecer políticas claras sobre herramientas IA',
+    'Como gerente, TÚ eres el liderazgo protector —\nno solo el CEO',
   ], note: 'Fundamento 3 — Pilar 1', color: 'accent' },
 
   { type: 'content', title: 'Crear espacio', bullets: [
@@ -245,47 +250,47 @@ const slides = [
   // ── EQUIPOS ──
   { type: 'content', title: 'Equipos multifuncionales', bullets: [
     'Composición dinámica según la etapa',
-    'Diseñadores, investigadores, desarrolladores juntos',
-    'Evaluar agentes por impacto en usuario',
-    'No solo por eficiencia interna',
+    'Calidad, producción, mercadeo y logística juntos',
+    'Si no trabajan juntos desde el inicio:\nretrabajo y retrasos',
+    'Evaluar resultados por impacto en el cliente',
   ], note: 'Fundamento 4' },
 
   { type: 'content', title: 'Centrado en el usuario, siempre', bullets: [
     'La multifuncionalidad evita silos',
     'Decisiones conectadas al usuario final',
-    'Un agente 5x más rápido que degrada CSAT\n¡destruye valor!',
+    'Una herramienta 5x más rápida que degrada\nla satisfacción del cliente ¡destruye valor!',
   ], color: 'accent' },
 
   // ── DELIVERY MANAGER ──
-  { type: 'content', title: 'El Delivery Manager', bullets: [
+  { type: 'content', title: 'El líder de proceso', bullets: [
     'Cadencias de trabajo y eliminación de impedimentos',
     'Colaboración entre disciplinas',
     'Acceso a recursos, datos y herramientas',
-  ], note: 'Fundamento 5 — Responsabilidades base' },
+  ], note: 'Fundamento 5 — Este rol puede ser tuyo' },
 
-  { type: 'content', title: 'Delivery Manager en 2026', bullets: [
+  { type: 'content', title: 'Líder de proceso en 2026', bullets: [
     'Integración gobernada de IA',
-    'Entrenamiento en validación de outputs',
-    'Prácticas de revisión de código generado',
+    'Entrenamiento en validación de resultados',
+    'Prácticas de revisión de entregables generados por IA',
     'Si no configura revisión, ¡la inspección no ocurre!',
   ], note: 'Extensión agéntica', color: 'highlight' },
 
   // ── QUIZ 1 ──
   { type: 'section', title: 'Autocomprobación', subtitle: 'Fundamentos ágiles', quiz: true },
-  { type: 'quiz', idx: 0, q: 'El objetivo principal de la agilidad es\nofrecer mejores resultados mediante\nretroalimentación frecuente, inspección\ny adaptación.', explanation: 'El ciclo empírico es el mecanismo central.\nEn era agéntica se amplifica.' },
-  { type: 'quiz', idx: 1, q: 'El liderazgo debe proteger a los equipos\nágiles de ser arrastrados a viejas formas\nde trabajo y transferir poder a los equipos.', explanation: 'Sin liderazgo protector, los equipos\nson reabsorbidos por la inercia burocrática.' },
-  { type: 'quiz', idx: 2, q: 'Las transformaciones ágiles fracasan\ncuando no cuentan con apoyo ejecutivo\no de mandos medios.', explanation: 'El apoyo ejecutivo es condición estructural.\n>80% sin gobierno visible no logra retorno.' },
-  { type: 'quiz', idx: 3, q: 'La agilidad es esencial cuando existen\ngrandes brechas de satisfacción\no necesidades cambiando rápidamente.', explanation: 'En 2026 se agrega automatización directa.\nTriángulo: ágil vs. estable vs. automatizado.' },
-  { type: 'quiz', idx: 4, q: 'Los procesos estables satisfacen mejor\ncuando las brechas son pequeñas\ny las necesidades son estables.', explanation: 'No todo requiere agilidad.\nEl error es "agilizar" lo que funciona bien.' },
+  { type: 'quiz', idx: 0, q: 'El objetivo principal de la agilidad es\nofrecer mejores resultados mediante\nretroalimentación frecuente, inspección\ny adaptación.', explanation: 'En manufactura: inspección de calidad en línea vs.\nal final del lote. Cuanto antes detectes, menos cuesta.' },
+  { type: 'quiz', idx: 1, q: 'El liderazgo debe proteger a los equipos\nágiles de ser arrastrados a viejas formas\nde trabajo y transferir poder a los equipos.', explanation: 'Transferir poder no es perder control. El equipo\ndecide el CÓMO; tú defines el QUÉ y el PARA QUÉ.' },
+  { type: 'quiz', idx: 2, q: 'Las transformaciones ágiles fracasan\ncuando no cuentan con apoyo ejecutivo\no de mandos medios.', explanation: 'Si tu gerente general no protege el tiempo del equipo\nde las urgencias diarias, el proyecto siempre pierde.' },
+  { type: 'quiz', idx: 3, q: 'La agilidad es esencial cuando existen\ngrandes brechas de satisfacción\no necesidades cambiando rápidamente.', explanation: 'Piensa en tu sector: ¿clientes satisfechos y estables,\no cambiando lo que necesitan? Eso define tu enfoque.' },
+  { type: 'quiz', idx: 4, q: 'Los procesos estables satisfacen mejor\ncuando las brechas son pequeñas\ny las necesidades son estables.', explanation: 'Tu nómina funciona con estabilidad. Un lanzamiento\nnuevo necesita iteración. No fuerces agilidad donde no aporta.' },
 
   // ── ERA AGÉNTICA ──
   { type: 'section', title: 'Era agéntica', subtitle: 'Lo que cambia en 2026' },
 
   { type: 'content', title: '¿Qué es un agente?', bullets: [
-    'Sistema que planifica y ejecuta múltiples pasos',
-    'No solo chat — ejecuta, coordina, decide',
-    'Problema real: ¡agencia excesiva + bajo control!',
-  ] },
+    'Asistente: le preguntas, te responde (ChatGPT)',
+    'Agente: le asignas tarea, la ejecuta completa',
+    'Riesgo: que ejecute cosas que nadie le pidió,\ncon datos que no debía tocar',
+  ], note: 'No necesitas ser empresa tech para que esto te afecte' },
 
   { type: 'diagram', id: 'agentic' },
 
@@ -298,30 +303,30 @@ const slides = [
     'AI Agent Specialist — diseño y orquestación',
     'AI ROI Analyst — medición de impacto real',
     'Chief AI Officer — gobernanza estratégica',
-  ], note: 'Surgen por 3 tensiones: seguridad, cumplimiento, ROI' },
+  ], note: 'Nuevas responsabilidades que alguien debe asumir' },
 
   // ── SCRUM ROLES (EMPHASIS) ──
-  { type: 'section', title: 'Roles Scrum', subtitle: 'El punto de partida canónico', emphasis: true },
+  { type: 'section', title: 'Roles ágiles', subtitle: 'Quién hace qué', emphasis: true },
 
-  { type: 'content', title: 'Product Owner', bullets: [
-    'Maximizar el valor del producto',
-    'Gestionar el Product Backlog',
-    'Comunicar el Objetivo del Producto',
-    'Asegurar transparencia y orden',
+  { type: 'content', title: 'Responsable de prioridades', bullets: [
+    'Maximizar el valor del producto o servicio',
+    'Gestionar la lista priorizada de trabajo',
+    'Comunicar el objetivo a todo el equipo',
+    'En tu organización: gerente de proyecto,\ngerente de producto, quien decide QUÉ se hace',
   ], color: 'accent' },
 
-  { type: 'content', title: 'Scrum Master', bullets: [
-    'Establecer Scrum; lograr efectividad',
-    'Líder servidor del equipo',
-    'Coach en autogestión y multifuncionalidad',
-    'Eliminar impedimentos; servir a la organización',
+  { type: 'content', title: 'Facilitador del equipo', bullets: [
+    'Lograr que el equipo sea efectivo',
+    'Líder servidor — facilita, no manda',
+    'Coach en autogestión y colaboración',
+    'En tu organización: líder de proceso,\njefe de proyecto, quien configura CÓMO trabaja el equipo',
   ], color: 'highlight' },
 
-  { type: 'content', title: 'Developers', bullets: [
-    'Crear un Increment utilizable cada Sprint',
-    'Plan del Sprint y calidad en la DoD',
-    'Adaptar el plan diariamente',
-    'Responsabilidad mutua como profesionales',
+  { type: 'content', title: 'Equipo de ejecución', bullets: [
+    'Crear un resultado utilizable cada ciclo',
+    'Planificar el ciclo y cuidar la calidad',
+    'Adaptar el plan según lo aprendido',
+    'En tu organización: analistas, técnicos,\noperadores — quienes ejecutan el trabajo',
   ], color: 'accent' },
 
   // ── ADOPCIÓN IA ──
@@ -332,17 +337,17 @@ const slides = [
     { label: 'Uso regular genAI (2025)', value: 71, color: C.highlight },
     { label: 'IA en ≥1 función (Nov 2025)', value: 88, color: C.accent },
     { label: 'Experimenta con agentes (39% + 23% escala)', value: 62, color: C.accent },
-  ], source: 'McKinsey 2024–2025' },
+  ], source: 'McKinsey 2024–2025', note: 'Datos globales — en LatAm: mayor oportunidad para quienes adopten con criterio' },
 
   // ── PRODUCTIVIDAD ──
   { type: 'content', title: '¿Qué mejora con IA?', bullets: [
-    'Programación (lab): +55.8% más rápido',
+    'Tareas técnicas repetitivas (lab): +55.8% más rápido',
     'Escritura: −40% tiempo, +18% calidad',
-    'Contact center: +34% productividad en novatos',
-    'Copilot/Accenture: +84% builds exitosos',
+    'Equipos de atención (personal nuevo): +34% productividad',
+    'Entregables aprobados a la primera: +84%',
   ], note: 'Evidencia positiva', color: 'highlight' },
 
-  { type: 'bigstat', value: '+19%', label: 'más lento para devs expertos\ncon IA (METR RCT 2025)', source: '¡Pese a creer ser ~20% más rápidos!', warn: true },
+  { type: 'bigstat', value: '+19%', label: 'más lento para profesionales expertos\ncon IA (METR RCT 2025)', source: 'Creían ser ~20% más rápidos.\nPara cualquier gerente: si no mides, te autoengañas', warn: true },
 
   { type: 'content', title: '¿Por qué resultados contradictorios?', bullets: [
     'Varía por especificidad de la tarea',
@@ -354,49 +359,56 @@ const slides = [
 
   { type: 'bars', title: 'DORA: mejoras locales', items: [
     { label: 'Calidad de documentación', value: 7.5, max: 12, color: C.highlight, suffix: '%' },
-    { label: 'Calidad de código', value: 3.4, max: 12, color: C.highlight, suffix: '%' },
-    { label: 'Velocidad de code review', value: 3.1, max: 12, color: C.highlight, suffix: '%' },
+    { label: 'Calidad de entregables', value: 3.4, max: 12, color: C.highlight, suffix: '%' },
+    { label: 'Velocidad de revisión y aprobación', value: 3.1, max: 12, color: C.highlight, suffix: '%' },
     { label: 'Flow individual', value: 2.6, max: 12, color: C.accent, suffix: '%' },
   ], source: 'DORA 2024 — por +25% adopción IA', note: 'Lo que sube' },
 
   { type: 'bars', title: 'DORA: pérdidas sistémicas', items: [
-    { label: 'Throughput de entrega', value: 1.5, max: 10, color: C.red, suffix: '%', prefix: '−' },
-    { label: 'Estabilidad', value: 7.2, max: 10, color: C.red, suffix: '%', prefix: '−' },
+    { label: 'Ritmo de entrega completa', value: 1.5, max: 10, color: C.red, suffix: '%', prefix: '−' },
+    { label: 'Estabilidad operativa', value: 7.2, max: 10, color: C.red, suffix: '%', prefix: '−' },
   ], source: 'DORA 2024 — por +25% adopción IA', note: 'Lo que baja', warn: true },
 
   // ── VACUUM ──
-  { type: 'quote', text: 'Si la IA acelera tareas valiosas,\nse crea un "vacío de tiempo".\nSin rediseño, ese vacío\nse rellena con burocracia.\n\nDORA: tiempo en trabajo valioso\ncae −2.6% aun subiendo flow.', source: 'El "Vacuum Effect"' },
+  { type: 'quote', text: 'Si la IA acelera tareas valiosas,\nse crea un "vacío de tiempo".\nSin rediseño, ese vacío\nse rellena con burocracia.\n\nEl tiempo en trabajo valioso\ncae −2.6% aun subiendo productividad.', source: 'El "Vacuum Effect"' },
 
   // ── SISTEMA E2E ──
   { type: 'diagram', id: 'system' },
 
   // ── ROLES REDEFINIDOS (EMPHASIS) ──
-  { type: 'section', title: 'Roles redefinidos', subtitle: 'De "hacer" a "orquestar"', emphasis: true },
+  { type: 'section', title: 'Roles redefinidos', subtitle: 'De "hacer" a "dirigir y verificar"', emphasis: true },
 
-  { type: 'role', role: 'Product Owner', base: 'Maximizar valor;\ngestionar Product Backlog', upgrade: 'Diseñar value + guardrails:\ndecidir qué se delega a agentes\ny con qué límites', artifacts: 'Policy-by-design, eval sets,\ncriterios verificables', color: C.accent },
+  { type: 'role', role: 'Resp. de prioridades', base: 'Maximizar valor;\ngestionar lista de trabajo', upgrade: 'Diseñar valor + límites:\ndecidir qué se delega a IA\ny con qué controles', artifacts: 'Políticas de uso,\ncriterios de calidad verificables', color: C.accent },
 
-  { type: 'role', role: 'SM / Delivery Manager', base: 'Establecer Scrum;\nlograr efectividad;\nconfigurar entorno ágil', upgrade: 'Flow & adoption architect:\nentrenar uso/validación,\nbajar fricción, proteger foco', artifacts: 'Guías de uso, checklists,\nmétricas DevEx/Flow', color: C.highlight },
+  { type: 'role', role: 'Facilitador / Líder de proceso', base: 'Configurar cómo trabaja\nel equipo; lograr efectividad;\neliminar obstáculos', upgrade: 'Arquitecto de flujo:\nentrenar uso/validación de IA,\nbajar fricción, proteger foco', artifacts: 'Guías de uso, checklists,\nmétricas de satisfacción del equipo', color: C.highlight },
 
-  { type: 'role', role: 'Developers', base: 'Entregar Increment;\ncalidad en DoD;\nplan del Sprint', upgrade: 'Engineer + evaluator:\norquestar agentes, revisar,\nasegurar seguridad, testear', artifacts: 'Suites de pruebas,\nlinters/SAST, revisión de prompts', color: C.accent },
+  { type: 'role', role: 'Equipo de ejecución', base: 'Entregar resultados;\ncuidar calidad;\nplanificar el ciclo', upgrade: 'Ejecutor + evaluador:\nusar IA como herramienta, revisar,\nasegurar calidad de resultados', artifacts: 'Checklists de calidad,\nrevisión de resultados IA', color: C.accent },
 
-  { type: 'role', role: 'Líderes', base: 'Crear condiciones;\nproteger equipos;\ntransferir poder', upgrade: 'Agent-boss / system steward:\nhuman-agent ratio, work charts,\ncentralización vs. federación', artifacts: 'Modelo de gobernanza,\nmétricas EBIT/ROI, controles', color: C.highlight },
+  { type: 'role', role: 'Líderes / Gerentes', base: 'Crear condiciones;\nproteger equipos;\ntransferir poder', upgrade: 'Director del sistema:\nproporción automatización vs. humano,\ncentralización vs. autonomía', artifacts: 'Modelo de gobernanza,\nmétricas de retorno, controles', color: C.highlight },
 
   // ── QUIZ 2 ──
   { type: 'section', title: 'Autocomprobación', subtitle: 'Roles y liderazgo', quiz: true },
-  { type: 'quiz', idx: 5, q: 'Los líderes ágiles necesitan\ncrear espacio para que todos\ncontribuyan — diferentes equipos,\ndiferentes caminos.', explanation: 'En era agéntica: autonomía por nivel\ny work charts dinámicos.' },
-  { type: 'quiz', idx: 6, q: 'Confiar en la inteligencia ascendente\ncambia el papel de los gerentes.\nCrean condiciones y dan paso atrás.', explanation: 'Matiz 2026: paso atrás en ejecución,\nintensifica en gobernanza.' },
-  { type: 'quiz', idx: 7, q: 'El tamaño del equipo y los roles\ncambiarán según la etapa\nde desarrollo del servicio.', explanation: 'En 2026 es dinámico a nivel de sprint.\nNuevos roles IA según madurez.' },
-  { type: 'quiz', idx: 8, q: 'Todo el equipo debe trabajar junto\npara diseñar, construir e iterar\nun servicio centrado en el usuario.', explanation: 'Los agentes se evalúan por impacto\nen experiencia de usuario.' },
-  { type: 'quiz', idx: 9, q: 'El delivery manager configura\nel entorno ágil que su equipo\nnecesita para iterar.', explanation: 'En 2026 ese entorno incluye agentes.\nEl SM asegura integración gobernada.' },
+  { type: 'quiz', idx: 5, q: 'Los líderes ágiles necesitan\ncrear espacio para que todos\ncontribuyan — diferentes equipos,\ndiferentes caminos.', explanation: 'Tu equipo de logística no trabajará igual que el de\nmercadeo. Y eso está bien. No impongas proceso único.' },
+  { type: 'quiz', idx: 6, q: 'Confiar en la inteligencia ascendente\ncambia el papel de los gerentes.\nCrean condiciones y dan paso atrás.', explanation: 'Tu valor como gerente: crear condiciones, no tomar\ntodas las decisiones. Incluye decidir qué se automatiza.' },
+  { type: 'quiz', idx: 7, q: 'El tamaño del equipo y los roles\ncambiarán según la etapa\nde desarrollo del servicio.', explanation: 'Al inicio necesitas gente creativa explorando.\nAl final necesitas gente rigurosa ejecutando.' },
+  { type: 'quiz', idx: 8, q: 'Todo el equipo debe trabajar junto\npara diseñar, construir e iterar\nun servicio centrado en el usuario.', explanation: 'En lanzamiento de producto alimenticio: si calidad,\nproducción y logística no van juntos, hay retrabajo.' },
+  { type: 'quiz', idx: 9, q: 'El delivery manager configura\nel entorno ágil que su equipo\nnecesita para iterar.', explanation: 'Este rol puede ser tuyo. Si configuras las condiciones\nde trabajo de tu equipo, ya lo estás haciendo.' },
 
   // ── GOBERNANZA ──
   { type: 'section', title: 'Gobernanza', subtitle: 'Modelos operativos' },
 
-  { type: 'governance', model: 'Centralizado', subtitle: 'AI CoE fuerte', pros: 'Consistencia, control, cumplimiento', cons: 'Cuellos de botella, baja adopción', when: 'Industrias reguladas, riesgo alto', color: C.accent },
+  { type: 'content', title: '3 preguntas antes de elegir modelo', bullets: [
+    '¿Quién en tu empresa decide qué herramientas de IA se pueden usar?',
+    '¿Hay una política sobre qué datos puedes compartir con ChatGPT?',
+    '¿Quién es responsable si una decisión basada en IA sale mal?',
+    'Si no sabes la respuesta, necesitas gobernanza',
+  ], note: 'Reflexión', color: 'accent' },
 
-  { type: 'governance', model: 'Federado', subtitle: 'Centro define; unidades ejecutan', pros: 'Balance entre velocidad y control', cons: 'Inconsistencia, "shadow AI"', when: 'Empresas multi-unidad por productos', color: C.highlight },
+  { type: 'governance', model: 'Centralizado', subtitle: 'Comité central de IA', pros: 'Consistencia, control, cumplimiento', cons: 'Cuellos de botella, lentitud', when: 'Industrias reguladas, riesgo alto', color: C.accent },
 
-  { type: 'governance', model: 'Product-aligned', subtitle: 'Governance en el flujo de producto', pros: 'Conecta IA con outcomes', cons: 'Requiere madurez de medición', when: 'Agile escalado con telemetría', color: C.accent },
+  { type: 'governance', model: 'Federado', subtitle: 'Centro define; unidades ejecutan', pros: 'Balance entre velocidad y control', cons: 'Inconsistencia, uso no autorizado de IA', when: 'Empresas multi-unidad por productos', color: C.highlight },
+
+  { type: 'governance', model: 'Integrado al negocio', subtitle: 'Gobernanza en el flujo del negocio', pros: 'Conecta IA con outcomes', cons: 'Requiere madurez de medición', when: 'Agile escalado con telemetría', color: C.accent },
 
   // ── QUÉ CENTRALIZAR ──
   { type: 'content', title: '¿Qué centralizar?', bullets: [
@@ -409,59 +421,62 @@ const slides = [
 
   // ── GOBERNANZA MÍNIMA VIABLE ──
   { type: 'checklist', title: 'Gobernanza mínima viable (90 días)', items: [
-    { step: 1, text: 'Política de datos e IP:\nqué entra a modelos, qué se anonimiza, qué se prohíbe' },
-    { step: 2, text: 'Guardrails técnicos:\npruebas automatizadas, revisión humana en alto impacto' },
-    { step: 3, text: 'Sistema de medición:\nDORA + calidad + ROI + riesgo, cadencia mensual' },
-    { step: 4, text: 'RACI de responsabilidad:\nquién responde si el agente introduce regresiones o fugas' },
+    { step: 1, text: 'Política de datos:\nqué información puede entrar a herramientas IA,\nqué se prohíbe' },
+    { step: 2, text: 'Controles de calidad:\nrevisión humana obligatoria en decisiones\nde alto impacto' },
+    { step: 3, text: 'Sistema de medición:\nresultados + calidad + retorno + riesgo,\ncadencia mensual' },
+    { step: 4, text: 'Responsabilidades claras:\nquién responde si la IA introduce errores\no problemas' },
   ]},
 
   // ── MÉTRICAS ──
   { type: 'section', title: 'Métricas', subtitle: 'Tablero mínimo viable' },
 
   { type: 'metrics', title: 'Dimensiones sistémicas', items: [
-    { dim: 'Velocidad E2E', metric: 'Lead time / throughput', alert: 'Baja con "más commits"' },
-    { dim: 'Estabilidad', metric: 'Change failure rate', alert: 'Cae con IA (−7.2%)' },
-    { dim: 'Calidad', metric: 'Build success, merge rate', alert: 'Volumen sube, calidad baja' },
+    { dim: 'Velocidad E2E', metric: 'Tiempo desde aprobación hasta entrega final', alert: 'Baja con "más tareas"' },
+    { dim: 'Estabilidad', metric: '% de cambios que generan retrabajo', alert: 'Cae con IA (−7.2%)' },
+    { dim: 'Calidad', metric: '% de entregables aprobados a la primera', alert: 'Volumen sube, calidad baja' },
   ]},
 
   { type: 'metrics', title: 'Dimensiones de impacto', items: [
-    { dim: 'Productividad', metric: 'Flow / percepción', alert: 'Percepción ≠ realidad' },
-    { dim: 'ROI', metric: '% EBIT atribuible', alert: '>80% sin impacto enterprise' },
-    { dim: 'Riesgo', metric: 'Incidentes IA', alert: 'Privacidad, IP, sesgo' },
+    { dim: 'Productividad', metric: 'Qué tan fluido trabaja el equipo', alert: 'Percepción ≠ realidad' },
+    { dim: 'ROI', metric: '¿Cuánto dinero genera o ahorra esto?', alert: '>80% sin impacto real' },
+    { dim: 'Riesgo', metric: 'Problemas causados por herramientas IA', alert: 'Privacidad, datos, sesgo' },
   ]},
 
   // ── CASOS ──
   { type: 'section', title: 'Casos cuantificados', subtitle: 'Evidencia real' },
 
-  { type: 'case', title: 'Copilot + Accenture', subtitle: 'RCT en enterprise', items: [
-    { label: 'Pull Requests', value: '+8.69%' },
-    { label: 'Merge rate', value: '+15%' },
-    { label: 'Builds exitosos', value: '+84%' },
+  { type: 'case', title: 'Copilot + Accenture', subtitle: 'Experimento controlado en empresa global', items: [
+    { label: 'Entregables completados', value: '+8.69%' },
+    { label: 'Aprobados a la primera', value: '+15%' },
+    { label: 'Ejecuciones sin reproceso', value: '+84%' },
     { label: 'Aceptación sugerencias', value: '30%' },
     { label: 'Satisfacción', value: '90%' },
     { label: 'Disfruta más', value: '95%' },
   ], color: C.highlight },
 
-  { type: 'case', title: 'Klarna', subtitle: 'Agente end-to-end', items: [
-    { label: 'Conversaciones', value: '2.3M' },
-    { label: 'Equivalente FTE', value: '700' },
+  { type: 'case', title: 'Klarna', subtitle: 'Atención al cliente con IA', items: [
+    { label: 'Consultas atendidas', value: '2.3M' },
+    { label: 'Equivalente personas', value: '700' },
     { label: 'Resolución', value: '<2 min vs 11' },
-    { label: '−Repetición', value: '25%' },
-    { label: 'Revenue/empleado', value: '+73%' },
-    { label: 'Profit', value: '+$40M' },
+    { label: '−Casos repetidos', value: '25%' },
+    { label: 'Ingreso/empleado', value: '+73%' },
+    { label: 'Ganancia', value: '+$40M' },
   ], color: C.accent },
 
-  { type: 'case', title: 'Escritura profesional', subtitle: 'Transferible a PO/SM', items: [
+  { type: 'case', title: 'Escritura profesional', subtitle: 'Reportes, minutas, propuestas — aplica desde el lunes', items: [
     { label: 'Tiempo', value: '−40%' },
     { label: 'Calidad', value: '+18%' },
-  ], note: 'PRDs, historias, minutas, síntesis ejecutiva', color: C.highlight },
+  ], note: 'Reportes, minutas, propuestas, comunicaciones a stakeholders', color: C.highlight },
+
+  // ── ¿Y YO QUÉ HAGO EL LUNES? ──
+  { type: 'monday' },
 
   // ── CHECKLIST ──
   { type: 'section', title: 'Implementación', subtitle: 'Checklist de 30 días' },
 
   { type: 'checklist', title: 'Primeros pasos', items: [
-    { step: 1, text: 'Verificar fundamentos:\nliderazgo, equipos, inspección' },
-    { step: 2, text: 'Medir baseline:\nDORA + DevEx + calidad' },
+    { step: 1, text: '¿Tienes equipo con objetivos claros, un líder\nque protege su tiempo, y revisión quincenal\nde qué funcionó? Empieza por ahí' },
+    { step: 2, text: 'Medir baseline:\nresultados actuales + satisfacción del equipo' },
     { step: 3, text: 'Definir guardrails:\ndatos, IP, seguridad' },
   ]},
 
@@ -643,16 +658,16 @@ function AgenticDiagram() {
 
 function SystemDiagram() {
   const phases = [
-    { label: 'Discovery', x: 20 }, { label: 'Backlog', x: 170 }, { label: 'Build', x: 320 },
-    { label: 'Test', x: 470 }, { label: 'Release', x: 620 }, { label: 'Observe', x: 770 },
+    { label: 'Discovery', x: 20 }, { label: 'Priorización', x: 170 }, { label: 'Ejecución', x: 320 },
+    { label: 'Verificación', x: 470 }, { label: 'Entrega', x: 620 }, { label: 'Seguimiento', x: 770 },
   ]
   const agents = [
-    { label: 'Agent: PRD', x: 170 }, { label: 'Agent: Code', x: 320 },
-    { label: 'Agent: Test', x: 470 }, { label: 'Agent: Incidents', x: 770 },
+    { label: 'IA: Borradores', x: 170 }, { label: 'IA: Ejecución', x: 320 },
+    { label: 'IA: Verificación', x: 470 }, { label: 'IA: Análisis', x: 770 },
   ]
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 30 }}>
-      <p style={{ fontSize: T.subtitle, fontWeight: 600, color: C.white }}>Sistema ágil-agéntico end-to-end</p>
+      <p style={{ fontSize: T.subtitle, fontWeight: 600, color: C.white }}>Sistema ágil end-to-end con IA</p>
       <svg viewBox="0 0 920 290" width={920} fill="none">
         {phases.map((p, i) => (
           <g key={i} className={`anim-pop d${i + 1}`}>
@@ -835,6 +850,7 @@ function SlideRenderer({ data, quizState, onQuizAnswer }) {
           <motion.h1 variants={fadeUp} style={{ fontSize: T.hero, fontWeight: 800, lineHeight: 1.1, color: C.white, maxWidth: 900 }}>
             Roles y <span style={{ color: C.accent }}>Liderazgo</span>
           </motion.h1>
+          <motion.p variants={fadeUp} style={{ fontSize: 22, color: 'rgba(255,255,255,0.5)', fontWeight: 400, maxWidth: 700 }}>Para líderes y gerentes que gestionan proyectos en manufactura, servicios, banca y operaciones</motion.p>
           <motion.a variants={fadeUp} href="https://www.linkedin.com/in/ulisesgonzalez/" target="_blank" rel="noopener noreferrer" style={{ fontSize: T.caption, color: C.dim, fontWeight: 400, textDecoration: 'none', cursor: 'pointer', transition: 'color 200ms' }} onMouseEnter={e => e.currentTarget.style.color = C.white} onMouseLeave={e => e.currentTarget.style.color = C.dim}>Profesor: Ulises González</motion.a>
         </div>
       </motion.div>
@@ -1069,12 +1085,33 @@ function SlideRenderer({ data, quizState, onQuizAnswer }) {
       </motion.div>
     )
 
+    case 'monday': return (
+      <motion.div variants={stagger} initial="hidden" animate="visible" style={{ ...inner, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 24 }}>
+        <motion.h2 variants={fadeUp} style={{ fontSize: T.title, fontWeight: 700, color: C.white }}>¿Y yo qué hago el lunes?</motion.h2>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24, marginTop: 8 }}>
+          {[
+            { role: 'Calidad / Operaciones', color: C.accent, items: ['Identifica 1 proceso repetitivo candidato a IA\n(reportes, checklists, análisis de no conformidades)', 'Establece una métrica de baseline antes de cambiar algo'] },
+            { role: 'Finanzas', color: C.highlight, items: ['Usa IA para análisis y síntesis de reportes\n(−40% tiempo documentado)', 'No automatices aprobaciones ni decisiones de riesgo'] },
+            { role: 'Supervisor / Operativo', color: '#F59E0B', items: ['Propón un ciclo corto (2 semanas) de prueba\nen 1 proyecto', 'Mide: ¿terminamos lo planificado?\n¿El cliente interno quedó satisfecho?'] },
+            { role: 'Comercial / Marketing', color: '#A855F7', items: ['IA en contenido, análisis de mercado,\nborradores de propuestas', 'Mantén criterio humano en decisiones\nde marca y relación con cliente'] },
+          ].map((block, i) => (
+            <motion.div key={i} variants={popIn} style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 16, padding: '24px 28px', borderTop: `3px solid ${block.color}` }}>
+              <p style={{ fontSize: 22, fontWeight: 700, color: block.color, marginBottom: 12 }}>{block.role}</p>
+              {block.items.map((item, j) => (
+                <p key={j} style={{ fontSize: 20, color: 'rgba(255,255,255,0.8)', lineHeight: 1.5, marginBottom: 8, whiteSpace: 'pre-line', paddingLeft: 16, borderLeft: `2px solid ${block.color}30` }}>{item}</p>
+              ))}
+            </motion.div>
+          ))}
+        </div>
+      </motion.div>
+    )
+
     case 'autonomy': {
       const levels = [
         { level: 'Asistencia', agent: 'Sugiere, resume, borradores', human: 'Decide y ejecuta', risk: 'Sobreconfianza', color: C.highlight },
-        { level: 'Delegación', agent: 'Ejecuta subtareas, PRs, tests', human: 'Revisa y aprueba', risk: 'Deuda por throughput', color: C.accent },
-        { level: 'Autonomía acotada', agent: 'Orquesta dentro de límites', human: 'Define límites, audita', risk: 'Agency excesiva', color: '#F59E0B' },
-        { level: 'Autonomía alta', agent: 'Decide y ejecuta E2E', human: 'Supervisión post-hoc', risk: 'Cumplimiento difuso', color: C.red },
+        { level: 'Delegación', agent: 'Ejecuta subtareas, entregables', human: 'Revisa y aprueba', risk: 'Velocidad sin calidad', color: C.accent },
+        { level: 'Autonomía acotada', agent: 'Opera dentro de límites definidos', human: 'Define límites, audita', risk: 'Exceso de autonomía', color: '#F59E0B' },
+        { level: 'Autonomía alta', agent: 'Decide y ejecuta completo', human: 'Supervisión posterior', risk: 'Responsabilidad difusa', color: C.red },
       ]
       return (
         <motion.div variants={stagger} initial="hidden" animate="visible" style={{ ...inner, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 20 }}>

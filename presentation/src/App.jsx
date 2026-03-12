@@ -67,8 +67,8 @@ const TAKEAWAYS = [
   /* 12 crear esp */      'En era agéntica esto se traduce en autonomía por nivel y work charts dinámicos donde cada equipo define su human-agent ratio según contexto, no por mandato central.',
   /* 13 confiar */        'Matiz crítico 2026: la "inteligencia ascendente" ahora incluye agentes. El líder que no define límites de autonomía (humana Y de agentes) no está "soltando" — está abdicando.',
   /* 14 gobernar */       'Solo 21% de organizaciones reporta haber hecho rediseño fundamental de workflows (McKinsey 2025). El resto intenta insertar IA en procesos viejos — por eso no ven EBIT.',
-  /* 15 diagram lid */    'El cuarto pilar (gobernar) no existía en agilidad clásica. Es la respuesta al riesgo de que la velocidad de los agentes supere la capacidad de supervisión humana.',
-  /* 16 >80% */           'El dato más incómodo: no es un problema de tecnología sino de liderazgo. Las organizaciones que "delegan sin gobernar" no fallan por la IA, fallan por el vacío de dirección.',
+  /* 15 >80% */           'El dato más incómodo: no es un problema de tecnología sino de liderazgo. Las organizaciones que "delegan sin gobernar" no fallan por la IA, fallan por el vacío de dirección.',
+  /* 16 doramodel */      'El modelo DORA demuestra que capabilities técnicas, de proceso y culturales predicen software delivery performance, que a su vez predice resultados organizacionales. Sin mejorar el sistema completo, no hay mejora sostenible.',
   /* 17 equipos */        'En 2026 la composición dinámica no es solo por fase de proyecto — es dinámica a nivel de sprint. Nuevos roles como AI Security Specialist surgen según la madurez de la capacidad IA.',
   /* 18 centrado usr */   'Caso Klarna: la eficiencia es real (2.3M conversaciones, −25% repetición), pero el valor real está en resolución <2 min vs 11 — una métrica de experiencia de usuario, no de eficiencia interna.',
   /* 19 DM base */        'Conexión directa con el ciclo empírico: si el delivery manager no configura prácticas de revisión de outputs IA, la inspección del fundamento 1 simplemente no ocurre en la práctica.',
@@ -115,7 +115,8 @@ const TAKEAWAYS = [
   /* 57 centralizar */    'La distinción es operacional: los equipos deciden cómo usar herramientas, pero el liderazgo centraliza políticas, evaluación e incidentes. Sin esto, "shadow AI" es inevitable.',
   /* 58 GMV */            'Estos 4 componentes son operables en 90 días. La gobernanza mínima viable no es burocracia — es el mínimo para que la adopción de IA no sea un riesgo sistémico.',
   /* 59 section metr */   'El tablero mínimo viable evita "local wins / system losses". Medir solo productividad individual es como medir solo goles sin ver el resultado del partido.',
-  /* 58 doramodel */      'El modelo DORA demuestra que capabilities técnicas, de proceso y culturales predicen software delivery performance, que a su vez predice resultados organizacionales. No se puede mejorar el outcome sin mejorar el sistema completo.',
+  /* 58 metrics 1 */      'Lead time y estabilidad son las métricas que más rápido delatan la deuda oculta por IA. Si "más commits" no se traduce en más throughput, hay retrabajo invisible.',
+  /* 59 metrics 2 */      'METR demostró que la percepción de productividad puede ser opuesta a la realidad (creen +20%, medido −19%). Sin ROI medido, estás en terreno de autoengaño organizacional.',
   /* 60 section casos */  'Nota metodológica: los efectos varían por especificidad de tarea, experiencia del profesional, madurez del repo y controles de calidad. Esto explica resultados contradictorios.',
   /* 61 copilot */        'La clave de Accenture no es Copilot — es que tenían telemetría y prácticas de revisión. Sin esos controles, el mismo tool produce "deuda acelerada" (coherente con DORA).',
   /* 62 klarna */         'Caveat: métricas de "equivalente FTE" dependen de supuestos internos. Para replicar, exige método de cálculo interno. Los "best case" deben auditarse, no copiarse.',
@@ -237,9 +238,9 @@ const slides = [
     '¡Gobierno ejecutivo visible es condición necesaria!',
   ], note: 'Fundamento 3 — Pilar 4 (nuevo)', color: 'highlight' },
 
-  { type: 'diagram', id: 'leadership' },
-
   { type: 'bigstat', value: '>80%', label: 'sin gobierno ejecutivo visible\nno logra retorno tangible de genAI', source: 'McKinsey 2025' },
+
+  { type: 'doramodel' },
 
   // ── EQUIPOS ──
   { type: 'content', title: 'Equipos multifuncionales', bullets: [
@@ -417,7 +418,17 @@ const slides = [
   // ── MÉTRICAS ──
   { type: 'section', title: 'Métricas', subtitle: 'Tablero mínimo viable' },
 
-  { type: 'doramodel' },
+  { type: 'metrics', title: 'Dimensiones sistémicas', items: [
+    { dim: 'Velocidad E2E', metric: 'Lead time / throughput', alert: 'Baja con "más commits"' },
+    { dim: 'Estabilidad', metric: 'Change failure rate', alert: 'Cae con IA (−7.2%)' },
+    { dim: 'Calidad', metric: 'Build success, merge rate', alert: 'Volumen sube, calidad baja' },
+  ]},
+
+  { type: 'metrics', title: 'Dimensiones de impacto', items: [
+    { dim: 'Productividad', metric: 'Flow / percepción', alert: 'Percepción ≠ realidad' },
+    { dim: 'ROI', metric: '% EBIT atribuible', alert: '>80% sin impacto enterprise' },
+    { dim: 'Riesgo', metric: 'Incidentes IA', alert: 'Privacidad, IP, sesgo' },
+  ]},
 
   // ── CASOS ──
   { type: 'section', title: 'Casos cuantificados', subtitle: 'Evidencia real' },

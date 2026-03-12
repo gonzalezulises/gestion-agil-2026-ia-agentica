@@ -49,7 +49,7 @@ function LiveClock() {
    ═══════════════════════════════════════════ */
 const TAKEAWAYS = [
   /* 0  hero */           'La competencia en 2026 no es entre marcos (Scrum vs Kanban) sino entre sistemas de entrega capaces de absorber incertidumbre y rediseñar trabajo cuando la IA acelera la ejecución.',
-  /* 1  stats */          'Adopción masiva no es valor: el 17% que sí logra ≥5% EBIT lo hace porque rediseñó workflows, no porque compró herramientas. El resto está en "AI theater".',
+  /* 1  contexto */       'La evolución no invalida los fundamentos: retroalimentación, inspección y adaptación son más críticos que nunca. Lo que cambia es la velocidad de los ciclos y el riesgo de amplificación.',
   /* 2  section fund */   'Estos principios no son "básicos" en el sentido de triviales — son prerrequisitos estructurales. Sin ellos, la IA no se adopta de forma efectiva, solo de forma caótica.',
   /* 3  overview */       'Los fundamentos son condiciones necesarias pero no suficientes. Una organización sin ellos no puede adoptar IA agéntica — solo puede adoptar herramientas de forma desorganizada.',
   /* 4  ciclo emp */      'Los equipos que mejoran calidad de documentación y código (+7.5%/+3.4% en DORA) son los que inspeccionan. Los que pierden estabilidad (−7.2%) son los que no revisan.',
@@ -133,13 +133,13 @@ const slides = [
   // ── 0: TITLE ──
   { type: 'hero' },
 
-  // ── 1: KEY METRICS ──
-  { type: 'stats', title: 'El contexto en números', items: [
-    { value: '71%', label: 'uso regular de genAI', source: 'McKinsey 2025' },
-    { value: '62%', label: 'experimenta con agentes', source: 'McKinsey 2025' },
-    { value: '>80%', label: 'sin impacto en EBIT', source: 'McKinsey 2025' },
-    { value: '82%', label: 'punto de inflexión', source: 'Microsoft WTI 2025' },
-  ]},
+  // ── 1: CONTEXTO ──
+  { type: 'content', title: 'Gestión ágil en 2026', bullets: [
+    'Ya no compite entre marcos (Scrum vs Kanban)',
+    'Compite entre sistemas de entrega capaces de absorber incertidumbre',
+    'La IA acelera ejecución y amplifica errores',
+    'El liderazgo se vuelve el cuello de botella',
+  ], note: 'Contexto' },
 
   // ── SECTION: FUNDAMENTOS ──
   { type: 'section', title: 'Fundamentos ágiles', subtitle: 'La base que no cambia' },

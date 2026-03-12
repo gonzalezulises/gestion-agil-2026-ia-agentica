@@ -1,0 +1,62 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg-deep: #0a0f1a;
+  --color-bg-surface: #111827;
+  --color-bg-card: #1e293b;
+  --color-cyan: #06b6d4;
+  --color-amber: #f59e0b;
+  --color-red: #ef4444;
+  --color-green: #10b981;
+  --color-purple: #a855f7;
+  --font-sans: 'DM Sans', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--color-bg-deep);
+  font-family: var(--font-sans);
+}
+
+.slide-enter { animation: slideIn 0.5s ease-out forwards; }
+.slide-exit { animation: slideOut 0.3s ease-in forwards; }
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes slideOut {
+  from { opacity: 1; transform: translateY(0); }
+  to   { opacity: 0; transform: translateY(-16px); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes growBar {
+  from { width: 0; }
+}
+
+@keyframes drawLine {
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes popIn {
+  from { opacity: 0; transform: scale(0.7); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+.stagger-1 { animation-delay: 0.1s; }
+.stagger-2 { animation-delay: 0.25s; }
+.stagger-3 { animation-delay: 0.4s; }
+.stagger-4 { animation-delay: 0.55s; }
+.stagger-5 { animation-delay: 0.7s; }
+.stagger-6 { animation-delay: 0.85s; }
+
+.anim-pop { animation: popIn 0.5s ease-out both; }
+.anim-fade { animation: fadeIn 0.6s ease-out both; }

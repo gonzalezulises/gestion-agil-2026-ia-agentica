@@ -643,7 +643,7 @@ function SlideRenderer({ data, quizState, onQuizAnswer }) {
         <h1 className="anim-fade d3" style={{ fontSize: T.hero, fontWeight: 800, lineHeight: 1.1, color: C.white, maxWidth: 900 }}>
           Roles y <span style={{ color: C.accent }}>Liderazgo</span>
         </h1>
-        <p className="anim-fade d4" style={{ fontSize: T.caption, color: C.dim, fontWeight: 400 }}>Profesor: Ulises González</p>
+        <a href="https://www.linkedin.com/in/ulisesgonzalez/" target="_blank" rel="noopener noreferrer" className="anim-fade d4" style={{ fontSize: T.caption, color: C.dim, fontWeight: 400, textDecoration: 'none', cursor: 'pointer', transition: 'color 200ms' }} onMouseEnter={e => e.currentTarget.style.color = C.white} onMouseLeave={e => e.currentTarget.style.color = C.dim}>Profesor: Ulises González</a>
       </div>
     )
 

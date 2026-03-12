@@ -88,7 +88,6 @@ const TAKEAWAYS = [
   /* 28 qué es agente */  'OWASP Top 10 para LLM incluye "excessive agency" como riesgo crítico. El problema no es que los agentes ejecuten mal — es que ejecuten cosas que nadie les pidió, con datos que no debían tocar.',
   /* 29 diagram agen */   'Microsoft formaliza el concepto "agent boss": el 82% de líderes considera 2025-2026 un punto de inflexión. La pregunta no es si adoptar agentes sino cómo gobernarlos.',
   /* 30 autonomía */      'La mayoría opera en delegación con revisión. Saltar a autonomía alta sin pasar por acotada es la receta para incidentes de seguridad y compliance.',
-  /* 31 nuevos roles */   'Estos roles no "inflan headcount" — clarifican ownership de decisiones de alto riesgo que HOY nadie está tomando explícitamente en la mayoría de organizaciones.',
   /* 32 section roles */  'En era agéntica no se elimina la accountability — se reubica. La unidad de trabajo cambia de "tareas humanas" a "tareas orquestadas humano-agente".',
   /* 31 PO */             'La accountability del PO no cambia pero su contexto sí: priorizar ya no es solo ordenar el backlog, es decidir qué trabajo se diseña para humanos, cuál para agentes y cuál es híbrido.',
   /* 32 SM */             'El Scrum Master como líder servidor cobra nueva dimensión: "servir" ahora incluye proteger al equipo de la sobreconfianza en outputs de IA y de la presión por adoptar sin evaluar.',
@@ -307,16 +306,8 @@ const slides = [
   // ── NIVELES DE AUTONOMÍA ──
   { type: 'autonomy' },
 
-  // ── NUEVOS ROLES IA ──
-  { type: 'content', title: 'Roles IA emergentes', bullets: [
-    'AI Security Specialist — seguridad de agentes y datos',
-    'AI Agent Specialist — diseño y orquestación',
-    'AI ROI Analyst — medición de impacto real',
-    'Chief AI Officer — gobernanza estratégica',
-  ], note: 'Nuevas responsabilidades que alguien debe asumir' },
-
   // ── SCRUM ROLES (EMPHASIS) ──
-  { type: 'section', title: 'Roles ágiles', subtitle: 'Quién hace qué', emphasis: true },
+  { type: 'section', title: 'Roles ágiles', subtitle: '¿Quién hace qué?', emphasis: true },
 
   { type: 'content', title: 'Responsable de prioridades', bullets: [
     'Maximizar el valor del producto o servicio',

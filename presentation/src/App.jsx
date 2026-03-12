@@ -293,7 +293,7 @@ const slides = [
   { type: 'quiz', idx: 4, q: 'Los procesos estables satisfacen mejor\ncuando las brechas son pequeñas\ny las necesidades son estables.', explanation: 'Tu nómina funciona con estabilidad. Un lanzamiento\nnuevo necesita iteración. No fuerces agilidad donde no aporta.' },
 
   // ── ERA AGÉNTICA ──
-  { type: 'section', title: 'Era agéntica', subtitle: 'Lo que cambia en 2026' },
+  { type: 'section', title: 'Era agéntica', subtitle: 'Lo que cambia en 2026 para la dirección de proyectos' },
 
   { type: 'content', title: '¿Qué es un agente?', bullets: [
     'Asistente: le preguntas, te responde (ChatGPT)',
@@ -705,7 +705,6 @@ function SystemDiagram() {
 function DORAModelDiagram() {
   const [focused, setFocused] = useState(null)
   const toggle = (id) => setFocused(prev => prev === id ? null : id)
-  const dimmed = (id) => focused !== null && focused !== id
 
   const capGroups = [
     { label: 'Técnicas', color: C.accent, items: ['CI/CD', 'Trunk-based dev', 'Arquitectura desacoplada', 'Automatización de tests', 'Monitoreo y observabilidad', 'Calidad de documentación'], detail: 'Las prácticas técnicas son la base. Sin integración continua, sin pruebas automatizadas y sin monitoreo, cualquier mejora es frágil. Son el "cómo se construye".' },
@@ -713,125 +712,177 @@ function DORAModelDiagram() {
     { label: 'Culturales', color: '#A855F7', items: ['Cultura Westrum', 'Liderazgo transformacional', 'Clima de aprendizaje'], detail: 'La cultura determina si la gente reporta problemas o los oculta. Sin seguridad psicológica y liderazgo que proteja, las capabilities técnicas no se sostienen.' },
   ]
   const metrics = [
-    { label: 'Deployment\nFrequency', sub: 'Velocidad', color: C.accent, detail: 'Frecuencia de entrega: ¿cada cuánto tiempo tu equipo entrega algo terminado al cliente? Los mejores equipos entregan bajo demanda; los peores, cada varios meses.' },
-    { label: 'Lead Time\nfor Changes', sub: 'Velocidad', color: C.accent, detail: 'Tiempo de ciclo: desde que se aprueba un cambio hasta que está en manos del cliente. Mide la agilidad real de tu sistema de entrega.' },
-    { label: 'Change\nFailure Rate', sub: 'Estabilidad', color: '#F59E0B', detail: '% de cambios que generan retrabajo o problemas. Con IA, este indicador cae −7.2% — se entrega más rápido pero con más errores.' },
-    { label: 'Time to\nRestore', sub: 'Estabilidad', color: '#F59E0B', detail: 'Tiempo de recuperación: cuando algo falla, ¿cuánto tardas en resolverlo? Es la medida de resiliencia de tu equipo.' },
+    { label: 'Deployment Frequency', sub: 'Velocidad', color: C.accent, detail: 'Frecuencia de entrega: ¿cada cuánto tiempo tu equipo entrega algo terminado al cliente? Los mejores equipos entregan bajo demanda; los peores, cada varios meses.' },
+    { label: 'Lead Time for Changes', sub: 'Velocidad', color: C.accent, detail: 'Tiempo de ciclo: desde que se aprueba un cambio hasta que está en manos del cliente. Mide la agilidad real de tu sistema de entrega.' },
+    { label: 'Change Failure Rate', sub: 'Estabilidad', color: '#F59E0B', detail: '% de cambios que generan retrabajo o problemas. Con IA, este indicador cae −7.2% — se entrega más rápido pero con más errores.' },
+    { label: 'Time to Restore', sub: 'Estabilidad', color: '#F59E0B', detail: 'Tiempo de recuperación: cuando algo falla, ¿cuánto tardas en resolverlo? Es la medida de resiliencia de tu equipo.' },
   ]
   const outcomes = [
-    { label: 'Rendimiento\norganizacional', sub: 'Rentabilidad, productividad', color: C.highlight, detail: 'Los equipos con mejor delivery performance logran mayor rentabilidad, productividad y cuota de mercado. DORA lo ha comprobado en 10 años de investigación.' },
-    { label: 'Bienestar', sub: 'Menos burnout', color: '#A855F7', detail: 'Equipos con buenas prácticas sufren menos burnout y menor dolor en los despliegues. La calidad del sistema de trabajo afecta directamente a las personas.' },
+    { label: 'Rendimiento organizacional', sub: 'Rentabilidad, productividad', color: C.highlight, detail: 'Los equipos con mejor delivery performance logran mayor rentabilidad, productividad y cuota de mercado. DORA lo ha comprobado en 10 años de investigación.' },
+    { label: 'Bienestar del equipo', sub: 'Menos burnout, menos fricción', color: '#A855F7', detail: 'Equipos con buenas prácticas sufren menos burnout y menor dolor en los despliegues. La calidad del sistema de trabajo afecta directamente a las personas.' },
   ]
-
   const reliabilityDetail = 'La confiabilidad conecta delivery con operaciones. No basta entregar rápido — el servicio debe funcionar de forma consistente para el usuario final.'
 
-  return (
-    <motion.div variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.08, delayChildren: 0.1 } } }} initial="hidden" animate="visible"
-      style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 16, width: '100%' }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-        <motion.p variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0 } }}
-          style={{ fontSize: 40, fontWeight: 700, color: C.white }}>DORA Core Model</motion.p>
-        {focused && <motion.span initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ fontSize: 16, color: C.dim, cursor: 'pointer' }} onClick={() => setFocused(null)}>✕ cerrar zoom</motion.span>}
-      </div>
-
-      <div style={{ display: 'flex', alignItems: 'center', gap: 0, width: '100%', maxWidth: 1680, position: 'relative' }}>
-
-        {/* ── CAPABILITIES ── */}
-        <motion.div
-          animate={{ opacity: dimmed('caps') ? 0.2 : 1, scale: focused === 'caps' ? 1.15 : 1, zIndex: focused === 'caps' ? 10 : 1 }}
-          transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-          onClick={() => toggle('caps')}
-          style={{ flex: '0 0 420px', display: 'flex', flexDirection: 'column', gap: 12, cursor: 'pointer', position: 'relative' }}>
-          <p style={{ fontSize: 14, color: C.dim, textTransform: 'uppercase', letterSpacing: 3, fontWeight: 600, textAlign: 'center', marginBottom: 4 }}>Capabilities</p>
+  /* ── Expanded panel (centered overlay) ── */
+  const renderExpanded = () => {
+    if (focused === 'caps') return (
+      <motion.div initial={{ opacity: 0, scale: 0.6 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.6 }} transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+        onClick={() => setFocused(null)} style={{ position: 'absolute', inset: 0, zIndex: 20, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
+        <div style={{ width: 1100, display: 'flex', flexDirection: 'column', gap: 20 }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <p style={{ fontSize: 32, fontWeight: 700, color: C.white }}>Capabilities</p>
+            <span style={{ fontSize: 16, color: C.dim }}>click para cerrar</span>
+          </div>
           {capGroups.map((g, gi) => (
-            <div key={gi} style={{ background: focused === 'caps' ? '#1a2233' : C.surface, border: `1px solid ${focused === 'caps' ? g.color + '60' : C.border}`, borderRadius: 12, padding: '12px 16px', borderLeft: `3px solid ${g.color}`, transition: 'all 300ms' }}>
-              <p style={{ fontSize: 15, fontWeight: 700, color: g.color, marginBottom: 6 }}>{g.label}</p>
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
+            <div key={gi} style={{ background: '#1a2233', border: `1px solid ${g.color}60`, borderRadius: 16, padding: '28px 32px', borderLeft: `4px solid ${g.color}` }}>
+              <p style={{ fontSize: 26, fontWeight: 700, color: g.color, marginBottom: 14 }}>{g.label}</p>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 16 }}>
                 {g.items.map((item, i) => (
-                  <span key={i} style={{ fontSize: 12, color: 'rgba(255,255,255,0.6)', background: 'rgba(255,255,255,0.04)', borderRadius: 6, padding: '3px 8px' }}>{item}</span>
+                  <span key={i} style={{ fontSize: 18, color: 'rgba(255,255,255,0.7)', background: 'rgba(255,255,255,0.06)', borderRadius: 8, padding: '6px 14px' }}>{item}</span>
                 ))}
               </div>
-              <AnimatePresence>
-                {focused === 'caps' && <motion.p initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }} style={{ fontSize: 13, color: 'rgba(255,255,255,0.7)', marginTop: 8, lineHeight: 1.5, borderTop: `1px solid ${g.color}30`, paddingTop: 8 }}>{g.detail}</motion.p>}
-              </AnimatePresence>
+              <p style={{ fontSize: 20, color: 'rgba(255,255,255,0.75)', lineHeight: 1.6, borderTop: `1px solid ${g.color}30`, paddingTop: 14 }}>{g.detail}</p>
             </div>
           ))}
-        </motion.div>
-
-        {/* ── ARROW 1 ── */}
-        <motion.div animate={{ opacity: focused ? 0.15 : 1 }} transition={{ duration: 0.3 }}
-          style={{ flex: '0 0 80px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-          <svg width="80" height="40" viewBox="0 0 80 40">
-            <defs><marker id="dora-a1" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8" fill={C.accent} /></marker></defs>
-            <line x1="0" y1="20" x2="68" y2="20" stroke={C.accent} strokeWidth="2" markerEnd="url(#dora-a1)" />
-          </svg>
-          <span style={{ fontSize: 11, color: C.dim, fontWeight: 500 }}>impulsan</span>
-        </motion.div>
-
-        {/* ── SOFTWARE DELIVERY PERFORMANCE ── */}
-        <motion.div
-          animate={{ opacity: dimmed('perf') ? 0.2 : 1, scale: focused === 'perf' ? 1.18 : 1, zIndex: focused === 'perf' ? 10 : 1 }}
-          transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-          onClick={() => toggle('perf')}
-          style={{ flex: '1 1 auto', display: 'flex', flexDirection: 'column', gap: 10, alignItems: 'center', cursor: 'pointer' }}>
-          <p style={{ fontSize: 14, color: C.dim, textTransform: 'uppercase', letterSpacing: 3, fontWeight: 600, textAlign: 'center' }}>Software Delivery Performance</p>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, width: '100%' }}>
+        </div>
+      </motion.div>
+    )
+    if (focused === 'perf') return (
+      <motion.div initial={{ opacity: 0, scale: 0.6 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.6 }} transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+        onClick={() => setFocused(null)} style={{ position: 'absolute', inset: 0, zIndex: 20, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
+        <div style={{ width: 1100, display: 'flex', flexDirection: 'column', gap: 16 }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <p style={{ fontSize: 32, fontWeight: 700, color: C.white }}>Software Delivery Performance</p>
+            <span style={{ fontSize: 16, color: C.dim }}>click para cerrar</span>
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
             {metrics.map((m, i) => (
-              <div key={i} style={{ background: focused === 'perf' ? '#1a2233' : C.surface, border: `1px solid ${focused === 'perf' ? m.color + '60' : C.border}`, borderRadius: 12, padding: '16px 14px', textAlign: 'center', transition: 'all 300ms' }}>
-                <p style={{ fontSize: 16, fontWeight: 700, color: m.color, whiteSpace: 'pre-line', lineHeight: 1.25 }}>{m.label}</p>
-                <p style={{ fontSize: 12, color: C.dim, marginTop: 4 }}>{m.sub}</p>
-                <AnimatePresence>
-                  {focused === 'perf' && <motion.p initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }} style={{ fontSize: 12, color: 'rgba(255,255,255,0.65)', marginTop: 8, lineHeight: 1.5, borderTop: `1px solid ${m.color}30`, paddingTop: 6, textAlign: 'left' }}>{m.detail}</motion.p>}
-                </AnimatePresence>
+              <div key={i} style={{ background: '#1a2233', border: `1px solid ${m.color}60`, borderRadius: 16, padding: '28px 24px' }}>
+                <p style={{ fontSize: 24, fontWeight: 700, color: m.color, lineHeight: 1.3 }}>{m.label}</p>
+                <p style={{ fontSize: 16, color: C.dim, marginTop: 6 }}>{m.sub}</p>
+                <p style={{ fontSize: 19, color: 'rgba(255,255,255,0.7)', marginTop: 14, lineHeight: 1.6, borderTop: `1px solid ${m.color}30`, paddingTop: 12 }}>{m.detail}</p>
               </div>
             ))}
           </div>
-          <div style={{ background: focused === 'perf' ? '#1a2233' : C.surface, border: `1px solid ${focused === 'perf' ? C.highlight + '60' : C.border}`, borderRadius: 12, padding: '10px 24px', textAlign: 'center', width: '100%', transition: 'all 300ms' }}>
-            <p style={{ fontSize: 14, fontWeight: 600, color: C.highlight }}>Reliability</p>
-            <p style={{ fontSize: 11, color: C.dim }}>Operational Performance</p>
-            <AnimatePresence>
-              {focused === 'perf' && <motion.p initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }} style={{ fontSize: 12, color: 'rgba(255,255,255,0.65)', marginTop: 6, lineHeight: 1.5, borderTop: `1px solid ${C.highlight}30`, paddingTop: 6 }}>{reliabilityDetail}</motion.p>}
-            </AnimatePresence>
+          <div style={{ background: '#1a2233', border: `1px solid ${C.highlight}60`, borderRadius: 16, padding: '20px 28px' }}>
+            <p style={{ fontSize: 22, fontWeight: 700, color: C.highlight }}>Reliability — Operational Performance</p>
+            <p style={{ fontSize: 19, color: 'rgba(255,255,255,0.7)', marginTop: 10, lineHeight: 1.6 }}>{reliabilityDetail}</p>
           </div>
-        </motion.div>
-
-        {/* ── ARROW 2 ── */}
-        <motion.div animate={{ opacity: focused ? 0.15 : 1 }} transition={{ duration: 0.3 }}
-          style={{ flex: '0 0 80px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-          <svg width="80" height="40" viewBox="0 0 80 40">
-            <defs><marker id="dora-a2" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8" fill={C.highlight} /></marker></defs>
-            <line x1="0" y1="20" x2="68" y2="20" stroke={C.highlight} strokeWidth="2" markerEnd="url(#dora-a2)" />
-          </svg>
-          <span style={{ fontSize: 11, color: C.dim, fontWeight: 500 }}>predicen</span>
-        </motion.div>
-
-        {/* ── OUTCOMES ── */}
-        <motion.div
-          animate={{ opacity: dimmed('out') ? 0.2 : 1, scale: focused === 'out' ? 1.15 : 1, zIndex: focused === 'out' ? 10 : 1 }}
-          transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-          onClick={() => toggle('out')}
-          style={{ flex: '0 0 280px', display: 'flex', flexDirection: 'column', gap: 10, cursor: 'pointer' }}>
-          <p style={{ fontSize: 14, color: C.dim, textTransform: 'uppercase', letterSpacing: 3, fontWeight: 600, textAlign: 'center', marginBottom: 4 }}>Outcomes</p>
+        </div>
+      </motion.div>
+    )
+    if (focused === 'out') return (
+      <motion.div initial={{ opacity: 0, scale: 0.6 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.6 }} transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+        onClick={() => setFocused(null)} style={{ position: 'absolute', inset: 0, zIndex: 20, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
+        <div style={{ width: 900, display: 'flex', flexDirection: 'column', gap: 20 }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <p style={{ fontSize: 32, fontWeight: 700, color: C.white }}>Outcomes</p>
+            <span style={{ fontSize: 16, color: C.dim }}>click para cerrar</span>
+          </div>
           {outcomes.map((o, i) => (
-            <div key={i} style={{ background: focused === 'out' ? '#1a2233' : C.surface, border: `1px solid ${focused === 'out' ? o.color + '60' : C.border}`, borderRadius: 12, padding: '20px 16px', textAlign: 'center', borderRight: `3px solid ${o.color}`, transition: 'all 300ms' }}>
-              <p style={{ fontSize: 18, fontWeight: 700, color: o.color, whiteSpace: 'pre-line', lineHeight: 1.3 }}>{o.label}</p>
-              <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.5)', marginTop: 6 }}>{o.sub}</p>
-              <AnimatePresence>
-                {focused === 'out' && <motion.p initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }} style={{ fontSize: 13, color: 'rgba(255,255,255,0.65)', marginTop: 8, lineHeight: 1.5, borderTop: `1px solid ${o.color}30`, paddingTop: 8 }}>{o.detail}</motion.p>}
-              </AnimatePresence>
+            <div key={i} style={{ background: '#1a2233', border: `1px solid ${o.color}60`, borderRadius: 16, padding: '32px 36px', borderRight: `4px solid ${o.color}` }}>
+              <p style={{ fontSize: 28, fontWeight: 700, color: o.color, lineHeight: 1.3 }}>{o.label}</p>
+              <p style={{ fontSize: 18, color: 'rgba(255,255,255,0.5)', marginTop: 8 }}>{o.sub}</p>
+              <p style={{ fontSize: 21, color: 'rgba(255,255,255,0.75)', marginTop: 16, lineHeight: 1.6, borderTop: `1px solid ${o.color}30`, paddingTop: 14 }}>{o.detail}</p>
             </div>
           ))}
-        </motion.div>
-      </div>
-
-      {/* ── FOOTER ── */}
-      <motion.div animate={{ opacity: focused ? 0.3 : 1 }} transition={{ duration: 0.3 }}
-        style={{ display: 'flex', gap: 32, marginTop: 4 }}>
-        <span style={{ fontSize: 14, color: C.dim }}>dora.dev/research</span>
-        <span style={{ fontSize: 14, color: C.red }}>⚠ Con IA: +3.4% entregables, +7.5% docs pero −7.2% estabilidad, −1.5% ritmo</span>
-        {!focused && <span style={{ fontSize: 14, color: C.accent }}>Click en cualquier sección para explorar →</span>}
+        </div>
       </motion.div>
-    </motion.div>
+    )
+    return null
+  }
+
+  return (
+    <div style={{ position: 'relative', width: '100%', height: '100%' }}>
+      {/* ── Backdrop when focused ── */}
+      <AnimatePresence>
+        {focused && <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} style={{ position: 'absolute', inset: 0, background: 'rgba(10,15,20,0.92)', zIndex: 15 }} onClick={() => setFocused(null)} />}
+      </AnimatePresence>
+
+      {/* ── Expanded overlay ── */}
+      <AnimatePresence>{renderExpanded()}</AnimatePresence>
+
+      {/* ── Normal diagram ── */}
+      <motion.div animate={{ opacity: focused ? 0 : 1, pointerEvents: focused ? 'none' : 'auto' }} transition={{ duration: 0.25 }}
+        style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 16, width: '100%', height: '100%', justifyContent: 'center' }}>
+        <motion.p initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
+          style={{ fontSize: 40, fontWeight: 700, color: C.white }}>DORA Core Model</motion.p>
+
+        <div style={{ display: 'flex', alignItems: 'center', gap: 0, width: '100%', maxWidth: 1680 }}>
+
+          {/* ── CAPABILITIES ── */}
+          <motion.div whileHover={{ scale: 1.03 }} onClick={() => toggle('caps')}
+            style={{ flex: '0 0 420px', display: 'flex', flexDirection: 'column', gap: 12, cursor: 'pointer' }}>
+            <p style={{ fontSize: 14, color: C.dim, textTransform: 'uppercase', letterSpacing: 3, fontWeight: 600, textAlign: 'center', marginBottom: 4 }}>Capabilities</p>
+            {capGroups.map((g, gi) => (
+              <div key={gi} style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 12, padding: '12px 16px', borderLeft: `3px solid ${g.color}`, transition: 'border-color 200ms' }}>
+                <p style={{ fontSize: 15, fontWeight: 700, color: g.color, marginBottom: 6 }}>{g.label}</p>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
+                  {g.items.map((item, i) => (
+                    <span key={i} style={{ fontSize: 12, color: 'rgba(255,255,255,0.6)', background: 'rgba(255,255,255,0.04)', borderRadius: 6, padding: '3px 8px' }}>{item}</span>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </motion.div>
+
+          {/* ── ARROW 1 ── */}
+          <div style={{ flex: '0 0 80px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+            <svg width="80" height="40" viewBox="0 0 80 40">
+              <defs><marker id="dora-a1" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8" fill={C.accent} /></marker></defs>
+              <line x1="0" y1="20" x2="68" y2="20" stroke={C.accent} strokeWidth="2" markerEnd="url(#dora-a1)" />
+            </svg>
+            <span style={{ fontSize: 11, color: C.dim, fontWeight: 500 }}>impulsan</span>
+          </div>
+
+          {/* ── SOFTWARE DELIVERY PERFORMANCE ── */}
+          <motion.div whileHover={{ scale: 1.03 }} onClick={() => toggle('perf')}
+            style={{ flex: '1 1 auto', display: 'flex', flexDirection: 'column', gap: 10, alignItems: 'center', cursor: 'pointer' }}>
+            <p style={{ fontSize: 14, color: C.dim, textTransform: 'uppercase', letterSpacing: 3, fontWeight: 600, textAlign: 'center' }}>Software Delivery Performance</p>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, width: '100%' }}>
+              {metrics.map((m, i) => (
+                <div key={i} style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 12, padding: '16px 14px', textAlign: 'center' }}>
+                  <p style={{ fontSize: 16, fontWeight: 700, color: m.color, lineHeight: 1.25 }}>{m.label}</p>
+                  <p style={{ fontSize: 12, color: C.dim, marginTop: 4 }}>{m.sub}</p>
+                </div>
+              ))}
+            </div>
+            <div style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 12, padding: '10px 24px', textAlign: 'center', width: '100%' }}>
+              <p style={{ fontSize: 14, fontWeight: 600, color: C.highlight }}>Reliability</p>
+              <p style={{ fontSize: 11, color: C.dim }}>Operational Performance</p>
+            </div>
+          </motion.div>
+
+          {/* ── ARROW 2 ── */}
+          <div style={{ flex: '0 0 80px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+            <svg width="80" height="40" viewBox="0 0 80 40">
+              <defs><marker id="dora-a2" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8" fill={C.highlight} /></marker></defs>
+              <line x1="0" y1="20" x2="68" y2="20" stroke={C.highlight} strokeWidth="2" markerEnd="url(#dora-a2)" />
+            </svg>
+            <span style={{ fontSize: 11, color: C.dim, fontWeight: 500 }}>predicen</span>
+          </div>
+
+          {/* ── OUTCOMES ── */}
+          <motion.div whileHover={{ scale: 1.03 }} onClick={() => toggle('out')}
+            style={{ flex: '0 0 280px', display: 'flex', flexDirection: 'column', gap: 10, cursor: 'pointer' }}>
+            <p style={{ fontSize: 14, color: C.dim, textTransform: 'uppercase', letterSpacing: 3, fontWeight: 600, textAlign: 'center', marginBottom: 4 }}>Outcomes</p>
+            {outcomes.map((o, i) => (
+              <div key={i} style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 12, padding: '20px 16px', textAlign: 'center', borderRight: `3px solid ${o.color}` }}>
+                <p style={{ fontSize: 18, fontWeight: 700, color: o.color, lineHeight: 1.3 }}>{o.label}</p>
+                <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.5)', marginTop: 6 }}>{o.sub}</p>
+              </div>
+            ))}
+          </motion.div>
+        </div>
+
+        {/* ── FOOTER ── */}
+        <div style={{ display: 'flex', gap: 32, marginTop: 4 }}>
+          <span style={{ fontSize: 14, color: C.dim }}>dora.dev/research</span>
+          <span style={{ fontSize: 14, color: C.red }}>⚠ Con IA: +3.4% entregables, +7.5% docs pero −7.2% estabilidad, −1.5% ritmo</span>
+          <span style={{ fontSize: 14, color: C.accent }}>Click en cualquier sección para explorar →</span>
+        </div>
+      </motion.div>
+    </div>
   )
 }
 

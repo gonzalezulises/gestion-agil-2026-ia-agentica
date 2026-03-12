@@ -149,7 +149,7 @@ const slides = [
     { value: '71%', label: 'uso regular de genAI', source: 'McKinsey 2025' },
     { value: '62%', label: 'experimenta con agentes', source: 'McKinsey 2025' },
     { value: '17%', label: 'logra ≥5% EBIT atribuible', source: 'McKinsey 2025' },
-    { value: '82%', label: 'punto de inflexión', source: 'Microsoft WTI 2025' },
+    { value: '82%', label: 'de líderes: replantear estrategia y operaciones', source: 'Microsoft WTI 2025' },
   ]},
 
   // ── 3: CONTEXTO EVIDENCIA SISTÉMICA ──

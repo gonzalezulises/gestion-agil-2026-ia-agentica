@@ -7,38 +7,17 @@ const C = { bg: '#0B0F14', white: '#FFFFFF', accent: '#4F8CFF', highlight: '#22C
 const T = { hero: 88, title: 72, subtitle: 44, text: 34, bullet: 32, caption: 26 }
 
 /* ═══════════════════════════════════════════
-   LOGO SVGs
+   LOGO — Imagen original del programa
    ═══════════════════════════════════════════ */
-function IESALogo({ size = 80 }) {
+function Logos({ height = 64 }) {
   return (
-    <svg width={size} height={size} viewBox="0 0 100 100" fill="none">
-      <path d="M50 0 L65 35 L100 50 L65 65 L50 100 L35 65 L0 50 L35 35 Z" fill="#6B1D2A" />
-      <path d="M50 8 L62 35 L50 28 L38 35 Z" fill="#8B2E3D" opacity="0.6" />
-      <path d="M50 92 L62 65 L50 72 L38 65 Z" fill="#8B2E3D" opacity="0.6" />
-      <path d="M8 50 L35 38 L28 50 L35 62 Z" fill="#8B2E3D" opacity="0.6" />
-      <path d="M92 50 L65 38 L72 50 L65 62 Z" fill="#8B2E3D" opacity="0.6" />
-      <rect x="30" y="38" width="40" height="24" rx="2" fill="#6B1D2A" />
-      <text x="50" y="55" textAnchor="middle" fill="white" fontSize="16" fontWeight="700" fontFamily="serif" letterSpacing="2">IESA</text>
-    </svg>
-  )
-}
-
-function UniKemiaLogo({ height = 40 }) {
-  return (
-    <svg height={height} viewBox="0 0 220 50" fill="none">
-      <text x="0" y="35" fill="#1E293B" fontSize="36" fontWeight="700" fontFamily="Inter, sans-serif">Uni</text>
-      <text x="68" y="35" fill="#E11D48" fontSize="36" fontWeight="700" fontFamily="Inter, sans-serif">K</text>
-      <text x="90" y="35" fill="#1E293B" fontSize="36" fontWeight="700" fontFamily="Inter, sans-serif">emia</text>
-      <text x="0" y="48" fill="#64748B" fontSize="9" fontWeight="500" letterSpacing="2" fontFamily="Inter, sans-serif">DRIVE FORWARD TRANSFORM</text>
-    </svg>
-  )
-}
-
-function Logos({ size = 60 }) {
-  return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 40 }}>
-      <IESALogo size={size} />
-      <UniKemiaLogo height={size * 0.5} />
+    <div style={{ background: '#F0F0F0', borderRadius: 16, padding: '16px 32px', display: 'inline-flex' }}>
+      <img
+        src="./logo-programa.png"
+        alt="IESA — UniKemia"
+        style={{ height, objectFit: 'contain' }}
+        draggable={false}
+      />
     </div>
   )
 }
@@ -562,7 +541,7 @@ function SlideRenderer({ data, quizState, onQuizAnswer }) {
 
     case 'hero': return (
       <div style={{ ...inner, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', textAlign: 'center', gap: 40 }}>
-        <div className="anim-fade d1"><Logos size={70} /></div>
+        <div className="anim-fade d1"><Logos height={80} /></div>
         <p className="anim-fade d2" style={{ fontSize: T.caption, color: C.dim, letterSpacing: 4, textTransform: 'uppercase', fontWeight: 500 }}>Gestión Ágil de Proyectos</p>
         <h1 className="anim-fade d3" style={{ fontSize: T.hero, fontWeight: 800, lineHeight: 1.1, color: C.white, maxWidth: 900 }}>
           Roles y <span style={{ color: C.accent }}>Liderazgo</span>
@@ -575,7 +554,7 @@ function SlideRenderer({ data, quizState, onQuizAnswer }) {
 
     case 'end': return (
       <div style={{ ...inner, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', textAlign: 'center', gap: 60 }}>
-        <div className="anim-fade d1"><Logos size={80} /></div>
+        <div className="anim-fade d1"><Logos height={80} /></div>
         <p className="anim-fade d2" style={{ fontSize: T.subtitle, color: C.dim, fontWeight: 500 }}>Gestión Ágil de Proyectos</p>
         <p className="anim-fade d3" style={{ fontSize: T.title, fontWeight: 700, color: C.white }}>Gracias</p>
       </div>

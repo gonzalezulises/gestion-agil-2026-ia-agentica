@@ -15,13 +15,13 @@ function Logos({ height = 128 }) {
       <img
         src="./logo-iesa.png"
         alt="IESA"
-        style={{ height, objectFit: 'contain', filter: 'brightness(0) invert(1)' }}
+        style={{ height, objectFit: 'contain' }}
         draggable={false}
       />
       <img
         src="./logo-unikemia.webp"
         alt="UniKemia"
-        style={{ height, objectFit: 'contain', filter: 'brightness(0) invert(1)' }}
+        style={{ height: height * 0.55, objectFit: 'contain', filter: 'brightness(0) invert(1)' }}
         draggable={false}
       />
     </div>
@@ -643,10 +643,7 @@ function SlideRenderer({ data, quizState, onQuizAnswer }) {
         <h1 className="anim-fade d3" style={{ fontSize: T.hero, fontWeight: 800, lineHeight: 1.1, color: C.white, maxWidth: 900 }}>
           Roles y <span style={{ color: C.accent }}>Liderazgo</span>
         </h1>
-        <p className="anim-fade d4" style={{ fontSize: T.text, color: C.dim, maxWidth: 700, lineHeight: 1.4 }}>
-          En la era de la IA agéntica
-        </p>
-        <div className="anim-fade d5"><LiveClock /></div>
+        <div style={{ height: 24 }} />
       </div>
     )
 
@@ -655,7 +652,6 @@ function SlideRenderer({ data, quizState, onQuizAnswer }) {
         <div className="anim-fade d1"><Logos height={128} /></div>
         <p className="anim-fade d2" style={{ fontSize: T.subtitle, color: C.dim, fontWeight: 500 }}>Gestión Ágil de Proyectos</p>
         <p className="anim-fade d3" style={{ fontSize: T.title, fontWeight: 700, color: C.white }}>¡Gracias!</p>
-        <div className="anim-fade d4"><LiveClock /></div>
       </div>
     )
 

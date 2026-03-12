@@ -1,910 +1,781 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
-import {
-  ChevronLeft, ChevronRight, Target, Shield, Users, UserCog,
-  Bot, Zap, TrendingUp, TrendingDown, AlertTriangle, BarChart3,
-  CheckCircle2, XCircle, Layout, Eye, Settings, Award, Layers,
-  ArrowRight, Brain, Gauge, Briefcase, Clock, ChevronDown
-} from 'lucide-react'
 
-/* ─── Helpers ─── */
-const mono = "font-['JetBrains_Mono',monospace]"
-const card = "bg-bg-card border border-white/10 rounded-xl p-6"
-const cardSm = "bg-bg-card border border-white/10 rounded-lg p-4"
+/* ═══════════════════════════════════════════
+   DESIGN SYSTEM — 1920×1080 Keynote
+   ═══════════════════════════════════════════ */
+const C = { bg: '#0B0F14', white: '#FFFFFF', accent: '#4F8CFF', highlight: '#22C55E', dim: '#64748B', surface: '#141A23', border: '#1E293B', red: '#EF4444' }
+const T = { hero: 88, title: 72, subtitle: 44, text: 34, bullet: 32, caption: 26 }
 
-function MetricCard({ icon: Icon, value, label, source, color = 'cyan', delay = 0 }) {
+/* ═══════════════════════════════════════════
+   LOGO SVGs
+   ═══════════════════════════════════════════ */
+function IESALogo({ size = 80 }) {
   return (
-    <div className={`${cardSm} anim-pop flex flex-col items-center text-center gap-2`}
-      style={{ animationDelay: `${delay}s` }}>
-      <Icon className={`w-6 h-6 text-${color}`} />
-      <span className={`${mono} text-2xl font-bold text-${color}`}>{value}</span>
-      <span className="text-sm text-gray-300">{label}</span>
-      {source && <span className="text-[10px] text-gray-500">{source}</span>}
-    </div>
-  )
-}
-
-function DataBar({ label, value, suffix = '%', color = '#10b981', max = 100, delay = 0 }) {
-  const [w, setW] = useState(0)
-  useEffect(() => { const t = setTimeout(() => setW(Math.min(Math.abs(value) / max * 100, 100)), 100 + delay * 1000); return () => clearTimeout(t) }, [value, max, delay])
-  return (
-    <div className="flex items-center gap-3 anim-fade" style={{ animationDelay: `${delay}s` }}>
-      <span className="text-sm text-gray-300 w-48 text-right shrink-0">{label}</span>
-      <div className="flex-1 bg-white/5 rounded-full h-7 relative overflow-hidden">
-        <div className="h-full rounded-full transition-all duration-1000 ease-out flex items-center justify-end pr-2"
-          style={{ width: `${w}%`, backgroundColor: color }}>
-          <span className={`${mono} text-xs font-bold text-white`}>{value > 0 ? '+' : ''}{value}{suffix}</span>
-        </div>
-      </div>
-    </div>
-  )
-}
-
-function QuizCard({ q, explanation, index, onAnswer, answered, correct }) {
-  return (
-    <div className={`${card} transition-all duration-500 ${answered !== null ? (correct ? 'border-green/50 bg-green/5' : 'border-red/50 bg-red/5') : 'hover:border-cyan/30'}`}>
-      <p className="text-sm text-gray-300 mb-1">Pregunta {index + 1}</p>
-      <p className="text-base text-white mb-4 leading-relaxed">{q}</p>
-      {answered === null ? (
-        <div className="flex gap-3">
-          <button onClick={() => onAnswer(true)}
-            className="flex-1 py-2 rounded-lg bg-green/10 border border-green/30 text-green hover:bg-green/20 transition font-medium text-sm">Verdadero</button>
-          <button onClick={() => onAnswer(false)}
-            className="flex-1 py-2 rounded-lg bg-red/10 border border-red/30 text-red hover:bg-red/20 transition font-medium text-sm">Falso</button>
-        </div>
-      ) : (
-        <div className="space-y-2 anim-fade">
-          <div className="flex items-center gap-2">
-            {correct ? <CheckCircle2 className="w-5 h-5 text-green" /> : <XCircle className="w-5 h-5 text-red" />}
-            <span className={`font-medium ${correct ? 'text-green' : 'text-red'}`}>{correct ? 'Correcto' : 'Incorrecto'} — La respuesta es Verdadero</span>
-          </div>
-          <p className="text-sm text-gray-400 leading-relaxed">{explanation}</p>
-        </div>
-      )}
-    </div>
-  )
-}
-
-/* ─── SVG Diagrams ─── */
-function CycleEmpiricoSVG() {
-  return (
-    <svg viewBox="0 0 500 300" className="w-full max-w-lg mx-auto">
-      {/* Nodes */}
-      <g className="anim-pop stagger-1">
-        <rect x="30" y="100" width="130" height="50" rx="10" fill="#111827" stroke="#06b6d4" strokeWidth="2" />
-        <text x="95" y="130" textAnchor="middle" fill="#06b6d4" fontSize="14" fontFamily="DM Sans">Transparencia</text>
-      </g>
-      <g className="anim-pop stagger-2">
-        <rect x="190" y="100" width="120" height="50" rx="10" fill="#111827" stroke="#06b6d4" strokeWidth="2" />
-        <text x="250" y="130" textAnchor="middle" fill="#06b6d4" fontSize="14" fontFamily="DM Sans">Inspección</text>
-      </g>
-      <g className="anim-pop stagger-3">
-        <rect x="340" y="100" width="130" height="50" rx="10" fill="#111827" stroke="#06b6d4" strokeWidth="2" />
-        <text x="405" y="130" textAnchor="middle" fill="#06b6d4" fontSize="14" fontFamily="DM Sans">Adaptación</text>
-      </g>
-      {/* Arrows forward */}
-      <g className="anim-fade stagger-2">
-        <line x1="160" y1="125" x2="185" y2="125" stroke="#06b6d4" strokeWidth="2" markerEnd="url(#arrowCyan)" />
-      </g>
-      <g className="anim-fade stagger-3">
-        <line x1="310" y1="125" x2="335" y2="125" stroke="#06b6d4" strokeWidth="2" markerEnd="url(#arrowCyan)" />
-      </g>
-      {/* Feedback arc */}
-      <g className="anim-fade stagger-4">
-        <path d="M405 155 C405 220, 95 220, 95 155" fill="none" stroke="#f59e0b" strokeWidth="2" strokeDasharray="6 3" markerEnd="url(#arrowAmber)" />
-        <text x="250" y="210" textAnchor="middle" fill="#f59e0b" fontSize="11" fontFamily="DM Sans">feedback loop</text>
-      </g>
-      {/* IA warning */}
-      <g className="anim-pop stagger-5">
-        <rect x="145" y="240" width="210" height="36" rx="8" fill="#f59e0b" fillOpacity="0.1" stroke="#f59e0b" strokeWidth="1" />
-        <text x="250" y="263" textAnchor="middle" fill="#f59e0b" fontSize="11" fontFamily="DM Sans">⚡ IA amplifica velocidad Y errores</text>
-      </g>
-      <defs>
-        <marker id="arrowCyan" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8" fill="#06b6d4" /></marker>
-        <marker id="arrowAmber" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8" fill="#f59e0b" /></marker>
-      </defs>
+    <svg width={size} height={size} viewBox="0 0 100 100" fill="none">
+      <path d="M50 0 L65 35 L100 50 L65 65 L50 100 L35 65 L0 50 L35 35 Z" fill="#6B1D2A" />
+      <path d="M50 8 L62 35 L50 28 L38 35 Z" fill="#8B2E3D" opacity="0.6" />
+      <path d="M50 92 L62 65 L50 72 L38 65 Z" fill="#8B2E3D" opacity="0.6" />
+      <path d="M8 50 L35 38 L28 50 L35 62 Z" fill="#8B2E3D" opacity="0.6" />
+      <path d="M92 50 L65 38 L72 50 L65 62 Z" fill="#8B2E3D" opacity="0.6" />
+      <rect x="30" y="38" width="40" height="24" rx="2" fill="#6B1D2A" />
+      <text x="50" y="55" textAnchor="middle" fill="white" fontSize="16" fontWeight="700" fontFamily="serif" letterSpacing="2">IESA</text>
     </svg>
   )
 }
 
-function TriangleSVG() {
+function UniKemiaLogo({ height = 40 }) {
   return (
-    <svg viewBox="0 0 500 380" className="w-full max-w-lg mx-auto">
-      {/* Triangle nodes */}
-      <g className="anim-pop stagger-1">
-        <rect x="185" y="30" width="130" height="50" rx="12" fill="#111827" stroke="#06b6d4" strokeWidth="2" />
-        <text x="250" y="60" textAnchor="middle" fill="#06b6d4" fontSize="14" fontWeight="600" fontFamily="DM Sans">Agilidad</text>
-      </g>
-      <g className="anim-pop stagger-2">
-        <rect x="30" y="250" width="150" height="50" rx="12" fill="#111827" stroke="#10b981" strokeWidth="2" />
-        <text x="105" y="280" textAnchor="middle" fill="#10b981" fontSize="14" fontWeight="600" fontFamily="DM Sans">Estabilidad</text>
-      </g>
-      <g className="anim-pop stagger-3">
-        <rect x="320" y="250" width="150" height="50" rx="12" fill="#111827" stroke="#a855f7" strokeWidth="2" />
-        <text x="395" y="280" textAnchor="middle" fill="#a855f7" fontSize="14" fontWeight="600" fontFamily="DM Sans">Automatización</text>
-      </g>
-      {/* Lines */}
-      <g className="anim-fade stagger-3">
-        <line x1="210" y1="80" x2="120" y2="250" stroke="white" strokeWidth="1" strokeDasharray="5 4" opacity="0.3" />
-        <line x1="290" y1="80" x2="380" y2="250" stroke="white" strokeWidth="1" strokeDasharray="5 4" opacity="0.3" />
-        <line x1="180" y1="275" x2="320" y2="275" stroke="white" strokeWidth="1" strokeDasharray="5 4" opacity="0.3" />
-      </g>
-      {/* Labels */}
-      <g className="anim-fade stagger-4">
-        <text x="130" y="170" textAnchor="middle" fill="#06b6d4" fontSize="10" fontFamily="DM Sans" opacity="0.8">Brechas grandes</text>
-        <text x="130" y="183" textAnchor="middle" fill="#06b6d4" fontSize="10" fontFamily="DM Sans" opacity="0.8">cambio rápido</text>
-      </g>
-      <g className="anim-fade stagger-5">
-        <text x="370" y="170" textAnchor="middle" fill="#a855f7" fontSize="10" fontFamily="DM Sans" opacity="0.8">Repetitivo</text>
-        <text x="370" y="183" textAnchor="middle" fill="#a855f7" fontSize="10" fontFamily="DM Sans" opacity="0.8">reglas claras</text>
-      </g>
-      <g className="anim-fade stagger-6">
-        <text x="250" y="335" textAnchor="middle" fill="#10b981" fontSize="10" fontFamily="DM Sans" opacity="0.8">Brechas pequeñas / estable</text>
-      </g>
+    <svg height={height} viewBox="0 0 220 50" fill="none">
+      <text x="0" y="35" fill="#1E293B" fontSize="36" fontWeight="700" fontFamily="Inter, sans-serif">Uni</text>
+      <text x="68" y="35" fill="#E11D48" fontSize="36" fontWeight="700" fontFamily="Inter, sans-serif">K</text>
+      <text x="90" y="35" fill="#1E293B" fontSize="36" fontWeight="700" fontFamily="Inter, sans-serif">emia</text>
+      <text x="0" y="48" fill="#64748B" fontSize="9" fontWeight="500" letterSpacing="2" fontFamily="Inter, sans-serif">DRIVE FORWARD TRANSFORM</text>
     </svg>
   )
 }
 
-function LeadershipSVG() {
+function Logos({ size = 60 }) {
   return (
-    <svg viewBox="0 0 520 360" className="w-full max-w-xl mx-auto">
-      {/* Leader */}
-      <g className="anim-pop stagger-1">
-        <rect x="185" y="15" width="150" height="55" rx="12" fill="#111827" stroke="#06b6d4" strokeWidth="2.5" />
-        <text x="260" y="48" textAnchor="middle" fill="#06b6d4" fontSize="15" fontWeight="700" fontFamily="DM Sans">Líder Ágil</text>
-      </g>
-      {/* Four pillars */}
-      {[
-        { x: 15, label: 'Proteger', sub: 'Blindar de\nburocracia', color: '#06b6d4', icon: '🛡️', delay: 2 },
-        { x: 140, label: 'Habilitar', sub: 'Recursos,\nautonomía', color: '#10b981', icon: '🔓', delay: 3 },
-        { x: 265, label: 'Soltar', sub: 'Paso atrás\nen ejecución', color: '#f59e0b', icon: '🤝', delay: 4 },
-        { x: 390, label: 'Gobernar', sub: 'Límites de\nautonomía', color: '#a855f7', icon: '🆕', delay: 5 },
-      ].map((p, i) => (
-        <g key={i} className={`anim-pop stagger-${p.delay}`}>
-          <rect x={p.x} y="120" width="115" height="70" rx="10" fill="#111827" stroke={p.color} strokeWidth="1.5" />
-          <text x={p.x + 57} y="148" textAnchor="middle" fill={p.color} fontSize="13" fontWeight="600" fontFamily="DM Sans">{p.label}</text>
-          <text x={p.x + 57} y="175" textAnchor="middle" fill="white" fontSize="9" opacity="0.6" fontFamily="DM Sans">
-            {p.sub.split('\n').map((l, j) => <tspan key={j} x={p.x + 57} dy={j === 0 ? 0 : 12}>{l}</tspan>)}
-          </text>
-          <line x1={p.x + 57} y1="70" x2={p.x + 57} y2="120" stroke={p.color} strokeWidth="1.5" opacity="0.5" />
+    <div style={{ display: 'flex', alignItems: 'center', gap: 40 }}>
+      <IESALogo size={size} />
+      <UniKemiaLogo height={size * 0.5} />
+    </div>
+  )
+}
+
+/* ═══════════════════════════════════════════
+   SLIDE DATA
+   ═══════════════════════════════════════════ */
+const slides = [
+
+  // ── 0: TITLE ──
+  { type: 'hero' },
+
+  // ── 1: KEY METRICS ──
+  { type: 'stats', items: [
+    { value: '71%', label: 'uso regular de genAI', source: 'McKinsey 2025' },
+    { value: '62%', label: 'experimenta con agentes', source: 'McKinsey 2025' },
+    { value: '>80%', label: 'sin impacto en EBIT', source: 'McKinsey 2025' },
+    { value: '82%', label: 'punto de inflexión', source: 'Microsoft WTI 2025' },
+  ]},
+
+  // ── SECTION: FUNDAMENTOS ──
+  { type: 'section', title: 'Fundamentos ágiles', subtitle: 'La base que no cambia' },
+
+  // ── CICLO EMPÍRICO ──
+  { type: 'content', title: 'El ciclo empírico', bullets: [
+    'Retroalimentación frecuente',
+    'Inspección de resultados',
+    'Adaptación basada en evidencia',
+  ], note: 'Fundamento 1' },
+
+  { type: 'diagram', id: 'cycle' },
+
+  { type: 'content', title: 'IA amplifica el ciclo', bullets: [
+    'Sin inspección, errores de IA se propagan',
+    'La velocidad de ejecución supera la revisión',
+    'La deuda técnica se acumula más rápido',
+  ], note: 'Conexión agéntica', color: 'accent' },
+
+  // ── CUÁNDO SÍ / CUÁNDO NO ──
+  { type: 'content', title: 'Cuándo la agilidad es esencial', bullets: [
+    'Grandes brechas de satisfacción del cliente',
+    'Necesidades cambiando rápidamente',
+    'Capacidad de iterar genera ventaja directa',
+  ], note: 'Fundamento 2' },
+
+  { type: 'content', title: 'Cuándo no es necesaria', bullets: [
+    'Brechas pequeñas y necesidades estables',
+    'Procesos predecibles satisfacen mejor',
+    'En 2026: automatización directa es opción',
+  ], color: 'highlight' },
+
+  { type: 'diagram', id: 'triangle' },
+
+  // ── LIDERAZGO (EMPHASIS) ──
+  { type: 'section', title: 'Liderazgo ágil', subtitle: 'Proteger, habilitar, soltar', emphasis: true },
+
+  { type: 'content', title: 'Proteger', bullets: [
+    'Blindar de interferencia burocrática',
+    'Eliminar deadlines arbitrarios',
+    'Establecer políticas claras sobre agentes IA',
+    'Sin protección, equipos son reabsorbidos',
+  ], note: 'Fundamento 3 — Pilar 1', color: 'accent' },
+
+  { type: 'content', title: 'Crear espacio', bullets: [
+    'Diferentes equipos, diferentes caminos',
+    'Diversidad de enfoques es fortaleza',
+    'Transferir mecanismos de poder a equipos',
+    'No existe un "camino único"',
+  ], note: 'Fundamento 3 — Pilar 2', color: 'accent' },
+
+  { type: 'content', title: 'Confiar y soltar', bullets: [
+    'Inteligencia ascendente cambia el rol gerencial',
+    'Crear condiciones, luego dar paso atrás',
+    'Matiz 2026: paso atrás en ejecución',
+    'Intensifica en gobernanza y diseño de sistema',
+  ], note: 'Fundamento 3 — Pilar 3', color: 'accent' },
+
+  { type: 'content', title: 'Gobernar (2026)', bullets: [
+    'Definir límites de autonomía humana y de agentes',
+    'Diseñar el sistema de trabajo',
+    'Rediseño de workflows = mayor correlación con EBIT',
+    'Gobierno ejecutivo visible es condición necesaria',
+  ], note: 'Fundamento 3 — Pilar 4 (nuevo)', color: 'highlight' },
+
+  { type: 'diagram', id: 'leadership' },
+
+  { type: 'bigstat', value: '>80%', label: 'sin gobierno ejecutivo visible\nno logra retorno tangible de genAI', source: 'McKinsey 2025' },
+
+  // ── EQUIPOS ──
+  { type: 'content', title: 'Equipos multifuncionales', bullets: [
+    'Composición dinámica según etapa',
+    'Diseñadores, investigadores, desarrolladores juntos',
+    'Evaluar agentes por impacto en usuario',
+    'No solo por eficiencia interna',
+  ], note: 'Fundamento 4' },
+
+  { type: 'content', title: 'Centrado en usuario, siempre', bullets: [
+    'Multifuncionalidad evita silos',
+    'Decisiones conectadas al usuario final',
+    'Un agente 5x más rápido que degrada CSAT\ndestruye valor',
+  ], color: 'accent' },
+
+  // ── DELIVERY MANAGER ──
+  { type: 'content', title: 'El Delivery Manager', bullets: [
+    'Cadencias de trabajo e impedimentos',
+    'Colaboración entre disciplinas',
+    'Acceso a recursos, datos y herramientas',
+  ], note: 'Fundamento 5 — Responsabilidades base' },
+
+  { type: 'content', title: 'Delivery Manager en 2026', bullets: [
+    'Integración gobernada de IA',
+    'Entrenamiento en validación de outputs',
+    'Prácticas de revisión de código generado',
+    'Si no configura revisión, la inspección no ocurre',
+  ], note: 'Extensión agéntica', color: 'highlight' },
+
+  // ── QUIZ 1 ──
+  { type: 'section', title: 'Autocomprobación', subtitle: 'Fundamentos ágiles', quiz: true },
+  { type: 'quiz', idx: 0, q: 'El objetivo principal de la agilidad es\nofrecer mejores resultados mediante\nretroalimentación frecuente, inspección\ny adaptación.', explanation: 'El ciclo empírico es el mecanismo central.\nEn era agéntica se amplifica.' },
+  { type: 'quiz', idx: 1, q: 'El liderazgo debe proteger equipos ágiles\nde ser arrastrados a viejas formas de trabajo\ny transferir poder a los equipos.', explanation: 'Sin liderazgo protector, los equipos\nson reabsorbidos por inercia burocrática.' },
+  { type: 'quiz', idx: 2, q: 'Las transformaciones ágiles fracasan\ncuando no cuentan con apoyo ejecutivo\no de mandos medios.', explanation: 'El apoyo ejecutivo es condición estructural.\n>80% sin gobierno visible no logra retorno.' },
+  { type: 'quiz', idx: 3, q: 'La agilidad es esencial cuando existen\ngrandes brechas de satisfacción\no necesidades cambiando rápidamente.', explanation: 'En 2026 se agrega automatización directa.\nTriángulo: ágil vs. estable vs. automatizado.' },
+  { type: 'quiz', idx: 4, q: 'Procesos estables satisfacen mejor\ncuando las brechas son pequeñas\ny las necesidades son estables.', explanation: 'No todo requiere agilidad.\nEl error es "agilizar" lo que funciona bien.' },
+
+  // ── ERA AGÉNTICA ──
+  { type: 'section', title: 'Era agéntica', subtitle: 'Lo que cambia en 2026' },
+
+  { type: 'content', title: 'Qué es un agente', bullets: [
+    'Sistema que planifica y ejecuta múltiples pasos',
+    'No solo chat — ejecuta, coordina, decide',
+    'Problema real: agencia excesiva + bajo control',
+  ] },
+
+  { type: 'diagram', id: 'agentic' },
+
+  // ── SCRUM ROLES (EMPHASIS) ──
+  { type: 'section', title: 'Roles Scrum', subtitle: 'El punto de partida canónico', emphasis: true },
+
+  { type: 'content', title: 'Product Owner', bullets: [
+    'Maximizar valor del producto',
+    'Gestionar Product Backlog',
+    'Comunicar Objetivo del Producto',
+    'Asegurar transparencia y orden',
+  ], color: 'accent' },
+
+  { type: 'content', title: 'Scrum Master', bullets: [
+    'Establecer Scrum; lograr efectividad',
+    'Líder servidor del equipo',
+    'Coach en autogestión y multifuncionalidad',
+    'Eliminar impedimentos; servir a la org',
+  ], color: 'highlight' },
+
+  { type: 'content', title: 'Developers', bullets: [
+    'Crear Increment utilizable cada Sprint',
+    'Plan del Sprint y calidad en DoD',
+    'Adaptar plan diariamente',
+    'Responsabilidad mutua como profesionales',
+  ], color: 'accent' },
+
+  // ── ADOPCIÓN IA ──
+  { type: 'section', title: 'Adopción de IA', subtitle: 'Datos y evidencia' },
+
+  { type: 'bars', title: 'Curva de adopción', items: [
+    { label: 'Uso regular genAI (2024)', value: 65, color: C.highlight },
+    { label: 'Uso regular genAI (2025)', value: 71, color: C.highlight },
+    { label: 'AI en ≥1 función (2025)', value: 88, color: C.accent },
+    { label: 'Experimenta con agentes', value: 62, color: C.accent },
+  ], source: 'McKinsey 2024-2025' },
+
+  // ── PRODUCTIVIDAD ──
+  { type: 'content', title: 'Lo que sube', bullets: [
+    'Programación (lab): +55.8% más rápido',
+    'Escritura: −40% tiempo, +18% calidad',
+    'Contact center: +34% productividad novatos',
+    'Copilot/Accenture: +84% builds exitosos',
+  ], note: 'Evidencia positiva', color: 'highlight' },
+
+  { type: 'bigstat', value: '+19%', label: 'más lento para devs expertos\ncon IA (METR RCT 2025)', source: 'Pese a creer ser ~20% más rápidos', warn: true },
+
+  { type: 'bars', title: 'DORA: mejoras locales', items: [
+    { label: 'Calidad documentación', value: 7.5, max: 12, color: C.highlight, suffix: '%' },
+    { label: 'Calidad código', value: 3.4, max: 12, color: C.highlight, suffix: '%' },
+    { label: 'Velocidad code review', value: 3.1, max: 12, color: C.highlight, suffix: '%' },
+    { label: 'Flow individual', value: 2.6, max: 12, color: C.accent, suffix: '%' },
+  ], source: 'DORA 2024 — por +25% adopción IA', note: 'Lo que sube' },
+
+  { type: 'bars', title: 'DORA: pérdidas sistémicas', items: [
+    { label: 'Throughput de entrega', value: 1.5, max: 10, color: C.red, suffix: '%', prefix: '−' },
+    { label: 'Estabilidad', value: 7.2, max: 10, color: C.red, suffix: '%', prefix: '−' },
+  ], source: 'DORA 2024 — por +25% adopción IA', note: 'Lo que baja', warn: true },
+
+  // ── VACUUM ──
+  { type: 'quote', text: 'Si IA acelera tareas valiosas,\nse crea un "vacío de tiempo".\nSin rediseño, ese vacío\nse rellena con burocracia.', source: 'El "Vacuum Effect"' },
+
+  // ── SISTEMA E2E ──
+  { type: 'diagram', id: 'system' },
+
+  // ── ROLES REDEFINIDOS (EMPHASIS) ──
+  { type: 'section', title: 'Roles redefinidos', subtitle: 'De "hacer" a "orquestar"', emphasis: true },
+
+  { type: 'role', role: 'Product Owner', base: 'Maximizar valor;\ngestionar Product Backlog', upgrade: 'Diseñar value + guardrails:\ndecidir qué se delega a agentes\ny con qué límites', artifacts: 'Policy-by-design, eval sets,\ncriterios verificables', color: C.accent },
+
+  { type: 'role', role: 'SM / Delivery Manager', base: 'Establecer Scrum;\nlograr efectividad;\nconfigurar entorno ágil', upgrade: 'Flow & adoption architect:\nentrenar uso/validación,\nbajar fricción, proteger foco', artifacts: 'Guías de uso, checklists,\nmétricas DevEx/Flow', color: C.highlight },
+
+  { type: 'role', role: 'Developers', base: 'Entregar Increment;\ncalidad en DoD;\nplan del Sprint', upgrade: 'Engineer + evaluator:\norquestar agentes, revisar,\nasegurar seguridad, testear', artifacts: 'Suites de pruebas,\nlinters/SAST, revisión prompts', color: C.accent },
+
+  { type: 'role', role: 'Líderes', base: 'Crear condiciones;\nproteger equipos;\ntransferir poder', upgrade: 'Agent-boss / system steward:\nhuman-agent ratio, work charts,\ncentralización vs federación', artifacts: 'Modelo gobernanza,\nmétricas EBIT/ROI, controles', color: C.highlight },
+
+  // ── QUIZ 2 ──
+  { type: 'section', title: 'Autocomprobación', subtitle: 'Roles y liderazgo', quiz: true },
+  { type: 'quiz', idx: 5, q: 'Los líderes ágiles necesitan\ncrear espacio para que todos\ncontribuyan — diferentes equipos,\ndiferentes caminos.', explanation: 'En era agéntica: autonomía por nivel\ny work charts dinámicos.' },
+  { type: 'quiz', idx: 6, q: 'Confiar en la inteligencia ascendente\ncambia el papel de los gerentes.\nCrean condiciones y dan paso atrás.', explanation: 'Matiz 2026: paso atrás en ejecución,\nintensifica en gobernanza.' },
+  { type: 'quiz', idx: 7, q: 'El tamaño del equipo y los roles\ncambiarán según la etapa\nde desarrollo del servicio.', explanation: 'En 2026 es dinámico a nivel de sprint.\nNuevos roles IA según madurez.' },
+  { type: 'quiz', idx: 8, q: 'Todo el equipo debe trabajar junto\npara diseñar, construir e iterar\nun servicio centrado en el usuario.', explanation: 'Agentes se evalúan por impacto\nen experiencia de usuario.' },
+  { type: 'quiz', idx: 9, q: 'El delivery manager configura\nel entorno ágil que su equipo\nnecesita para iterar.', explanation: 'En 2026 ese entorno incluye agentes.\nSM asegura integración gobernada.' },
+
+  // ── GOBERNANZA ──
+  { type: 'section', title: 'Gobernanza', subtitle: 'Modelos operativos' },
+
+  { type: 'governance', model: 'Centralizado', subtitle: 'AI CoE fuerte', pros: 'Consistencia, control, cumplimiento', cons: 'Cuellos de botella, baja adopción', when: 'Industrias reguladas, riesgo alto', color: C.accent },
+
+  { type: 'governance', model: 'Federado', subtitle: 'Centro define; unidades ejecutan', pros: 'Balance velocidad / control', cons: 'Inconsistencia, "shadow AI"', when: 'Empresas multi-unidad por productos', color: C.highlight },
+
+  { type: 'governance', model: 'Product-aligned', subtitle: 'Governance en el flujo de producto', pros: 'Conecta IA con outcomes', cons: 'Requiere madurez de medición', when: 'Agile escalado con telemetría', color: C.accent },
+
+  // ── MÉTRICAS ──
+  { type: 'section', title: 'Métricas', subtitle: 'Tablero mínimo viable' },
+
+  { type: 'metrics', items: [
+    { dim: 'Velocidad E2E', metric: 'Lead time / throughput', alert: 'Baja con "más commits"' },
+    { dim: 'Estabilidad', metric: 'Change failure rate', alert: 'Cae con IA (−7.2%)' },
+    { dim: 'Calidad', metric: 'Build success, merge rate', alert: 'Volumen sube, calidad baja' },
+  ]},
+
+  { type: 'metrics', items: [
+    { dim: 'Productividad', metric: 'Flow / percepción', alert: 'Percepción ≠ realidad' },
+    { dim: 'ROI', metric: '% EBIT atribuible', alert: '>80% sin impacto enterprise' },
+    { dim: 'Riesgo', metric: 'Incidentes IA', alert: 'Privacidad, IP, sesgo' },
+  ]},
+
+  // ── CASOS ──
+  { type: 'section', title: 'Casos cuantificados', subtitle: 'Evidencia real' },
+
+  { type: 'case', title: 'Copilot + Accenture', subtitle: 'RCT en enterprise', items: [
+    { label: 'Pull Requests', value: '+8.69%' },
+    { label: 'Merge rate', value: '+15%' },
+    { label: 'Builds exitosos', value: '+84%' },
+    { label: 'Satisfacción', value: '90% más fulfilled' },
+  ], color: C.highlight },
+
+  { type: 'case', title: 'Klarna', subtitle: 'Agente end-to-end', items: [
+    { label: 'Conversaciones', value: '2.3M' },
+    { label: 'Equivalente FTE', value: '700' },
+    { label: 'Resolución', value: '<2 min vs 11' },
+    { label: 'Profit improvement', value: '+$40M' },
+  ], color: C.accent },
+
+  { type: 'case', title: 'Escritura profesional', subtitle: 'Transferible a PO/SM', items: [
+    { label: 'Tiempo', value: '−40%' },
+    { label: 'Calidad', value: '+18%' },
+  ], note: 'PRDs, historias, minutas, síntesis ejecutiva', color: C.highlight },
+
+  // ── CHECKLIST ──
+  { type: 'section', title: 'Implementación', subtitle: 'Checklist 30 días' },
+
+  { type: 'checklist', items: [
+    { step: 1, text: 'Verificar fundamentos:\nliderazgo, equipos, inspección' },
+    { step: 2, text: 'Medir baseline:\nDORA + DevEx + calidad' },
+    { step: 3, text: 'Definir guardrails:\ndatos, IP, seguridad' },
+  ]},
+
+  { type: 'checklist', items: [
+    { step: 4, text: 'Empezar con 1-2 workflows.\n64% recomienda iniciar pequeño.' },
+    { step: 5, text: 'Iterar con evidencia.\nRevisar en 30 días con datos.' },
+  ]},
+
+  // ── CLOSING QUOTE ──
+  { type: 'quote', text: 'La IA agéntica amplifica\nlo que ya tienen.\nSi los fundamentos son sólidos,\namplifica valor.\nSi son frágiles,\namplifica disfunción.', source: '' },
+
+  // ── BIBLIOGRAPHY ──
+  { type: 'section', title: 'Bibliografía', subtitle: 'Fuentes y referencias' },
+
+  { type: 'bib', entries: [
+    'DORA / Google Cloud. "Accelerate State of DevOps Report 2024". Google Cloud Blog, 2024.',
+    'DORA. "Impact of Generative AI in Software Development". Google, 2025.',
+    'McKinsey & Company. "The state of AI in early 2024". McKinsey Global Survey, 2024.',
+    'McKinsey & Company. "The state of AI: How organizations are rewiring to capture value". Mar 2025.',
+  ]},
+
+  { type: 'bib', entries: [
+    'McKinsey & Company. "The state of AI in 2025: Agents, innovation, and transformation". Nov 2025.',
+    'Gartner. "Gartner Predicts 40% of Enterprise Apps Will Have AI Agents by 2026". Press Release, 2025.',
+    'Microsoft. "Work Trend Index 2025: The Year the Frontier Firm is Born". Microsoft, 2025.',
+    'Schwaber, K. & Sutherland, J. "La Guía de Scrum 2020". Scrum.org (Español LatAm).',
+  ]},
+
+  { type: 'bib', entries: [
+    'NIST. "AI Risk Management Framework 1.0 (AI RMF)". National Institute of Standards and Technology, 2023.',
+    'OWASP. "Top 10 for Large Language Model Applications". OWASP Foundation, 2024.',
+    'Noy, S. & Zhang, W. "Experimental evidence on the productivity effects of generative AI". Science, 2023.',
+    'Brynjolfsson, E. et al. "Generative AI at Work". NBER Working Paper 31161, 2023.',
+  ]},
+
+  { type: 'bib', entries: [
+    'Peng, S. et al. "The Impact of AI on Developer Productivity". arXiv:2302.06590, 2023.',
+    'METR. "Measuring the Impact of Early AI Assistance on Open-Source Developers". RCT, 2025.',
+    'OpenAI. "Klarna: AI Assistant Case Study". OpenAI Customer Stories, 2024.',
+    'PMI Sweden Chapter. "Navigating AI in Project Management". Survey Report, 2024.',
+  ]},
+
+  { type: 'bib', entries: [
+    'EU. "AI Act (Regulation 2024/1689)". Official Journal of the European Union, 2024.',
+    'GitHub. "Research: Quantifying Copilot\'s impact on code quality and developer productivity". GitHub Blog + Accenture, 2024.',
+    'Stack Overflow. "Developer Survey 2024". Stack Overflow, 2024.',
+  ]},
+
+  // ── FINAL ──
+  { type: 'end' },
+]
+
+/* ═══════════════════════════════════════════
+   SVG DIAGRAMS
+   ═══════════════════════════════════════════ */
+function CycleDiagram() {
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 40 }}>
+      <p style={{ fontSize: T.subtitle, fontWeight: 600, color: C.white }}>Ciclo empírico</p>
+      <svg viewBox="0 0 900 320" width={900} fill="none">
+        {[
+          { x: 40, label: 'Transparencia', color: C.accent },
+          { x: 340, label: 'Inspección', color: C.accent },
+          { x: 640, label: 'Adaptación', color: C.accent },
+        ].map((n, i) => (
+          <g key={i} className={`anim-pop d${i + 1}`}>
+            <rect x={n.x} y="60" width="220" height="80" rx="16" fill={C.surface} stroke={n.color} strokeWidth="2" />
+            <text x={n.x + 110} y="108" textAnchor="middle" fill={n.color} fontSize="28" fontWeight="600" fontFamily="Inter">{n.label}</text>
+          </g>
+        ))}
+        {/* Arrows */}
+        <g className="anim-fade d3">
+          <line x1="260" y1="100" x2="330" y2="100" stroke={C.accent} strokeWidth="2" markerEnd="url(#a1)" />
+          <line x1="560" y1="100" x2="630" y2="100" stroke={C.accent} strokeWidth="2" markerEnd="url(#a1)" />
         </g>
-      ))}
-      {/* Team */}
-      <g className="anim-pop stagger-6">
-        <rect x="110" y="260" width="300" height="55" rx="12" fill="#111827" stroke="#06b6d4" strokeWidth="2" strokeDasharray="6 3" />
-        <text x="260" y="290" textAnchor="middle" fill="white" fontSize="13" fontWeight="500" fontFamily="DM Sans">Equipo autogestionado + agentes</text>
-      </g>
-      {/* Connecting lines from pillars to team */}
-      {[72, 197, 322, 447].map((x, i) => (
-        <line key={i} x1={x} y1="190" x2="260" y2="260" stroke="white" strokeWidth="1" opacity="0.15" className={`anim-fade stagger-${i + 3}`} />
-      ))}
-    </svg>
+        {/* Feedback arc */}
+        <g className="anim-fade d4">
+          <path d="M750 145 C750 260, 150 260, 150 145" fill="none" stroke={C.highlight} strokeWidth="2" strokeDasharray="8 4" markerEnd="url(#a2)" />
+          <text x="450" y="245" textAnchor="middle" fill={C.highlight} fontSize="22" fontFamily="Inter">feedback loop</text>
+        </g>
+        {/* IA warning */}
+        <g className="anim-pop d5">
+          <rect x="270" y="275" width="360" height="40" rx="10" fill={C.surface} stroke="#F59E0B" strokeWidth="1" />
+          <text x="450" y="302" textAnchor="middle" fill="#F59E0B" fontSize="20" fontFamily="Inter">⚡ IA amplifica velocidad Y errores</text>
+        </g>
+        <defs>
+          <marker id="a1" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10" fill={C.accent} /></marker>
+          <marker id="a2" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10" fill={C.highlight} /></marker>
+        </defs>
+      </svg>
+    </div>
   )
 }
 
-function AgenticEvolutionSVG() {
-  const stages = [
-    { label: 'Asistente', sub: 'Responde', color: '#10b981', x: 20 },
-    { label: 'Agente', sub: 'Ejecuta tareas', color: '#06b6d4', x: 140 },
-    { label: 'Multiagente', sub: 'Coordina', color: '#f59e0b', x: 270 },
-    { label: 'Ecosistema', sub: 'Cruza apps', color: '#a855f7', x: 390 },
+function TriangleDiagram() {
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 40 }}>
+      <p style={{ fontSize: T.subtitle, fontWeight: 600, color: C.white }}>Triángulo de decisión</p>
+      <svg viewBox="0 0 800 500" width={800} fill="none">
+        <g className="anim-pop d1">
+          <rect x="300" y="40" width="200" height="70" rx="14" fill={C.surface} stroke={C.accent} strokeWidth="2" />
+          <text x="400" y="83" textAnchor="middle" fill={C.accent} fontSize="28" fontWeight="600" fontFamily="Inter">Agilidad</text>
+        </g>
+        <g className="anim-pop d2">
+          <rect x="50" y="350" width="220" height="70" rx="14" fill={C.surface} stroke={C.highlight} strokeWidth="2" />
+          <text x="160" y="393" textAnchor="middle" fill={C.highlight} fontSize="28" fontWeight="600" fontFamily="Inter">Estabilidad</text>
+        </g>
+        <g className="anim-pop d3">
+          <rect x="530" y="350" width="220" height="70" rx="14" fill={C.surface} stroke="#A855F7" strokeWidth="2" />
+          <text x="640" y="393" textAnchor="middle" fill="#A855F7" fontSize="28" fontWeight="600" fontFamily="Inter">Automatización</text>
+        </g>
+        <g className="anim-fade d3" opacity="0.25">
+          <line x1="350" y1="115" x2="200" y2="345" stroke="white" strokeWidth="1.5" strokeDasharray="6 4" />
+          <line x1="450" y1="115" x2="600" y2="345" stroke="white" strokeWidth="1.5" strokeDasharray="6 4" />
+          <line x1="270" y1="385" x2="530" y2="385" stroke="white" strokeWidth="1.5" strokeDasharray="6 4" />
+        </g>
+        <g className="anim-fade d4">
+          <text x="225" y="240" textAnchor="middle" fill={C.accent} fontSize="18" fontFamily="Inter" opacity="0.7">Brechas grandes</text>
+          <text x="225" y="262" textAnchor="middle" fill={C.accent} fontSize="18" fontFamily="Inter" opacity="0.7">cambio rápido</text>
+          <text x="575" y="240" textAnchor="middle" fill="#A855F7" fontSize="18" fontFamily="Inter" opacity="0.7">Repetitivo</text>
+          <text x="575" y="262" textAnchor="middle" fill="#A855F7" fontSize="18" fontFamily="Inter" opacity="0.7">reglas claras</text>
+          <text x="400" y="460" textAnchor="middle" fill={C.highlight} fontSize="18" fontFamily="Inter" opacity="0.7">Brechas pequeñas / necesidades estables</text>
+        </g>
+      </svg>
+    </div>
+  )
+}
+
+function LeadershipDiagram() {
+  const pillars = [
+    { label: 'Proteger', color: C.accent, x: 50 },
+    { label: 'Habilitar', color: C.highlight, x: 250 },
+    { label: 'Soltar', color: '#F59E0B', x: 450 },
+    { label: 'Gobernar', color: '#A855F7', x: 650 },
   ]
   return (
-    <svg viewBox="0 0 520 220" className="w-full max-w-xl mx-auto">
-      {stages.map((s, i) => (
-        <g key={i} className={`anim-pop stagger-${i + 1}`}>
-          <rect x={s.x} y="40" width="110" height="60" rx="10" fill="#111827" stroke={s.color} strokeWidth="2" />
-          <text x={s.x + 55} y="65" textAnchor="middle" fill={s.color} fontSize="13" fontWeight="600" fontFamily="DM Sans">{s.label}</text>
-          <text x={s.x + 55} y="85" textAnchor="middle" fill="white" fontSize="10" opacity="0.6" fontFamily="DM Sans">{s.sub}</text>
-          {i < 3 && <line x1={s.x + 110} y1="70" x2={s.x + 130} y2="70" stroke="white" strokeWidth="1.5" opacity="0.4" markerEnd="url(#arrowW)" />}
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 30 }}>
+      <p style={{ fontSize: T.subtitle, fontWeight: 600, color: C.white }}>Liderazgo ágil</p>
+      <svg viewBox="0 0 850 340" width={850} fill="none">
+        <g className="anim-pop d1">
+          <rect x="295" y="10" width="260" height="70" rx="14" fill={C.surface} stroke={C.accent} strokeWidth="2.5" />
+          <text x="425" y="53" textAnchor="middle" fill={C.accent} fontSize="30" fontWeight="700" fontFamily="Inter">Líder Ágil</text>
         </g>
-      ))}
-      {/* Risk */}
-      <g className="anim-pop stagger-5">
-        <rect x="160" y="145" width="200" height="40" rx="8" fill="#ef4444" fillOpacity="0.1" stroke="#ef4444" strokeWidth="1" />
-        <text x="260" y="170" textAnchor="middle" fill="#ef4444" fontSize="11" fontFamily="DM Sans">⚠️ Riesgo: agency sin control</text>
-        <line x1="195" y1="100" x2="220" y2="145" stroke="#ef4444" strokeWidth="1" strokeDasharray="4 3" opacity="0.5" />
-        <line x1="325" y1="100" x2="300" y2="145" stroke="#ef4444" strokeWidth="1" strokeDasharray="4 3" opacity="0.5" />
-      </g>
-      <defs>
-        <marker id="arrowW" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6" fill="white" opacity="0.5" /></marker>
-      </defs>
-    </svg>
+        {pillars.map((p, i) => (
+          <g key={i} className={`anim-pop d${i + 2}`}>
+            <line x1="425" y1="80" x2={p.x + 75} y2="135" stroke={p.color} strokeWidth="1.5" opacity="0.4" />
+            <rect x={p.x} y="135" width="150" height="60" rx="12" fill={C.surface} stroke={p.color} strokeWidth="1.5" />
+            <text x={p.x + 75} y="172" textAnchor="middle" fill={p.color} fontSize="22" fontWeight="600" fontFamily="Inter">{p.label}</text>
+            {i === 3 && <text x={p.x + 75} y="192" textAnchor="middle" fill={p.color} fontSize="13" fontFamily="Inter" opacity="0.6">2026</text>}
+          </g>
+        ))}
+        <g className="anim-pop d6">
+          <rect x="175" y="260" width="500" height="60" rx="14" fill={C.surface} stroke={C.accent} strokeWidth="2" strokeDasharray="8 4" />
+          <text x="425" y="297" textAnchor="middle" fill="white" fontSize="22" fontWeight="500" fontFamily="Inter">Equipo autogestionado + agentes</text>
+        </g>
+        {pillars.map((p, i) => (
+          <line key={`l${i}`} x1={p.x + 75} y1="195" x2="425" y2="260" stroke="white" strokeWidth="1" opacity="0.1" className={`anim-fade d${i + 3}`} />
+        ))}
+      </svg>
+    </div>
   )
 }
 
-function SystemE2ESVG() {
+function AgenticDiagram() {
+  const stages = [
+    { label: 'Asistente', sub: 'Responde', color: C.highlight, x: 30 },
+    { label: 'Agente', sub: 'Ejecuta', color: C.accent, x: 240 },
+    { label: 'Multiagente', sub: 'Coordina', color: '#F59E0B', x: 450 },
+    { label: 'Ecosistema', sub: 'Cruza apps', color: '#A855F7', x: 660 },
+  ]
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 30 }}>
+      <p style={{ fontSize: T.subtitle, fontWeight: 600, color: C.white }}>Evolución agéntica</p>
+      <svg viewBox="0 0 880 260" width={880} fill="none">
+        {stages.map((s, i) => (
+          <g key={i} className={`anim-pop d${i + 1}`}>
+            <rect x={s.x} y="50" width="170" height="80" rx="14" fill={C.surface} stroke={s.color} strokeWidth="2" />
+            <text x={s.x + 85} y="85" textAnchor="middle" fill={s.color} fontSize="24" fontWeight="600" fontFamily="Inter">{s.label}</text>
+            <text x={s.x + 85} y="112" textAnchor="middle" fill="white" fontSize="18" opacity="0.5" fontFamily="Inter">{s.sub}</text>
+            {i < 3 && <line x1={s.x + 170} y1="90" x2={s.x + 210} y2="90" stroke="white" strokeWidth="1.5" opacity="0.3" markerEnd="url(#aw)" />}
+          </g>
+        ))}
+        <g className="anim-pop d5">
+          <rect x="290" y="180" width="300" height="50" rx="10" fill="rgba(239,68,68,0.08)" stroke={C.red} strokeWidth="1" />
+          <text x="440" y="212" textAnchor="middle" fill={C.red} fontSize="20" fontFamily="Inter">⚠ Riesgo: agency sin control</text>
+          <line x1="325" y1="130" x2="370" y2="180" stroke={C.red} strokeWidth="1" strokeDasharray="4 3" opacity="0.4" />
+          <line x1="535" y1="130" x2="510" y2="180" stroke={C.red} strokeWidth="1" strokeDasharray="4 3" opacity="0.4" />
+        </g>
+        <defs>
+          <marker id="aw" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8" fill="white" opacity="0.4" /></marker>
+        </defs>
+      </svg>
+    </div>
+  )
+}
+
+function SystemDiagram() {
   const phases = [
-    { label: 'Discovery', color: '#06b6d4', x: 10 },
-    { label: 'Backlog', color: '#06b6d4', x: 95 },
-    { label: 'Build', color: '#06b6d4', x: 180 },
-    { label: 'Test', color: '#06b6d4', x: 265 },
-    { label: 'Release', color: '#06b6d4', x: 350 },
-    { label: 'Observe', color: '#06b6d4', x: 435 },
+    { label: 'Discovery', x: 20 },
+    { label: 'Backlog', x: 170 },
+    { label: 'Build', x: 320 },
+    { label: 'Test', x: 470 },
+    { label: 'Release', x: 620 },
+    { label: 'Observe', x: 770 },
   ]
   const agents = [
-    { label: 'Agent: PRD', x: 95, color: '#f59e0b' },
-    { label: 'Agent: Code', x: 180, color: '#f59e0b' },
-    { label: 'Agent: Test', x: 265, color: '#f59e0b' },
-    { label: 'Agent: Incidents', x: 435, color: '#f59e0b' },
+    { label: 'Agent: PRD', x: 170 },
+    { label: 'Agent: Code', x: 320 },
+    { label: 'Agent: Test', x: 470 },
+    { label: 'Agent: Incidents', x: 770 },
   ]
   return (
-    <svg viewBox="0 0 520 250" className="w-full max-w-2xl mx-auto">
-      {/* Main pipeline */}
-      {phases.map((p, i) => (
-        <g key={i} className={`anim-pop stagger-${i + 1}`}>
-          <rect x={p.x} y="50" width="75" height="40" rx="8" fill="#111827" stroke={p.color} strokeWidth="1.5" />
-          <text x={p.x + 37} y="75" textAnchor="middle" fill={p.color} fontSize="11" fontWeight="500" fontFamily="DM Sans">{p.label}</text>
-          {i < 5 && <line x1={p.x + 75} y1="70" x2={p.x + 85} y2="70" stroke="white" strokeWidth="1" opacity="0.3" markerEnd="url(#arrowW2)" />}
-        </g>
-      ))}
-      {/* Agents below */}
-      {agents.map((a, i) => (
-        <g key={i} className={`anim-pop stagger-${i + 3}`}>
-          <rect x={a.x - 5} y="140" width="85" height="35" rx="7" fill="#111827" stroke={a.color} strokeWidth="1" />
-          <text x={a.x + 37} y="162" textAnchor="middle" fill={a.color} fontSize="9" fontWeight="500" fontFamily="DM Sans">{a.label}</text>
-          <line x1={a.x + 37} y1="140" x2={a.x + 37} y2="90" stroke={a.color} strokeWidth="1" strokeDasharray="3 2" opacity="0.5" />
-        </g>
-      ))}
-      {/* Feedback arc */}
-      <g className="anim-fade stagger-6">
-        <path d="M472 50 C490 10, 30 10, 47 50" fill="none" stroke="#a855f7" strokeWidth="1.5" strokeDasharray="5 3" markerEnd="url(#arrowPurple)" />
-        <text x="260" y="18" textAnchor="middle" fill="#a855f7" fontSize="9" fontFamily="DM Sans">feedback</text>
-      </g>
-      <defs>
-        <marker id="arrowW2" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6" fill="white" opacity="0.4" /></marker>
-        <marker id="arrowPurple" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6" fill="#a855f7" /></marker>
-      </defs>
-    </svg>
-  )
-}
-
-/* ─── SLIDES ─── */
-const QUIZ_1 = [
-  { q: "El objetivo principal de la agilidad es ofrecer mejores resultados mediante la obtención de retroalimentación frecuente, la inspección de los resultados y la adaptación en función de esa retroalimentación.", explanation: "El ciclo empírico (transparencia → inspección → adaptación) es el mecanismo central. En era agéntica se vuelve más necesario porque la IA amplifica aciertos y errores a mayor velocidad." },
-  { q: "El liderazgo debe apoyar y proteger a los equipos ágiles de ser arrastrados de vuelta a viejas formas de trabajo, y deben cambiar la dinámica de poder transfiriendo mecanismos de poder a los equipos ágiles.", explanation: "Sin liderazgo protector, los equipos son reabsorbidos por la inercia burocrática. McKinsey 2025: >80% sin gobierno ejecutivo visible no logra retorno tangible de genAI." },
-  { q: "Las transformaciones ágiles pueden fracasar porque no cuentan con el apoyo ejecutivo o de los mandos medios.", explanation: "El apoyo ejecutivo es condición estructural. En contexto agéntico, el liderazgo define límites de autonomía (humana y de agentes); sin esto la adopción es caótica." },
-  { q: "La agilidad es esencial cuando existen grandes brechas de satisfacción del cliente o cuando las necesidades de los clientes están cambiando rápidamente.", explanation: "En 2026 se agrega una tercera dimensión: automatización directa para workflows repetitivos. La decisión se convierte en triángulo: ágil vs. estable vs. automatizado." },
-  { q: "Cuando las brechas de satisfacción son pequeñas y las necesidades son estables, los procesos estables a menudo satisfacen mejor las necesidades de los clientes.", explanation: "No todo requiere agilidad. Procesos estables bien ejecutados generan eficiencia predecible. El error es \"agilizar\" lo que funciona bien, generando fricción sin valor." },
-]
-
-const QUIZ_2 = [
-  { q: "Diferentes equipos tomarán diferentes caminos hacia los objetivos de su organización. Los líderes ágiles necesitan crear espacio para que todos contribuyan.", explanation: "La diversidad de enfoques es una fortaleza. En era agéntica se traduce en autonomía por nivel y work charts dinámicos donde cada equipo define su human-agent ratio." },
-  { q: "Aprender a confiar en la inteligencia ascendente cambia el papel de los gerentes. Los líderes ágiles crean condiciones para equipos autogestionados y luego dan un paso atrás.", explanation: "Matiz 2026: el líder da paso atrás en ejecución táctica pero intensifica su rol en gobernanza, límites de autonomía y diseño del sistema de trabajo." },
-  { q: "El tamaño de su equipo y los roles que necesita cambiarán a medida que construya su servicio. Necesitará diferentes habilidades durante las diferentes etapas de desarrollo.", explanation: "En 2026 esto es dinámico incluso a nivel de sprint: nuevos roles IA (AI Security Specialist, AI Agent Specialist) surgen según la madurez de la capacidad IA." },
-  { q: "Todo el equipo debe trabajar junto para diseñar, construir e iterar un servicio basado en las necesidades de usuario de las personas a las que va dirigido.", explanation: "La multifuncionalidad evita silos y decisiones desconectadas. En era agéntica, los agentes se evalúan por impacto en experiencia de usuario, no solo eficiencia." },
-  { q: "El delivery manager es responsable de liderar la configuración del entorno ágil que su equipo necesita para crear e iterar un servicio centrado en el usuario.", explanation: "En 2026, ese entorno incluye agentes IA. El delivery manager (SM) asegura que la integración de IA sea gobernada, evaluada y alineada con calidad y transparencia." },
-]
-
-function QuizSlide({ questions, title }) {
-  const [answers, setAnswers] = useState(Array(questions.length).fill(null))
-  const handleAnswer = (idx, val) => {
-    setAnswers(prev => { const n = [...prev]; n[idx] = val; return n })
-  }
-  const answered = answers.filter(a => a !== null).length
-  const correct = answers.filter(a => a === true).length
-  return (
-    <div className="h-full flex flex-col">
-      <h2 className="text-2xl font-bold text-cyan mb-1">{title}</h2>
-      <p className="text-sm text-gray-400 mb-4">Todas las preguntas son Verdadero/Falso. Selecciona tu respuesta.</p>
-      <div className="flex-1 overflow-y-auto space-y-4 pr-2 scrollbar-thin">
-        {questions.map((q, i) => (
-          <QuizCard key={i} q={q.q} explanation={q.explanation} index={i}
-            answered={answers[i]} correct={answers[i] === true}
-            onAnswer={(val) => handleAnswer(i, val)} />
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 30 }}>
+      <p style={{ fontSize: T.subtitle, fontWeight: 600, color: C.white }}>Sistema ágil-agéntico end-to-end</p>
+      <svg viewBox="0 0 920 290" width={920} fill="none">
+        {phases.map((p, i) => (
+          <g key={i} className={`anim-pop d${i + 1}`}>
+            <rect x={p.x} y="60" width="120" height="55" rx="12" fill={C.surface} stroke={C.accent} strokeWidth="1.5" />
+            <text x={p.x + 60} y="94" textAnchor="middle" fill={C.accent} fontSize="20" fontWeight="500" fontFamily="Inter">{p.label}</text>
+            {i < 5 && <line x1={p.x + 120} y1="87" x2={p.x + 150} y2="87" stroke="white" strokeWidth="1" opacity="0.2" markerEnd="url(#as)" />}
+          </g>
         ))}
-      </div>
-      {answered === questions.length && (
-        <div className="mt-4 text-center anim-fade">
-          <span className={`${mono} text-xl font-bold ${correct === questions.length ? 'text-green' : 'text-amber'}`}>
-            {correct}/{questions.length} correctas
-          </span>
-        </div>
-      )}
+        {agents.map((a, i) => (
+          <g key={`a${i}`} className={`anim-pop d${i + 3}`}>
+            <rect x={a.x - 10} y="170" width="140" height="45" rx="10" fill={C.surface} stroke="#F59E0B" strokeWidth="1" />
+            <text x={a.x + 60} y="199" textAnchor="middle" fill="#F59E0B" fontSize="16" fontWeight="500" fontFamily="Inter">{a.label}</text>
+            <line x1={a.x + 60} y1="170" x2={a.x + 60} y2="115" stroke="#F59E0B" strokeWidth="1" strokeDasharray="4 2" opacity="0.4" />
+          </g>
+        ))}
+        <g className="anim-fade d6">
+          <path d="M830 55 C860 15, 60 15, 80 55" fill="none" stroke="#A855F7" strokeWidth="1.5" strokeDasharray="6 3" markerEnd="url(#ap)" />
+          <text x="450" y="22" textAnchor="middle" fill="#A855F7" fontSize="16" fontFamily="Inter">feedback</text>
+        </g>
+        <defs>
+          <marker id="as" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7" fill="white" opacity="0.3" /></marker>
+          <marker id="ap" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7" fill="#A855F7" /></marker>
+        </defs>
+      </svg>
     </div>
   )
 }
 
-function SlideContent({ index }) {
-  switch (index) {
-    /* ── Slide 1: Título ── */
-    case 0: return (
-      <div className="h-full flex flex-col justify-center items-center text-center">
-        <p className="text-sm text-cyan uppercase tracking-widest mb-4 anim-fade stagger-1">2026</p>
-        <h1 className="text-4xl md:text-5xl font-bold text-white mb-4 anim-fade stagger-2 leading-tight">
-          Gestión Ágil en la Era de la<br /><span className="text-cyan">IA Agéntica</span>
+const DIAGRAMS = { cycle: CycleDiagram, triangle: TriangleDiagram, leadership: LeadershipDiagram, agentic: AgenticDiagram, system: SystemDiagram }
+
+/* ═══════════════════════════════════════════
+   SLIDE RENDERERS
+   ═══════════════════════════════════════════ */
+const MARGIN = 120
+const inner = { paddingLeft: MARGIN, paddingRight: MARGIN }
+
+function SlideRenderer({ data, quizState, onQuizAnswer }) {
+  switch (data.type) {
+
+    case 'hero': return (
+      <div style={{ ...inner, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', textAlign: 'center', gap: 40 }}>
+        <div className="anim-fade d1"><Logos size={70} /></div>
+        <p className="anim-fade d2" style={{ fontSize: T.caption, color: C.dim, letterSpacing: 4, textTransform: 'uppercase', fontWeight: 500 }}>Gestión Ágil de Proyectos</p>
+        <h1 className="anim-fade d3" style={{ fontSize: T.hero, fontWeight: 800, lineHeight: 1.1, color: C.white, maxWidth: 900 }}>
+          Roles y <span style={{ color: C.accent }}>Liderazgo</span>
         </h1>
-        <p className="text-gray-400 text-lg max-w-2xl mb-10 anim-fade stagger-3">
-          Liderazgo, roles y sistemas de entrega cuando la IA amplifica todo — lo bueno y lo malo
+        <p className="anim-fade d4" style={{ fontSize: T.text, color: C.dim, maxWidth: 700, lineHeight: 1.4 }}>
+          En la era de la IA agéntica
         </p>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 w-full max-w-3xl">
-          <MetricCard icon={TrendingUp} value="71%" label="Uso regular genAI" source="McKinsey 2025" delay={0.4} />
-          <MetricCard icon={Bot} value="62%" label="Experimenta con agentes" source="McKinsey 2025" color="amber" delay={0.55} />
-          <MetricCard icon={AlertTriangle} value=">80%" label="Sin impacto EBIT" source="McKinsey 2025" color="red" delay={0.7} />
-          <MetricCard icon={Brain} value="82%" label="Punto de inflexión" source="Microsoft WTI" color="purple" delay={0.85} />
+      </div>
+    )
+
+    case 'end': return (
+      <div style={{ ...inner, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', textAlign: 'center', gap: 60 }}>
+        <div className="anim-fade d1"><Logos size={80} /></div>
+        <p className="anim-fade d2" style={{ fontSize: T.subtitle, color: C.dim, fontWeight: 500 }}>Gestión Ágil de Proyectos</p>
+        <p className="anim-fade d3" style={{ fontSize: T.title, fontWeight: 700, color: C.white }}>Gracias</p>
+      </div>
+    )
+
+    case 'section': return (
+      <div style={{ ...inner, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 20 }}>
+        {data.emphasis && <div className="anim-fade d1" style={{ width: 60, height: 4, background: C.accent, borderRadius: 2 }} />}
+        {data.quiz && <div className="anim-fade d1" style={{ width: 60, height: 4, background: C.highlight, borderRadius: 2 }} />}
+        <h2 className="anim-fade d2" style={{ fontSize: T.title, fontWeight: 700, color: C.white, lineHeight: 1.15 }}>{data.title}</h2>
+        {data.subtitle && <p className="anim-fade d3" style={{ fontSize: T.subtitle, color: C.dim, fontWeight: 400 }}>{data.subtitle}</p>}
+      </div>
+    )
+
+    case 'stats': return (
+      <div style={{ ...inner, height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 40, width: '100%', maxWidth: 1500 }}>
+          {data.items.map((s, i) => (
+            <div key={i} className={`anim-pop d${i + 1}`} style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 16, padding: '48px 32px', textAlign: 'center' }}>
+              <p style={{ fontSize: 72, fontWeight: 800, color: C.accent, lineHeight: 1 }}>{s.value}</p>
+              <p style={{ fontSize: T.caption, color: C.white, marginTop: 16 }}>{s.label}</p>
+              <p style={{ fontSize: 18, color: C.dim, marginTop: 8 }}>{s.source}</p>
+            </div>
+          ))}
         </div>
       </div>
     )
 
-    /* ── Slide 2: Ciclo empírico ── */
-    case 1: return (
-      <div className="h-full flex flex-col">
-        <div className="mb-2">
-          <span className="text-xs text-cyan uppercase tracking-wider">Fundamento 1</span>
-          <h2 className="text-3xl font-bold text-white mt-1">El ciclo empírico</h2>
-          <p className="text-gray-400 mt-2 max-w-2xl">El objetivo de la agilidad: mejores resultados mediante retroalimentación frecuente, inspección y adaptación. En era agéntica, este ciclo es más necesario — sin inspección, los errores de IA se propagan exponencialmente.</p>
-        </div>
-        <div className="flex-1 flex items-center justify-center">
-          <CycleEmpiricoSVG />
-        </div>
-        <div className="grid grid-cols-3 gap-3 mt-2">
-          <div className={cardSm + ' anim-pop stagger-4'}>
-            <Eye className="w-5 h-5 text-cyan mb-2" />
-            <p className="text-xs font-medium text-cyan">Transparencia</p>
-            <p className="text-xs text-gray-400">Hacer visible el estado real del trabajo y la calidad del output IA</p>
-          </div>
-          <div className={cardSm + ' anim-pop stagger-5'}>
-            <Target className="w-5 h-5 text-cyan mb-2" />
-            <p className="text-xs font-medium text-cyan">Inspección</p>
-            <p className="text-xs text-gray-400">Revisar artefactos y progreso con frecuencia — incluye lo generado por IA</p>
-          </div>
-          <div className={cardSm + ' anim-pop stagger-6'}>
-            <Settings className="w-5 h-5 text-cyan mb-2" />
-            <p className="text-xs font-medium text-cyan">Adaptación</p>
-            <p className="text-xs text-gray-400">Ajustar proceso, herramientas y delegaciones basándose en evidencia</p>
-          </div>
-        </div>
+    case 'content': return (
+      <div style={{ ...inner, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 32 }}>
+        {data.note && <p className="anim-fade d1" style={{ fontSize: 20, color: data.color === 'highlight' ? C.highlight : data.color === 'accent' ? C.accent : C.dim, textTransform: 'uppercase', letterSpacing: 3, fontWeight: 600 }}>{data.note}</p>}
+        <h2 className="anim-fade d2" style={{ fontSize: T.title, fontWeight: 700, color: C.white, lineHeight: 1.15, maxWidth: 900 }}>{data.title}</h2>
+        <ul style={{ listStyle: 'none', padding: 0, maxWidth: 900 }}>
+          {data.bullets.map((b, i) => (
+            <li key={i} className={`anim-fade d${i + 3}`} style={{ fontSize: T.bullet, color: 'rgba(255,255,255,0.85)', lineHeight: 1.5, paddingLeft: 36, position: 'relative', marginBottom: 12 }}>
+              <span style={{ position: 'absolute', left: 0, top: 6, width: 10, height: 10, borderRadius: '50%', background: data.color === 'highlight' ? C.highlight : data.color === 'accent' ? C.accent : C.accent, opacity: 0.6 }} />
+              {b}
+            </li>
+          ))}
+        </ul>
       </div>
     )
 
-    /* ── Slide 3: Triángulo de decisión ── */
-    case 2: return (
-      <div className="h-full flex flex-col">
-        <div className="mb-2">
-          <span className="text-xs text-cyan uppercase tracking-wider">Fundamento 2</span>
-          <h2 className="text-3xl font-bold text-white mt-1">Cuándo sí, cuándo no</h2>
-          <p className="text-gray-400 mt-2 max-w-2xl">En 2026 la decisión no es binaria. Tres opciones: iterar ágilmente, estabilizar procesos, o automatizar con agentes.</p>
+    case 'diagram': {
+      const Comp = DIAGRAMS[data.id]
+      return (
+        <div style={{ ...inner, height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <Comp />
         </div>
-        <div className="flex-1 flex items-center justify-center">
-          <TriangleSVG />
-        </div>
+      )
+    }
+
+    case 'bigstat': return (
+      <div style={{ ...inner, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', textAlign: 'center', gap: 30 }}>
+        <p className="anim-pop d1" style={{ fontSize: 120, fontWeight: 800, color: data.warn ? C.red : C.accent, lineHeight: 1 }}>{data.value}</p>
+        <p className="anim-fade d2" style={{ fontSize: T.text, color: 'rgba(255,255,255,0.8)', maxWidth: 700, lineHeight: 1.5, whiteSpace: 'pre-line' }}>{data.label}</p>
+        {data.source && <p className="anim-fade d3" style={{ fontSize: T.caption, color: C.dim }}>{data.source}</p>}
       </div>
     )
 
-    /* ── Slide 4: Liderazgo (EMPHASIS) ── */
-    case 3: return (
-      <div className="h-full flex flex-col">
-        <div className="mb-2">
-          <span className="text-xs text-purple uppercase tracking-wider font-bold">Fundamento 3 — Énfasis</span>
-          <h2 className="text-3xl font-bold text-white mt-1">Liderazgo: proteger, habilitar, soltar</h2>
-        </div>
-        <div className="flex-1 flex flex-col lg:flex-row gap-4 items-start">
-          <div className="lg:w-1/2">
-            <LeadershipSVG />
-          </div>
-          <div className="lg:w-1/2 space-y-3">
-            <div className={`${cardSm} border-cyan/30 anim-fade stagger-1`}>
-              <div className="flex items-center gap-2 mb-1">
-                <Shield className="w-5 h-5 text-cyan" />
-                <span className="font-semibold text-cyan text-sm">Proteger</span>
-              </div>
-              <p className="text-xs text-gray-300">Blindar equipos de interferencia burocrática, deadlines arbitrarios. En era agéntica: establecer políticas claras sobre qué pueden hacer los agentes IA.</p>
-            </div>
-            <div className={`${cardSm} border-green/30 anim-fade stagger-2`}>
-              <div className="flex items-center gap-2 mb-1">
-                <Users className="w-5 h-5 text-green" />
-                <span className="font-semibold text-green text-sm">Crear espacio</span>
-              </div>
-              <p className="text-xs text-gray-300">Diferentes equipos, diferentes caminos. La diversidad de enfoques es fortaleza. Transferir mecanismos de poder a los equipos.</p>
-            </div>
-            <div className={`${cardSm} border-amber/30 anim-fade stagger-3`}>
-              <div className="flex items-center gap-2 mb-1">
-                <Zap className="w-5 h-5 text-amber" />
-                <span className="font-semibold text-amber text-sm">Confiar y soltar</span>
-              </div>
-              <p className="text-xs text-gray-300">Líderes crean condiciones para equipos autogestionados y dan paso atrás. Matiz 2026: paso atrás en ejecución, pero intensifica en gobernanza.</p>
-            </div>
-            <div className={`${cardSm} border-purple/30 anim-fade stagger-4`}>
-              <div className="flex items-center gap-2 mb-1">
-                <Layers className="w-5 h-5 text-purple" />
-                <span className="font-semibold text-purple text-sm">Gobernar (2026)</span>
-              </div>
-              <p className="text-xs text-gray-300">Definir límites de autonomía humana y de agentes. Diseñar el sistema de trabajo. Sin gobierno ejecutivo visible, &gt;80% no logra retorno tangible.</p>
-            </div>
-          </div>
-        </div>
-        <div className={`${cardSm} border-red/30 mt-2 anim-fade stagger-5 flex items-center gap-3`}>
-          <AlertTriangle className="w-5 h-5 text-red shrink-0" />
-          <p className="text-xs text-gray-300"><span className="text-red font-semibold">Dato clave:</span> McKinsey 2025 — el rediseño de workflows y el gobierno ejecutivo visible son los dos factores con mayor correlación con impacto en EBIT atribuible a genAI.</p>
-        </div>
+    case 'quote': return (
+      <div style={{ ...inner, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', textAlign: 'center', gap: 40 }}>
+        {data.source && <p className="anim-fade d1" style={{ fontSize: T.caption, color: C.accent, textTransform: 'uppercase', letterSpacing: 3, fontWeight: 600 }}>{data.source}</p>}
+        <p className="anim-fade d2" style={{ fontSize: T.subtitle, color: C.white, fontWeight: 500, lineHeight: 1.6, maxWidth: 800, whiteSpace: 'pre-line' }}>{data.text}</p>
       </div>
     )
 
-    /* ── Slide 5: Equipos multifuncionales (EMPHASIS) ── */
-    case 4: return (
-      <div className="h-full flex flex-col">
-        <div className="mb-3">
-          <span className="text-xs text-purple uppercase tracking-wider font-bold">Fundamento 4 — Énfasis</span>
-          <h2 className="text-3xl font-bold text-white mt-1">Equipos multifuncionales centrados en usuario</h2>
+    case 'bars': return (
+      <div style={{ ...inner, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 28 }}>
+        {data.note && <p className="anim-fade d1" style={{ fontSize: 20, color: data.warn ? C.red : C.dim, textTransform: 'uppercase', letterSpacing: 3, fontWeight: 600 }}>{data.note}</p>}
+        <h2 className="anim-fade d1" style={{ fontSize: T.subtitle, fontWeight: 700, color: C.white }}>{data.title}</h2>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 24, maxWidth: 1200 }}>
+          {data.items.map((item, i) => (
+            <BarRow key={i} item={item} delay={i} />
+          ))}
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 flex-1">
-          <div className="space-y-3">
-            <div className={`${card} anim-fade stagger-1`}>
-              <Users className="w-6 h-6 text-cyan mb-2" />
-              <h3 className="font-semibold text-white text-sm mb-2">Composición dinámica</h3>
-              <p className="text-xs text-gray-300 leading-relaxed">El tamaño del equipo y los roles cambian según la etapa de desarrollo. En 2026 esto es dinámico a nivel de sprint — nuevos roles IA surgen según la madurez de la capacidad.</p>
-            </div>
-            <div className={`${card} anim-fade stagger-2`}>
-              <Target className="w-6 h-6 text-green mb-2" />
-              <h3 className="font-semibold text-white text-sm mb-2">Centrado en usuario, no en eficiencia</h3>
-              <p className="text-xs text-gray-300 leading-relaxed">Diseñadores, investigadores, desarrolladores trabajan juntos. En era agéntica, los agentes IA se evalúan por impacto en experiencia del usuario, no solo por métricas de velocidad.</p>
-            </div>
-          </div>
-          <div className="space-y-3">
-            <div className={`${card} anim-fade stagger-3`}>
-              <Layout className="w-6 h-6 text-amber mb-2" />
-              <h3 className="font-semibold text-white text-sm mb-2">Multifuncionalidad = anti-silos</h3>
-              <p className="text-xs text-gray-300 leading-relaxed">Evita decisiones desconectadas del usuario final. Un agente que resuelve tickets 5x más rápido pero degrada satisfacción del cliente destruye valor.</p>
-            </div>
-            <div className={`${card} border-amber/30 anim-fade stagger-4`}>
-              <Briefcase className="w-6 h-6 text-amber mb-2" />
-              <h3 className="font-semibold text-amber text-sm mb-2">Caso Klarna</h3>
-              <p className="text-xs text-gray-300 leading-relaxed">2.3M conversaciones, equivalente a 700 FTE. Pero el valor real: resolución &lt;2 min vs 11 — una métrica de experiencia de usuario, no solo eficiencia.</p>
-              <div className="flex gap-2 mt-2">
-                <span className={`${mono} text-xs text-green bg-green/10 px-2 py-0.5 rounded`}>-25% repetición</span>
-                <span className={`${mono} text-xs text-green bg-green/10 px-2 py-0.5 rounded`}>+$40M</span>
-              </div>
-            </div>
-          </div>
-        </div>
+        {data.source && <p className="anim-fade d6" style={{ fontSize: 20, color: C.dim }}>{data.source}</p>}
       </div>
     )
 
-    /* ── Slide 6: Delivery Manager (EMPHASIS) ── */
-    case 5: return (
-      <div className="h-full flex flex-col">
-        <div className="mb-3">
-          <span className="text-xs text-purple uppercase tracking-wider font-bold">Fundamento 5 — Énfasis</span>
-          <h2 className="text-3xl font-bold text-white mt-1">El Delivery Manager</h2>
-          <p className="text-gray-400 mt-2">Configurar el entorno para que el equipo funcione — ahora ese entorno incluye agentes IA.</p>
-        </div>
-        <div className="flex-1 grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className={`${card} md:col-span-2 anim-fade stagger-1`}>
-            <UserCog className="w-8 h-8 text-cyan mb-3" />
-            <h3 className="font-semibold text-white text-lg mb-3">Responsabilidades del SM/Delivery Manager</h3>
-            <div className="space-y-3">
-              {[
-                { text: 'Establecer cadencias de trabajo y eliminación de impedimentos', classic: true },
-                { text: 'Facilitar colaboración entre disciplinas', classic: true },
-                { text: 'Asegurar acceso a recursos, datos y herramientas', classic: true },
-                { text: 'Integración gobernada de herramientas IA (agentes, copilots)', classic: false },
-                { text: 'Entrenamiento en uso y validación de outputs IA', classic: false },
-                { text: 'Prácticas de revisión de código/contenido generado por IA', classic: false },
-              ].map((item, i) => (
-                <div key={i} className={`flex items-start gap-3 anim-fade`} style={{ animationDelay: `${0.2 + i * 0.1}s` }}>
-                  {item.classic ? <CheckCircle2 className="w-4 h-4 text-cyan mt-0.5 shrink-0" /> : <Zap className="w-4 h-4 text-purple mt-0.5 shrink-0" />}
-                  <span className="text-sm text-gray-300">
-                    {item.text}
-                    {!item.classic && <span className="ml-2 text-[10px] text-purple bg-purple/10 px-1.5 py-0.5 rounded">2026</span>}
-                  </span>
-                </div>
-              ))}
+    case 'quiz': {
+      const state = quizState[data.idx]
+      return (
+        <div style={{ ...inner, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 32 }}>
+          <p className="anim-fade d1" style={{ fontSize: 20, color: C.highlight, textTransform: 'uppercase', letterSpacing: 3, fontWeight: 600 }}>Pregunta {data.idx + 1} de 10</p>
+          <p className="anim-fade d2" style={{ fontSize: T.text, color: C.white, lineHeight: 1.6, maxWidth: 900, whiteSpace: 'pre-line', fontWeight: 500 }}>{data.q}</p>
+          {state === null ? (
+            <div className="anim-fade d3" style={{ display: 'flex', gap: 24, marginTop: 20 }}>
+              <button onClick={() => onQuizAnswer(data.idx, true)}
+                style={{ padding: '20px 64px', borderRadius: 14, border: `2px solid ${C.highlight}`, background: 'rgba(34,197,94,0.08)', color: C.highlight, fontSize: T.bullet, fontWeight: 600, cursor: 'pointer', fontFamily: 'Inter', transition: 'all 300ms' }}>
+                Verdadero
+              </button>
+              <button onClick={() => onQuizAnswer(data.idx, false)}
+                style={{ padding: '20px 64px', borderRadius: 14, border: `2px solid ${C.red}`, background: 'rgba(239,68,68,0.08)', color: C.red, fontSize: T.bullet, fontWeight: 600, cursor: 'pointer', fontFamily: 'Inter', transition: 'all 300ms' }}>
+                Falso
+              </button>
             </div>
-          </div>
-          <div className="space-y-4">
-            <div className={`${cardSm} anim-pop stagger-3`}>
-              <p className="text-xs text-gray-400 mb-1">Scrum Guide</p>
-              <p className="text-sm text-white italic leading-relaxed">"El Scrum Master es responsable de establecer Scrum como se define en la Guía de Scrum. Logra esto ayudando al Scrum Team y la organización a comprender la teoría y la práctica."</p>
-            </div>
-            <div className={`${cardSm} border-purple/30 anim-pop stagger-4`}>
-              <p className="text-xs text-purple mb-1">Extensión 2026</p>
-              <p className="text-sm text-gray-300 leading-relaxed">Si el delivery manager no configura prácticas de revisión de outputs IA, la "inspección" del ciclo empírico <strong className="text-white">simplemente no ocurre</strong>.</p>
-            </div>
-            <div className={`${cardSm} border-amber/30 anim-pop stagger-5`}>
-              <p className="text-xs text-amber mb-1">Pregunta clave</p>
-              <p className="text-sm text-gray-300 italic">"¿Quién en su equipo tiene la responsabilidad explícita de configurar cómo se integra IA al flujo de trabajo?"</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    )
-
-    /* ── Slide 7: Quiz 1 ── */
-    case 6: return <QuizSlide questions={QUIZ_1} title="Quiz: Fundamentos Ágiles" />
-
-    /* ── Slide 8: Era agéntica ── */
-    case 7: return (
-      <div className="h-full flex flex-col">
-        <div className="mb-3">
-          <h2 className="text-3xl font-bold text-white">Qué entenderemos por <span className="text-amber">era agéntica</span></h2>
-          <p className="text-gray-400 mt-2">Agentes = sistemas que planifican y ejecutan múltiples pasos. El problema real: agencia excesiva + bajo control.</p>
-        </div>
-        <div className="flex-1 flex items-center">
-          <AgenticEvolutionSVG />
-        </div>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-2">
-          <MetricCard icon={Bot} value="62%" label="Experimenta con agentes" source="McKinsey 2025" color="amber" delay={0.3} />
-          <MetricCard icon={TrendingUp} value="23%" label="Escalando agentes" source="McKinsey 2025" color="green" delay={0.45} />
-          <MetricCard icon={Layers} value="40%" label="Apps con agentes (2026)" source="Gartner" color="purple" delay={0.6} />
-          <MetricCard icon={AlertTriangle} value="<5%" label="Apps con agentes (2025)" source="Gartner" color="red" delay={0.75} />
-        </div>
-      </div>
-    )
-
-    /* ── Slide 9: Scrum roles canónicos (EMPHASIS) ── */
-    case 8: return (
-      <div className="h-full flex flex-col">
-        <div className="mb-3">
-          <span className="text-xs text-purple uppercase tracking-wider font-bold">Roles — Base canónica</span>
-          <h2 className="text-3xl font-bold text-white mt-1">Scrum: el punto de partida</h2>
-          <p className="text-gray-400 mt-2">En era agéntica no se elimina la accountability; se reubica.</p>
-        </div>
-        <div className="flex-1 grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className={`${card} anim-pop stagger-1 border-cyan/30`}>
-            <div className="w-12 h-12 bg-cyan/10 rounded-xl flex items-center justify-center mb-3">
-              <Target className="w-7 h-7 text-cyan" />
-            </div>
-            <h3 className="text-lg font-bold text-cyan mb-2">Product Owner</h3>
-            <p className="text-sm text-gray-300 mb-3">Maximizar el valor del producto resultante del trabajo del Scrum Team.</p>
-            <ul className="space-y-1.5 text-xs text-gray-400">
-              <li className="flex items-start gap-2"><ArrowRight className="w-3 h-3 mt-0.5 text-cyan shrink-0" />Gestionar el Product Backlog</li>
-              <li className="flex items-start gap-2"><ArrowRight className="w-3 h-3 mt-0.5 text-cyan shrink-0" />Comunicar el Objetivo del Producto</li>
-              <li className="flex items-start gap-2"><ArrowRight className="w-3 h-3 mt-0.5 text-cyan shrink-0" />Ordenar items del Backlog</li>
-              <li className="flex items-start gap-2"><ArrowRight className="w-3 h-3 mt-0.5 text-cyan shrink-0" />Asegurar transparencia</li>
-            </ul>
-          </div>
-          <div className={`${card} anim-pop stagger-2 border-green/30`}>
-            <div className="w-12 h-12 bg-green/10 rounded-xl flex items-center justify-center mb-3">
-              <UserCog className="w-7 h-7 text-green" />
-            </div>
-            <h3 className="text-lg font-bold text-green mb-2">Scrum Master</h3>
-            <p className="text-sm text-gray-300 mb-3">Establecer Scrum, lograr efectividad del equipo como líder servidor.</p>
-            <ul className="space-y-1.5 text-xs text-gray-400">
-              <li className="flex items-start gap-2"><ArrowRight className="w-3 h-3 mt-0.5 text-green shrink-0" />Coach del equipo en autogestión</li>
-              <li className="flex items-start gap-2"><ArrowRight className="w-3 h-3 mt-0.5 text-green shrink-0" />Eliminar impedimentos</li>
-              <li className="flex items-start gap-2"><ArrowRight className="w-3 h-3 mt-0.5 text-green shrink-0" />Asegurar eventos productivos</li>
-              <li className="flex items-start gap-2"><ArrowRight className="w-3 h-3 mt-0.5 text-green shrink-0" />Servir a la organización</li>
-            </ul>
-          </div>
-          <div className={`${card} anim-pop stagger-3 border-amber/30`}>
-            <div className="w-12 h-12 bg-amber/10 rounded-xl flex items-center justify-center mb-3">
-              <Zap className="w-7 h-7 text-amber" />
-            </div>
-            <h3 className="text-lg font-bold text-amber mb-2">Developers</h3>
-            <p className="text-sm text-gray-300 mb-3">Crear cualquier aspecto de un Increment utilizable cada Sprint.</p>
-            <ul className="space-y-1.5 text-xs text-gray-400">
-              <li className="flex items-start gap-2"><ArrowRight className="w-3 h-3 mt-0.5 text-amber shrink-0" />Plan del Sprint</li>
-              <li className="flex items-start gap-2"><ArrowRight className="w-3 h-3 mt-0.5 text-amber shrink-0" />Calidad en Definition of Done</li>
-              <li className="flex items-start gap-2"><ArrowRight className="w-3 h-3 mt-0.5 text-amber shrink-0" />Adaptar plan cada día</li>
-              <li className="flex items-start gap-2"><ArrowRight className="w-3 h-3 mt-0.5 text-amber shrink-0" />Responsabilidad mutua</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    )
-
-    /* ── Slide 10: Adopción de IA ── */
-    case 9: return (
-      <div className="h-full flex flex-col">
-        <div className="mb-4">
-          <h2 className="text-3xl font-bold text-white">Adopción de IA: la curva ya cruzó el umbral</h2>
-          <p className="text-gray-400 mt-2">Uso ≠ valor enterprise. La trampa de "tool rollout".</p>
-        </div>
-        <div className="flex-1 space-y-4">
-          <DataBar label="Uso regular genAI (2024)" value={65} color="#10b981" delay={0.1} />
-          <DataBar label="Uso regular genAI (2025)" value={71} color="#10b981" delay={0.25} />
-          <DataBar label="AI en ≥1 función (2025)" value={88} color="#06b6d4" delay={0.4} />
-          <DataBar label="Experimenta con agentes" value={62} color="#f59e0b" delay={0.55} />
-          <DataBar label="Escalando agentes" value={23} color="#a855f7" delay={0.7} />
-          <DataBar label="Apps con agentes (proy. 2026)" value={40} color="#a855f7" delay={0.85} />
-          <DataBar label="Devs usando AI" value={62} color="#06b6d4" delay={1} />
-        </div>
-        <p className="text-xs text-gray-500 mt-3">Fuentes: McKinsey 2024-2025, Gartner 2025, Stack Overflow 2024</p>
-      </div>
-    )
-
-    /* ── Slide 11: Productividad sube y baja ── */
-    case 10: return (
-      <div className="h-full flex flex-col">
-        <div className="mb-3">
-          <h2 className="text-3xl font-bold text-white">Productividad: lo que sube <span className="text-red">y lo que baja</span></h2>
-        </div>
-        <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div>
-            <h3 className="text-green font-semibold mb-3 flex items-center gap-2"><TrendingUp className="w-5 h-5" /> Lo que sube</h3>
-            <div className="space-y-3">
-              <DataBar label="Programación (lab)" value={55.8} suffix="% más rápido" color="#10b981" max={60} delay={0.1} />
-              <DataBar label="Escritura: tiempo" value={-40} suffix="% tiempo" color="#10b981" max={60} delay={0.25} />
-              <DataBar label="Escritura: calidad" value={18} suffix="%" color="#10b981" max={60} delay={0.4} />
-              <DataBar label="Novatos contact center" value={34} suffix="%" color="#10b981" max={60} delay={0.55} />
-              <DataBar label="PRs (Copilot/Accenture)" value={8.69} suffix="%" color="#10b981" max={60} delay={0.7} />
-              <DataBar label="Builds exitosos" value={84} suffix="%" color="#10b981" max={100} delay={0.85} />
-            </div>
-          </div>
-          <div>
-            <h3 className="text-red font-semibold mb-3 flex items-center gap-2"><TrendingDown className="w-5 h-5" /> Alertas</h3>
-            <div className="space-y-3">
-              <DataBar label="Expertos open-source (METR)" value={19} suffix="% más lento" color="#ef4444" max={60} delay={0.2} />
-            </div>
-            <div className={`${card} mt-4 border-red/30 anim-fade stagger-4`}>
-              <AlertTriangle className="w-5 h-5 text-red mb-2" />
-              <p className="text-sm text-gray-300 leading-relaxed">
-                <strong className="text-red">Brecha percepción-realidad:</strong> los desarrolladores expertos creen ser ~20% más rápidos con IA, pero en realidad tardan 19% más (METR RCT 2025).
+          ) : (
+            <div className="anim-fade" style={{ marginTop: 20 }}>
+              <p style={{ fontSize: T.bullet, fontWeight: 700, color: state ? C.highlight : C.red, marginBottom: 16 }}>
+                {state ? '✓ Correcto' : '✗ Incorrecto'} — La respuesta es Verdadero
               </p>
-              <p className="text-xs text-gray-500 mt-2">Mensaje de liderazgo: "adopción selectiva + medición real + entrenamiento", no fe.</p>
+              <p style={{ fontSize: T.caption, color: 'rgba(255,255,255,0.7)', whiteSpace: 'pre-line', lineHeight: 1.6, maxWidth: 800 }}>{data.explanation}</p>
             </div>
-          </div>
+          )}
         </div>
-      </div>
-    )
+      )
+    }
 
-    /* ── Slide 12: DORA ── */
-    case 11: return (
-      <div className="h-full flex flex-col">
-        <div className="mb-3">
-          <h2 className="text-3xl font-bold text-white">DORA 2024: <span className="text-cyan">local</span> vs <span className="text-red">sistémico</span></h2>
-          <p className="text-gray-400 mt-2">Con +25% adopción de IA, mejoras locales no se traducen automáticamente en outcomes.</p>
-        </div>
-        <div className="flex-1 space-y-3">
-          <p className="text-xs text-green font-semibold uppercase tracking-wider">Mejoras (por +25% adopción IA)</p>
-          <DataBar label="Calidad documentación" value={7.5} color="#10b981" max={15} delay={0.1} />
-          <DataBar label="Calidad código" value={3.4} color="#10b981" max={15} delay={0.2} />
-          <DataBar label="Velocidad code review" value={3.1} color="#10b981" max={15} delay={0.3} />
-          <DataBar label="Flow individual" value={2.6} color="#06b6d4" max={15} delay={0.4} />
-          <DataBar label="Satisfacción laboral" value={2.2} color="#06b6d4" max={15} delay={0.5} />
-          <p className="text-xs text-red font-semibold uppercase tracking-wider mt-4">Degradaciones sistémicas</p>
-          <DataBar label="Throughput de entrega" value={-1.5} color="#ef4444" max={15} delay={0.6} />
-          <DataBar label="Estabilidad" value={-7.2} color="#ef4444" max={15} delay={0.7} />
-        </div>
-        <div className={`${cardSm} border-amber/30 mt-3 anim-fade stagger-6`}>
-          <p className="text-xs text-gray-300"><span className="text-amber font-semibold">Conexión con fundamentos:</span> sin el ciclo inspección → adaptación, las mejoras locales nunca se convierten en mejoras sistémicas. La gestión ágil debe convertir mejoras locales en outcomes.</p>
-        </div>
-      </div>
-    )
-
-    /* ── Slide 13: Vacuum effect ── */
-    case 12: return (
-      <div className="h-full flex flex-col justify-center items-center text-center">
-        <div className="max-w-2xl">
-          <AlertTriangle className="w-16 h-16 text-amber mx-auto mb-6 anim-pop stagger-1" />
-          <h2 className="text-3xl font-bold text-white mb-4 anim-fade stagger-2">El "Vacuum Effect"</h2>
-          <p className="text-lg text-gray-300 mb-8 anim-fade stagger-3">
-            Si IA acelera tareas valiosas, se crea un <strong className="text-amber">"vacío de tiempo"</strong>. Si la organización no rediseña, ese vacío se rellena con más burocracia y retrabajo.
-          </p>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className={`${card} anim-pop stagger-3`}>
-              <Clock className="w-8 h-8 text-green mx-auto mb-2" />
-              <p className={`${mono} text-xl text-green font-bold`}>Tiempo liberado</p>
-              <p className="text-xs text-gray-400 mt-1">IA acelera tareas cognitivas</p>
-            </div>
-            <div className={`${card} anim-pop stagger-4 border-red/30`}>
-              <AlertTriangle className="w-8 h-8 text-red mx-auto mb-2" />
-              <p className={`${mono} text-xl text-red font-bold`}>Sin rediseño</p>
-              <p className="text-xs text-gray-400 mt-1">Vacío se llena con burocracia</p>
-            </div>
-            <div className={`${card} anim-pop stagger-5 border-green/30`}>
-              <TrendingUp className="w-8 h-8 text-cyan mx-auto mb-2" />
-              <p className={`${mono} text-xl text-cyan font-bold`}>Con rediseño</p>
-              <p className="text-xs text-gray-400 mt-1">Vacío se convierte en innovación</p>
-            </div>
-          </div>
-          <p className="text-sm text-gray-500 mt-6 anim-fade stagger-6">DORA: tiempo en trabajo valioso cae (-2.6%) aun subiendo flow/productividad. El rol del liderazgo es proteger ese vacío.</p>
-        </div>
-      </div>
-    )
-
-    /* ── Slide 14: Sistema ágil-agéntico ── */
-    case 13: return (
-      <div className="h-full flex flex-col">
-        <div className="mb-3">
-          <h2 className="text-3xl font-bold text-white">Sistema ágil-agéntico <span className="text-cyan">end-to-end</span></h2>
-          <p className="text-gray-400 mt-2">Agentes aceleran cada fase; el control se desplaza a reglas, pruebas, políticas y revisión.</p>
-        </div>
-        <div className="flex-1 flex items-center">
-          <SystemE2ESVG />
-        </div>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-2">
+    case 'role': return (
+      <div style={{ ...inner, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 28 }}>
+        <div className="anim-fade d1" style={{ width: 60, height: 4, background: data.color, borderRadius: 2 }} />
+        <h2 className="anim-fade d1" style={{ fontSize: T.title, fontWeight: 700, color: data.color }}>{data.role}</h2>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 32, marginTop: 8 }}>
           {[
-            { label: 'Discovery', desc: 'Agente genera insights de usuario, sintetiza research', color: 'cyan' },
-            { label: 'Build', desc: 'Agente genera código, refactors, documentación', color: 'amber' },
-            { label: 'Test', desc: 'Agente genera tests, triage automatizado', color: 'green' },
-            { label: 'Observe', desc: 'Agente resume incidentes, detecta anomalías', color: 'purple' },
-          ].map((item, i) => (
-            <div key={i} className={`${cardSm} anim-pop stagger-${i + 2}`}>
-              <p className={`text-xs font-semibold text-${item.color} mb-1`}>{item.label}</p>
-              <p className="text-xs text-gray-400">{item.desc}</p>
+            { label: 'Base', content: data.base },
+            { label: 'Upgrade 2026', content: data.upgrade },
+            { label: 'Artefactos nuevos', content: data.artifacts },
+          ].map((col, i) => (
+            <div key={i} className={`anim-pop d${i + 2}`} style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 16, padding: 32 }}>
+              <p style={{ fontSize: 20, color: C.dim, textTransform: 'uppercase', letterSpacing: 2, marginBottom: 12, fontWeight: 600 }}>{col.label}</p>
+              <p style={{ fontSize: T.caption, color: 'rgba(255,255,255,0.85)', lineHeight: 1.6, whiteSpace: 'pre-line' }}>{col.content}</p>
             </div>
           ))}
         </div>
       </div>
     )
 
-    /* ── Slide 15: Roles redefinidos (EMPHASIS) ── */
-    case 14: return (
-      <div className="h-full flex flex-col">
-        <div className="mb-3">
-          <span className="text-xs text-purple uppercase tracking-wider font-bold">Roles — Redefinición 2026</span>
-          <h2 className="text-3xl font-bold text-white mt-1">De "hacer" a "orquestar y asegurar"</h2>
-        </div>
-        <div className="flex-1 overflow-y-auto">
-          <table className="w-full text-sm border-collapse">
-            <thead>
-              <tr className="text-left border-b border-white/10">
-                <th className="py-2 px-2 text-cyan font-semibold w-28">Rol</th>
-                <th className="py-2 px-2 text-gray-400 font-medium">Accountability base</th>
-                <th className="py-2 px-2 text-purple font-medium">Upgrade 2026</th>
-                <th className="py-2 px-2 text-amber font-medium">Artefactos nuevos</th>
-              </tr>
-            </thead>
-            <tbody className="text-xs text-gray-300">
-              <tr className="border-b border-white/5 anim-fade stagger-1">
-                <td className="py-3 px-2 font-semibold text-cyan">Product Owner</td>
-                <td className="py-3 px-2">Maximizar valor; gestionar Product Backlog</td>
-                <td className="py-3 px-2">Diseñar "value + guardrails": decidir qué se delega a agentes, con qué límites; priorizar rediseño de workflow para capturar EBIT</td>
-                <td className="py-3 px-2 text-amber">Policy-by-design, criterios verificables, eval sets mínimos</td>
-              </tr>
-              <tr className="border-b border-white/5 anim-fade stagger-2 bg-purple/5">
-                <td className="py-3 px-2 font-semibold text-green">SM / Delivery Manager</td>
-                <td className="py-3 px-2">Establecer Scrum; lograr efectividad; liderazgo servidor; configurar entorno ágil</td>
-                <td className="py-3 px-2">"Flow & adoption architect": entrenar uso/validación, bajar fricción, proteger foco; asegurar integración gobernada de IA</td>
-                <td className="py-3 px-2 text-amber">Guías de uso, checklists de validación, métricas DevEx/Flow</td>
-              </tr>
-              <tr className="border-b border-white/5 anim-fade stagger-3">
-                <td className="py-3 px-2 font-semibold text-amber">Developers</td>
-                <td className="py-3 px-2">Entregar Increment; plan del Sprint; calidad en DoD</td>
-                <td className="py-3 px-2">"Engineer + evaluator": orquestar agentes, revisar, asegurar seguridad, testear; gestionar deuda y contaminación</td>
-                <td className="py-3 px-2 text-amber">Suites de pruebas, linters/SAST, revisión de prompts</td>
-              </tr>
-              <tr className="anim-fade stagger-4 bg-purple/5">
-                <td className="py-3 px-2 font-semibold text-purple">Líderes</td>
-                <td className="py-3 px-2">Crear condiciones para equipos efectivos; proteger; transferir poder</td>
-                <td className="py-3 px-2">"Agent-boss / system steward": definir human-agent ratio, rediseñar estructura (work charts), decidir centralización vs federación</td>
-                <td className="py-3 px-2 text-amber">Modelo de gobernanza, métricas de impacto (EBIT/ROI), controles de riesgo</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <div className={`${cardSm} border-purple/30 mt-3 anim-fade stagger-5`}>
-          <p className="text-xs text-gray-300"><span className="text-purple font-semibold">Clave:</span> La accountability no desaparece, se reubica y se expande. Los roles Scrum permanecen; cambia el contenido de lo que hacen día a día.</p>
+    case 'governance': return (
+      <div style={{ ...inner, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 32 }}>
+        <div className="anim-fade d1" style={{ width: 60, height: 4, background: data.color, borderRadius: 2 }} />
+        <h2 className="anim-fade d1" style={{ fontSize: T.title, fontWeight: 700, color: data.color }}>{data.model}</h2>
+        <p className="anim-fade d2" style={{ fontSize: T.text, color: 'rgba(255,255,255,0.7)' }}>{data.subtitle}</p>
+        <div style={{ display: 'flex', gap: 40, marginTop: 16 }}>
+          <div className="anim-pop d3" style={{ flex: 1, background: C.surface, borderRadius: 16, padding: 32, border: `1px solid ${C.border}` }}>
+            <p style={{ fontSize: 20, color: C.highlight, textTransform: 'uppercase', letterSpacing: 2, marginBottom: 12, fontWeight: 600 }}>Ventajas</p>
+            <p style={{ fontSize: T.caption, color: 'rgba(255,255,255,0.85)', lineHeight: 1.6 }}>{data.pros}</p>
+          </div>
+          <div className="anim-pop d4" style={{ flex: 1, background: C.surface, borderRadius: 16, padding: 32, border: `1px solid ${C.border}` }}>
+            <p style={{ fontSize: 20, color: C.red, textTransform: 'uppercase', letterSpacing: 2, marginBottom: 12, fontWeight: 600 }}>Riesgos</p>
+            <p style={{ fontSize: T.caption, color: 'rgba(255,255,255,0.85)', lineHeight: 1.6 }}>{data.cons}</p>
+          </div>
+          <div className="anim-pop d5" style={{ flex: 1, background: C.surface, borderRadius: 16, padding: 32, border: `1px solid ${C.border}` }}>
+            <p style={{ fontSize: 20, color: C.accent, textTransform: 'uppercase', letterSpacing: 2, marginBottom: 12, fontWeight: 600 }}>Cuándo usar</p>
+            <p style={{ fontSize: T.caption, color: 'rgba(255,255,255,0.85)', lineHeight: 1.6 }}>{data.when}</p>
+          </div>
         </div>
       </div>
     )
 
-    /* ── Slide 16: Gobernanza 3 modelos ── */
-    case 15: return (
-      <div className="h-full flex flex-col">
-        <div className="mb-3">
-          <h2 className="text-3xl font-bold text-white">Gobernanza: <span className="text-cyan">3 modelos</span></h2>
-          <p className="text-gray-400 mt-2">Solo 18% reportaba un council/board con autoridad para IA responsable (McKinsey 2024). Esto es un gap crítico en 2026.</p>
-        </div>
-        <div className="flex-1 grid grid-cols-1 md:grid-cols-3 gap-4">
-          {[
-            { title: 'Centralizado', subtitle: 'AI CoE fuerte', pros: 'Consistencia, control, cumplimiento', cons: 'Cuellos de botella, baja adopción local', when: 'Industrias reguladas, riesgo alto', color: 'cyan', icon: Shield },
-            { title: 'Federado', subtitle: 'Centro + unidades', pros: 'Balance velocidad/control', cons: 'Inconsistencia, "shadow AI"', when: 'Empresas multi-unidad por productos', color: 'amber', icon: Layers },
-            { title: 'Product-aligned', subtitle: 'Por value streams', pros: 'Conecta IA con outcomes; mejor feedback loop', cons: 'Requiere madurez de medición', when: 'Agile ya escalado y hay telemetría', color: 'purple', icon: Layout },
-          ].map((m, i) => (
-            <div key={i} className={`${card} border-${m.color}/30 anim-pop stagger-${i + 1} flex flex-col`}>
-              <m.icon className={`w-8 h-8 text-${m.color} mb-3`} />
-              <h3 className={`text-lg font-bold text-${m.color} mb-1`}>{m.title}</h3>
-              <p className="text-xs text-gray-500 mb-3">{m.subtitle}</p>
-              <div className="space-y-2 flex-1">
-                <div><p className="text-[10px] text-green uppercase">Ventajas</p><p className="text-xs text-gray-300">{m.pros}</p></div>
-                <div><p className="text-[10px] text-red uppercase">Riesgos</p><p className="text-xs text-gray-300">{m.cons}</p></div>
-                <div><p className="text-[10px] text-cyan uppercase">Cuándo encaja</p><p className="text-xs text-gray-300">{m.when}</p></div>
-              </div>
+    case 'metrics': return (
+      <div style={{ ...inner, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 28 }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
+          {data.items.map((m, i) => (
+            <div key={i} className={`anim-fade d${i + 1}`} style={{ display: 'flex', alignItems: 'center', gap: 32, background: C.surface, border: `1px solid ${C.border}`, borderRadius: 16, padding: '28px 40px' }}>
+              <p style={{ fontSize: T.text, fontWeight: 700, color: C.accent, minWidth: 240 }}>{m.dim}</p>
+              <p style={{ fontSize: T.caption, color: 'rgba(255,255,255,0.8)', flex: 1 }}>{m.metric}</p>
+              <p style={{ fontSize: 20, color: C.red, fontWeight: 500 }}>⚠ {m.alert}</p>
             </div>
           ))}
         </div>
       </div>
     )
 
-    /* ── Slide 17: Métricas tablero mínimo ── */
-    case 16: return (
-      <div className="h-full flex flex-col">
-        <div className="mb-3">
-          <h2 className="text-3xl font-bold text-white">Métricas: tablero mínimo viable</h2>
-          <p className="text-gray-400 mt-2">Para evitar "local wins / system losses" — medir impacto neto.</p>
-        </div>
-        <div className="flex-1 overflow-y-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            {[
-              { dim: 'Velocidad E2E', metric: 'Lead time / throughput (DORA)', why: 'Captura el sistema completo', alert: 'Throughput baja con "más commits"', color: 'cyan', icon: Gauge },
-              { dim: 'Estabilidad', metric: 'Change failure rate', why: 'Señala deuda y fragilidad', alert: 'Estabilidad cae con IA (-7.2%)', color: 'green', icon: Shield },
-              { dim: 'Calidad', metric: 'Build success, PR merge rate, defect escape', why: 'IA puede inflar volumen con deuda', alert: 'Aumenta volumen; cae merge rate', color: 'amber', icon: CheckCircle2 },
-              { dim: 'Productividad', metric: 'Flow / productividad percibida', why: 'Indicador humano (sostenibilidad)', alert: 'Suben percepciones, baja valor real', color: 'purple', icon: Brain },
-              { dim: 'ROI', metric: '% EBIT atribuible; costo/beneficio', why: 'Evita "AI theater"', alert: '>80% sin impacto EBIT enterprise', color: 'red', icon: BarChart3 },
-              { dim: 'Riesgo', metric: 'Incidentes IA (privacidad, IP, sesgo)', why: 'Cumplimiento y reputación', alert: 'Consecuencias por inexactitud', color: 'red', icon: AlertTriangle },
-            ].map((m, i) => (
-              <div key={i} className={`${cardSm} anim-fade stagger-${i + 1} flex gap-3`}>
-                <m.icon className={`w-6 h-6 text-${m.color} shrink-0 mt-0.5`} />
-                <div>
-                  <p className={`text-sm font-semibold text-${m.color}`}>{m.dim}</p>
-                  <p className="text-xs text-white mt-0.5">{m.metric}</p>
-                  <p className="text-[10px] text-gray-400 mt-1">{m.why}</p>
-                  <p className="text-[10px] text-red/70 mt-0.5">⚠ {m.alert}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    )
-
-    /* ── Slide 18: Quiz 2 ── */
-    case 17: return <QuizSlide questions={QUIZ_2} title="Quiz: Roles y Liderazgo en Era Agéntica" />
-
-    /* ── Slide 19: Casos cuantificados ── */
-    case 18: return (
-      <div className="h-full flex flex-col">
-        <div className="mb-3">
-          <h2 className="text-3xl font-bold text-white">Casos cuantificados</h2>
-        </div>
-        <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-4 overflow-y-auto">
-          <div className={`${card} border-green/30 anim-pop stagger-1`}>
-            <h3 className="font-bold text-green text-sm mb-2">Copilot + Accenture (RCT)</h3>
-            <div className="space-y-2">
-              <div className="flex justify-between text-xs"><span className="text-gray-400">Pull Requests</span><span className={`${mono} text-green`}>+8.69%</span></div>
-              <div className="flex justify-between text-xs"><span className="text-gray-400">Merge rate</span><span className={`${mono} text-green`}>+15%</span></div>
-              <div className="flex justify-between text-xs"><span className="text-gray-400">Builds exitosos</span><span className={`${mono} text-green`}>+84%</span></div>
-              <div className="flex justify-between text-xs"><span className="text-gray-400">Satisfacción</span><span className={`${mono} text-green`}>90% más fulfilled</span></div>
-            </div>
-            <p className="text-[10px] text-gray-500 mt-2">Con telemetría y prácticas de calidad, el aumento de output acompaña señales de calidad.</p>
-          </div>
-          <div className={`${card} border-amber/30 anim-pop stagger-2`}>
-            <h3 className="font-bold text-amber text-sm mb-2">Klarna — Agente end-to-end</h3>
-            <div className="space-y-2">
-              <div className="flex justify-between text-xs"><span className="text-gray-400">Conversaciones</span><span className={`${mono} text-amber`}>2.3M</span></div>
-              <div className="flex justify-between text-xs"><span className="text-gray-400">Equivalente FTE</span><span className={`${mono} text-amber`}>700</span></div>
-              <div className="flex justify-between text-xs"><span className="text-gray-400">Resolución</span><span className={`${mono} text-amber`}>&lt;2 min vs 11</span></div>
-              <div className="flex justify-between text-xs"><span className="text-gray-400">Profit improvement</span><span className={`${mono} text-amber`}>+$40M</span></div>
-            </div>
-            <p className="text-[10px] text-gray-500 mt-2">Revenue por empleado +73% (SEK 4M→7M). Reducción vía attrition.</p>
-          </div>
-          <div className={`${card} border-cyan/30 anim-pop stagger-3`}>
-            <h3 className="font-bold text-cyan text-sm mb-2">Escritura profesional</h3>
-            <div className="space-y-2">
-              <div className="flex justify-between text-xs"><span className="text-gray-400">Tiempo</span><span className={`${mono} text-green`}>-40%</span></div>
-              <div className="flex justify-between text-xs"><span className="text-gray-400">Calidad</span><span className={`${mono} text-green`}>+18%</span></div>
-            </div>
-            <p className="text-[10px] text-gray-500 mt-2">Transferible a PO (PRDs, historias), SM (minutas, riesgos), Líderes (síntesis ejecutiva).</p>
-          </div>
-          <div className={`${card} border-red/30 anim-pop stagger-4`}>
-            <h3 className="font-bold text-red text-sm mb-2">Contracaso: METR RCT</h3>
-            <div className="space-y-2">
-              <div className="flex justify-between text-xs"><span className="text-gray-400">Devs expertos</span><span className={`${mono} text-red`}>+19% más lento</span></div>
-              <div className="flex justify-between text-xs"><span className="text-gray-400">Percepción</span><span className={`${mono} text-red`}>Creen ser ~20% más rápidos</span></div>
-            </div>
-            <p className="text-[10px] text-gray-500 mt-2">Trabajo altamente contextual en repos grandes. Enseñanza: no medir = autoengaño.</p>
-          </div>
-        </div>
-      </div>
-    )
-
-    /* ── Slide 20: Checklist 30 días ── */
-    case 19: return (
-      <div className="h-full flex flex-col justify-center">
-        <h2 className="text-3xl font-bold text-white mb-6 text-center anim-fade">Checklist de implementación: <span className="text-cyan">30 días</span></h2>
-        <div className="max-w-2xl mx-auto w-full space-y-4">
-          {[
-            { step: 1, title: 'Verificar fundamentos', desc: '¿Hay liderazgo protector, equipos multifuncionales, cadencias de inspección reales?', color: 'cyan' },
-            { step: 2, title: 'Medir antes/después', desc: 'Establecer baseline: DORA + DevEx + calidad. Sin baseline no hay ROI.', color: 'green' },
-            { step: 3, title: 'Definir guardrails', desc: 'Datos/IP/seguridad + entrenamiento. 72% preocupación privacidad/seguridad (PMI Sweden).', color: 'amber' },
-            { step: 4, title: 'Empezar pequeño', desc: '1-2 workflows, no "comprar todo". 64% recomienda iniciar pequeño y escalar (PMI Sweden).', color: 'purple' },
-            { step: 5, title: 'Iterar con evidencia', desc: 'Aplicar el ciclo empírico a la propia adopción de IA. Revisar en 30 días con datos.', color: 'cyan' },
-          ].map((s, i) => (
-            <div key={i} className={`${card} flex items-start gap-4 anim-fade`} style={{ animationDelay: `${0.2 + i * 0.15}s` }}>
-              <div className={`w-10 h-10 rounded-lg bg-${s.color}/10 border border-${s.color}/30 flex items-center justify-center shrink-0`}>
-                <span className={`${mono} text-lg font-bold text-${s.color}`}>{s.step}</span>
-              </div>
-              <div>
-                <h3 className={`font-semibold text-${s.color} text-sm`}>{s.title}</h3>
-                <p className="text-xs text-gray-300 mt-1">{s.desc}</p>
-              </div>
+    case 'case': return (
+      <div style={{ ...inner, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 28 }}>
+        <div className="anim-fade d1" style={{ width: 60, height: 4, background: data.color, borderRadius: 2 }} />
+        <h2 className="anim-fade d1" style={{ fontSize: T.title, fontWeight: 700, color: data.color }}>{data.title}</h2>
+        <p className="anim-fade d2" style={{ fontSize: T.caption, color: C.dim }}>{data.subtitle}</p>
+        <div style={{ display: 'flex', gap: 32, marginTop: 8 }}>
+          {data.items.map((item, i) => (
+            <div key={i} className={`anim-pop d${i + 2}`} style={{ flex: 1, background: C.surface, border: `1px solid ${C.border}`, borderRadius: 16, padding: '32px 24px', textAlign: 'center' }}>
+              <p style={{ fontSize: 48, fontWeight: 800, color: data.color, lineHeight: 1 }}>{item.value}</p>
+              <p style={{ fontSize: 22, color: 'rgba(255,255,255,0.7)', marginTop: 12 }}>{item.label}</p>
             </div>
           ))}
         </div>
-        <div className={`${cardSm} border-cyan/30 mt-6 max-w-2xl mx-auto w-full anim-fade stagger-6 text-center`}>
-          <p className="text-sm text-gray-300 italic">"La IA agéntica amplifica lo que ya tienen. Si los fundamentos son sólidos, amplifica valor. Si son frágiles, amplifica disfunción."</p>
-        </div>
+        {data.note && <p className="anim-fade d6" style={{ fontSize: 22, color: C.dim, fontStyle: 'italic' }}>{data.note}</p>}
+      </div>
+    )
+
+    case 'checklist': return (
+      <div style={{ ...inner, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 32 }}>
+        {data.items.map((item, i) => (
+          <div key={i} className={`anim-fade d${i + 1}`} style={{ display: 'flex', alignItems: 'flex-start', gap: 28, maxWidth: 900 }}>
+            <div style={{ width: 64, height: 64, borderRadius: 14, background: C.surface, border: `2px solid ${C.accent}`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+              <span style={{ fontSize: 36, fontWeight: 800, color: C.accent }}>{item.step}</span>
+            </div>
+            <p style={{ fontSize: T.bullet, color: 'rgba(255,255,255,0.85)', lineHeight: 1.5, whiteSpace: 'pre-line', paddingTop: 8 }}>{item.text}</p>
+          </div>
+        ))}
+      </div>
+    )
+
+    case 'bib': return (
+      <div style={{ ...inner, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 20 }}>
+        <h3 className="anim-fade d1" style={{ fontSize: T.caption, color: C.dim, textTransform: 'uppercase', letterSpacing: 3, fontWeight: 600 }}>Referencias</h3>
+        {data.entries.map((e, i) => (
+          <p key={i} className={`anim-fade d${i + 2}`} style={{ fontSize: 24, color: 'rgba(255,255,255,0.7)', lineHeight: 1.6, maxWidth: 1300, borderLeft: `3px solid ${C.border}`, paddingLeft: 20 }}>{e}</p>
+        ))}
       </div>
     )
 
@@ -912,109 +783,117 @@ function SlideContent({ index }) {
   }
 }
 
-/* ─── SLIDE TITLES for nav ─── */
-const SLIDE_TITLES = [
-  'Título', 'Ciclo empírico', 'Cuándo sí/cuándo no', 'Liderazgo',
-  'Equipos multifuncionales', 'Delivery Manager', 'Quiz: Fundamentos',
-  'Era agéntica', 'Scrum roles', 'Adopción IA', 'Productividad',
-  'DORA', 'Vacuum effect', 'Sistema E2E', 'Roles redefinidos',
-  'Gobernanza', 'Métricas', 'Quiz: Roles', 'Casos', 'Checklist 30d'
-]
-const QUIZ_SLIDES = [6, 17]
-const TOTAL = SLIDE_TITLES.length
+/* ─── Animated Bar ─── */
+function BarRow({ item, delay }) {
+  const [w, setW] = useState(0)
+  const max = item.max || 100
+  useEffect(() => { const t = setTimeout(() => setW(Math.min(Math.abs(item.value) / max * 100, 100)), 200 + delay * 150); return () => clearTimeout(t) }, [item.value, max, delay])
+  return (
+    <div className={`anim-fade d${delay + 2}`} style={{ display: 'flex', alignItems: 'center', gap: 24 }}>
+      <span style={{ fontSize: 24, color: 'rgba(255,255,255,0.7)', width: 320, textAlign: 'right', flexShrink: 0 }}>{item.label}</span>
+      <div style={{ flex: 1, background: 'rgba(255,255,255,0.04)', borderRadius: 12, height: 44, position: 'relative', overflow: 'hidden' }}>
+        <div style={{ height: '100%', borderRadius: 12, transition: 'width 1s cubic-bezier(0.16,1,0.3,1)', width: `${w}%`, background: item.color, display: 'flex', alignItems: 'center', justifyContent: 'flex-end', paddingRight: 16 }}>
+          <span style={{ fontSize: 22, fontWeight: 700, color: 'white' }}>{item.prefix || '+'}{item.value}{item.suffix || '%'}</span>
+        </div>
+      </div>
+    </div>
+  )
+}
 
-/* ─── MAIN APP ─── */
+/* ═══════════════════════════════════════════
+   MAIN APP
+   ═══════════════════════════════════════════ */
+const TOTAL = slides.length
+
 export default function App() {
   const [current, setCurrent] = useState(0)
-  const [animating, setAnimating] = useState(false)
-  const [showNav, setShowNav] = useState(false)
-  const slideRef = useRef(null)
+  const [anim, setAnim] = useState(false)
+  const [quizState, setQuizState] = useState(Array(10).fill(null))
+  const containerRef = useRef(null)
+  const [scale, setScale] = useState(1)
+
+  // Responsive scaling
+  useEffect(() => {
+    const resize = () => {
+      const s = Math.min(window.innerWidth / 1920, window.innerHeight / 1080)
+      setScale(s)
+    }
+    resize()
+    window.addEventListener('resize', resize)
+    return () => window.removeEventListener('resize', resize)
+  }, [])
 
   const go = useCallback((dir) => {
-    if (animating) return
-    const next = dir === 'next' ? Math.min(current + 1, TOTAL - 1) : Math.max(current - 1, 0)
+    if (anim) return
+    const next = dir === 1 ? Math.min(current + 1, TOTAL - 1) : Math.max(current - 1, 0)
     if (next === current) return
-    setAnimating(true)
-    if (slideRef.current) slideRef.current.classList.replace('slide-enter', 'slide-exit')
-    setTimeout(() => {
-      setCurrent(next)
-      setAnimating(false)
-    }, 300)
-  }, [current, animating])
+    setAnim(true)
+    setTimeout(() => { setCurrent(next); setAnim(false) }, 150)
+  }, [current, anim])
 
   const goTo = useCallback((idx) => {
-    if (animating || idx === current) return
-    setAnimating(true)
-    if (slideRef.current) slideRef.current.classList.replace('slide-enter', 'slide-exit')
-    setTimeout(() => { setCurrent(idx); setAnimating(false); setShowNav(false) }, 300)
-  }, [current, animating])
+    if (anim || idx === current) return
+    setAnim(true)
+    setTimeout(() => { setCurrent(idx); setAnim(false) }, 150)
+  }, [current, anim])
 
   useEffect(() => {
     const handler = (e) => {
-      if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); go('next') }
-      if (e.key === 'ArrowLeft') { e.preventDefault(); go('prev') }
-      if (e.key === 'Escape') setShowNav(false)
+      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') { e.preventDefault(); go(1) }
+      if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); go(-1) }
+      if (e.key === 'Home') { e.preventDefault(); goTo(0) }
+      if (e.key === 'End') { e.preventDefault(); goTo(TOTAL - 1) }
     }
     window.addEventListener('keydown', handler)
     return () => window.removeEventListener('keydown', handler)
-  }, [go])
+  }, [go, goTo])
+
+  const handleQuizAnswer = (idx, val) => {
+    setQuizState(prev => { const n = [...prev]; n[idx] = val; return n })
+  }
 
   return (
-    <div className="h-screen w-screen bg-bg-deep text-white flex flex-col overflow-hidden select-none">
-      {/* Progress bar */}
-      <div className="h-1 bg-white/5 w-full shrink-0">
-        <div className="h-full bg-cyan transition-all duration-500 ease-out" style={{ width: `${((current + 1) / TOTAL) * 100}%` }} />
-      </div>
+    <div style={{ width: '100vw', height: '100vh', background: C.bg, overflow: 'hidden', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+      {/* Slide canvas */}
+      <div style={{ width: 1920, height: 1080, transform: `scale(${scale})`, transformOrigin: 'center center', position: 'relative', flexShrink: 0 }}>
+        {/* Progress bar */}
+        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: 'rgba(255,255,255,0.04)', zIndex: 10 }}>
+          <div style={{ height: '100%', background: C.accent, transition: 'width 400ms ease-out', width: `${((current + 1) / TOTAL) * 100}%` }} />
+        </div>
 
-      {/* Header */}
-      <div className="flex items-center justify-between px-4 py-2 shrink-0">
-        <span className={`${mono} text-xs text-gray-500`}>
-          {String(current + 1).padStart(2, '0')}/{String(TOTAL).padStart(2, '0')}
-        </span>
-        <div className="flex items-center gap-1">
-          {SLIDE_TITLES.map((_, i) => (
-            <button key={i} onClick={() => goTo(i)}
-              className={`w-2 h-2 rounded-full transition-all duration-300 ${i === current ? 'bg-cyan w-6' : QUIZ_SLIDES.includes(i) ? 'bg-amber/50 hover:bg-amber' : 'bg-white/15 hover:bg-white/30'}`}
-              title={SLIDE_TITLES[i]} />
+        {/* Slide counter */}
+        <div style={{ position: 'absolute', top: 24, right: MARGIN, zIndex: 10, fontSize: 20, color: C.dim, fontWeight: 500 }}>
+          {String(current + 1).padStart(2, '0')} / {String(TOTAL).padStart(2, '0')}
+        </div>
+
+        {/* Slide content */}
+        <div key={current} className="slide-enter" style={{ width: 1920, height: 1080 }}>
+          <SlideRenderer data={slides[current]} quizState={quizState} onQuizAnswer={handleQuizAnswer} />
+        </div>
+
+        {/* Navigation arrows */}
+        {current > 0 && (
+          <button onClick={() => go(-1)} style={{ position: 'absolute', left: 32, top: '50%', transform: 'translateY(-50%)', width: 56, height: 56, borderRadius: 14, border: `1px solid ${C.border}`, background: 'rgba(255,255,255,0.03)', color: C.dim, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 28, transition: 'all 300ms', zIndex: 10 }}
+            onMouseEnter={e => { e.target.style.background = 'rgba(255,255,255,0.08)'; e.target.style.color = C.white }}
+            onMouseLeave={e => { e.target.style.background = 'rgba(255,255,255,0.03)'; e.target.style.color = C.dim }}>
+            ‹
+          </button>
+        )}
+        {current < TOTAL - 1 && (
+          <button onClick={() => go(1)} style={{ position: 'absolute', right: 32, top: '50%', transform: 'translateY(-50%)', width: 56, height: 56, borderRadius: 14, border: `1px solid ${C.border}`, background: 'rgba(255,255,255,0.03)', color: C.dim, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 28, transition: 'all 300ms', zIndex: 10 }}
+            onMouseEnter={e => { e.target.style.background = 'rgba(255,255,255,0.08)'; e.target.style.color = C.white }}
+            onMouseLeave={e => { e.target.style.background = 'rgba(255,255,255,0.03)'; e.target.style.color = C.dim }}>
+            ›
+          </button>
+        )}
+
+        {/* Bottom dot nav */}
+        <div style={{ position: 'absolute', bottom: 24, left: '50%', transform: 'translateX(-50%)', display: 'flex', gap: 6, zIndex: 10 }}>
+          {slides.map((s, i) => (
+            <button key={i} onClick={() => goTo(i)} title={`Slide ${i + 1}`}
+              style={{ width: i === current ? 28 : 8, height: 8, borderRadius: 4, border: 'none', cursor: 'pointer', transition: 'all 300ms', background: i === current ? C.accent : s.type === 'quiz' ? 'rgba(34,197,94,0.35)' : 'rgba(255,255,255,0.12)' }} />
           ))}
         </div>
-        <button onClick={() => setShowNav(!showNav)} className="text-xs text-gray-500 hover:text-cyan transition">
-          <ChevronDown className="w-4 h-4" />
-        </button>
-      </div>
-
-      {/* Nav dropdown */}
-      {showNav && (
-        <div className="absolute top-10 right-4 z-50 bg-bg-surface border border-white/10 rounded-xl p-3 w-72 max-h-96 overflow-y-auto shadow-2xl anim-fade">
-          {SLIDE_TITLES.map((t, i) => (
-            <button key={i} onClick={() => goTo(i)}
-              className={`w-full text-left px-3 py-1.5 text-sm rounded-lg transition ${i === current ? 'bg-cyan/10 text-cyan' : 'text-gray-400 hover:bg-white/5 hover:text-white'}`}>
-              <span className={`${mono} text-xs mr-2`}>{String(i + 1).padStart(2, '0')}</span>
-              {t}
-              {QUIZ_SLIDES.includes(i) && <span className="ml-2 text-[10px] text-amber bg-amber/10 px-1.5 py-0.5 rounded">Quiz</span>}
-            </button>
-          ))}
-        </div>
-      )}
-
-      {/* Slide content */}
-      <div className="flex-1 overflow-hidden px-6 md:px-12 py-4 relative">
-        <div key={current} ref={slideRef} className="slide-enter h-full">
-          <SlideContent index={current} />
-        </div>
-      </div>
-
-      {/* Footer navigation */}
-      <div className="flex items-center justify-between px-6 py-3 shrink-0">
-        <button onClick={() => go('prev')} disabled={current === 0}
-          className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm transition ${current === 0 ? 'text-gray-600 cursor-not-allowed' : 'text-gray-300 hover:bg-white/5 hover:text-white'}`}>
-          <ChevronLeft className="w-4 h-4" /> Anterior
-        </button>
-        <span className="text-xs text-gray-600">{SLIDE_TITLES[current]}</span>
-        <button onClick={() => go('next')} disabled={current === TOTAL - 1}
-          className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm transition ${current === TOTAL - 1 ? 'text-gray-600 cursor-not-allowed' : 'text-gray-300 hover:bg-white/5 hover:text-white'}`}>
-          Siguiente <ChevronRight className="w-4 h-4" />
-        </button>
       </div>
     </div>
   )

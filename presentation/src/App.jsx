@@ -1,4 +1,18 @@
 import { useState, useEffect, useCallback } from 'react'
+import { DotLottieReact } from '@lottiefiles/dotlottie-react'
+
+/* ═══════════════════════════════════════════
+   LOTTIE ANIMATION URLS (free from LottieFiles)
+   ═══════════════════════════════════════════ */
+const LOTTIE = {
+  aiRobot: 'https://assets-v2.lottiefiles.com/a/431279d2-118a-11ee-afa8-f7fbc4c05a63/bsM1mDTFOD.lottie',
+  cycle: 'https://assets-v2.lottiefiles.com/a/58c0ecce-1152-11ee-bb74-676f81cc9d80/WXubkGXGGK.lottie',
+  analytics: 'https://assets-v2.lottiefiles.com/a/68e7dfd6-1152-11ee-a771-670bcee1276f/Ix7fZPMdV7.lottie',
+  clock: 'https://assets-v2.lottiefiles.com/a/bb71d0c6-1171-11ee-83df-ab233474cd1f/GHWjSOvp3O.lottie',
+  teamwork: 'https://assets-v2.lottiefiles.com/a/a6615afa-1179-11ee-8303-7fd0b341f999/cJa13o17od.lottie',
+  confetti: 'https://assets-v2.lottiefiles.com/a/45dc9d20-1179-11ee-bc01-8bf34a2dfcf1/EcAtIfhj1J.lottie',
+  robot: 'https://assets-v2.lottiefiles.com/a/7d4f4568-1152-11ee-8717-efe6c49323b2/GSkGx9NpAv.lottie',
+}
 
 /* ═══════════════════════════════════════════
    DESIGN SYSTEM — 1920×1080 Keynote
@@ -692,18 +706,26 @@ function SlideRenderer({ data, quizState, onQuizAnswer }) {
   switch (data.type) {
 
     case 'hero': return (
-      <div style={{ ...inner, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', textAlign: 'center', gap: 36 }}>
-        <div className="anim-fade d1"><Logos height={128} /></div>
-        <p className="anim-fade d2" style={{ fontSize: T.caption, color: C.dim, letterSpacing: 4, textTransform: 'uppercase', fontWeight: 500 }}>Gestión Ágil de Proyectos</p>
-        <h1 className="anim-fade d3" style={{ fontSize: T.hero, fontWeight: 800, lineHeight: 1.1, color: C.white, maxWidth: 900 }}>
-          Roles y <span style={{ color: C.accent }}>Liderazgo</span>
-        </h1>
-        <a href="https://www.linkedin.com/in/ulisesgonzalez/" target="_blank" rel="noopener noreferrer" className="anim-fade d4" style={{ fontSize: T.caption, color: C.dim, fontWeight: 400, textDecoration: 'none', cursor: 'pointer', transition: 'color 200ms' }} onMouseEnter={e => e.currentTarget.style.color = C.white} onMouseLeave={e => e.currentTarget.style.color = C.dim}>Profesor: Ulises González</a>
+      <div style={{ ...inner, height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 60 }}>
+        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 36 }}>
+          <div className="anim-fade d1"><Logos height={128} /></div>
+          <p className="anim-fade d2" style={{ fontSize: T.caption, color: C.dim, letterSpacing: 4, textTransform: 'uppercase', fontWeight: 500 }}>Gestión Ágil de Proyectos</p>
+          <h1 className="anim-fade d3" style={{ fontSize: T.hero, fontWeight: 800, lineHeight: 1.1, color: C.white, maxWidth: 900 }}>
+            Roles y <span style={{ color: C.accent }}>Liderazgo</span>
+          </h1>
+          <a href="https://www.linkedin.com/in/ulisesgonzalez/" target="_blank" rel="noopener noreferrer" className="anim-fade d4" style={{ fontSize: T.caption, color: C.dim, fontWeight: 400, textDecoration: 'none', cursor: 'pointer', transition: 'color 200ms' }} onMouseEnter={e => e.currentTarget.style.color = C.white} onMouseLeave={e => e.currentTarget.style.color = C.dim}>Profesor: Ulises González</a>
+        </div>
+        <div className="anim-fade d3" style={{ width: 400, height: 400, opacity: 0.7 }}>
+          <DotLottieReact src={LOTTIE.aiRobot} loop autoplay style={{ width: '100%', height: '100%' }} />
+        </div>
       </div>
     )
 
     case 'end': return (
-      <div style={{ ...inner, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', textAlign: 'center', gap: 48 }}>
+      <div style={{ ...inner, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', textAlign: 'center', gap: 48, position: 'relative' }}>
+        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, pointerEvents: 'none', opacity: 0.6 }}>
+          <DotLottieReact src={LOTTIE.confetti} loop autoplay style={{ width: '100%', height: '100%' }} />
+        </div>
         <div className="anim-fade d1"><Logos height={128} /></div>
         <p className="anim-fade d2" style={{ fontSize: T.subtitle, color: C.dim, fontWeight: 500 }}>Gestión Ágil de Proyectos</p>
         <p className="anim-fade d3" style={{ fontSize: T.title, fontWeight: 700, color: C.white }}>¡Gracias!</p>
@@ -712,14 +734,24 @@ function SlideRenderer({ data, quizState, onQuizAnswer }) {
       </div>
     )
 
-    case 'section': return (
-      <div style={{ ...inner, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 20 }}>
-        {data.emphasis && <div className="anim-fade d1" style={{ width: 60, height: 4, background: C.accent, borderRadius: 2 }} />}
-        {data.quiz && <div className="anim-fade d1" style={{ width: 60, height: 4, background: C.highlight, borderRadius: 2 }} />}
-        <h2 className="anim-fade d2" style={{ fontSize: T.title, fontWeight: 700, color: C.white, lineHeight: 1.15 }}>{data.title}</h2>
-        {data.subtitle && <p className="anim-fade d3" style={{ fontSize: T.subtitle, color: C.dim, fontWeight: 400 }}>{data.subtitle}</p>}
-      </div>
-    )
+    case 'section': {
+      const sectionLottie = data.emphasis ? LOTTIE.teamwork : data.quiz ? null : (data.title === 'Era agéntica' ? LOTTIE.robot : null)
+      return (
+        <div style={{ ...inner, height: '100%', display: 'flex', justifyContent: 'flex-start', alignItems: 'center', gap: 60 }}>
+          <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 20 }}>
+            {data.emphasis && <div className="anim-fade d1" style={{ width: 60, height: 4, background: C.accent, borderRadius: 2 }} />}
+            {data.quiz && <div className="anim-fade d1" style={{ width: 60, height: 4, background: C.highlight, borderRadius: 2 }} />}
+            <h2 className="anim-fade d2" style={{ fontSize: T.title, fontWeight: 700, color: C.white, lineHeight: 1.15 }}>{data.title}</h2>
+            {data.subtitle && <p className="anim-fade d3" style={{ fontSize: T.subtitle, color: C.dim, fontWeight: 400 }}>{data.subtitle}</p>}
+          </div>
+          {sectionLottie && (
+            <div className="anim-fade d3" style={{ width: 340, height: 340, opacity: 0.5, flexShrink: 0 }}>
+              <DotLottieReact src={sectionLottie} loop autoplay style={{ width: '100%', height: '100%' }} />
+            </div>
+          )}
+        </div>
+      )
+    }
 
     case 'overview': return (
       <div style={{ ...inner, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 20 }}>
@@ -744,16 +776,21 @@ function SlideRenderer({ data, quizState, onQuizAnswer }) {
     )
 
     case 'stats': return (
-      <div style={{ ...inner, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', gap: 40 }}>
-        {data.title && <h2 className="anim-fade d1" style={{ fontSize: T.subtitle, fontWeight: 700, color: C.white }}>{data.title}</h2>}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 40, width: '100%', maxWidth: 1500 }}>
-          {data.items.map((s, i) => (
-            <div key={i} className={`anim-pop d${i + 1}`} style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 16, padding: '48px 32px', textAlign: 'center' }}>
-              <p style={{ fontSize: 72, fontWeight: 800, color: C.accent, lineHeight: 1 }}>{s.value}</p>
-              <p style={{ fontSize: T.caption, color: C.white, marginTop: 16 }}>{s.label}</p>
-              <p style={{ fontSize: 18, color: C.dim, marginTop: 8 }}>{s.source}</p>
-            </div>
-          ))}
+      <div style={{ ...inner, height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 40 }}>
+        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 40, alignItems: 'center' }}>
+          {data.title && <h2 className="anim-fade d1" style={{ fontSize: T.subtitle, fontWeight: 700, color: C.white }}>{data.title}</h2>}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 28, width: '100%', maxWidth: 1100 }}>
+            {data.items.map((s, i) => (
+              <div key={i} className={`anim-pop d${i + 1}`} style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 16, padding: '36px 28px', textAlign: 'center' }}>
+                <p style={{ fontSize: 64, fontWeight: 800, color: C.accent, lineHeight: 1 }}>{s.value}</p>
+                <p style={{ fontSize: T.caption, color: C.white, marginTop: 12 }}>{s.label}</p>
+                <p style={{ fontSize: 16, color: C.dim, marginTop: 6 }}>{s.source}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="anim-fade d4" style={{ width: 320, height: 320, opacity: 0.6, flexShrink: 0 }}>
+          <DotLottieReact src={LOTTIE.analytics} loop autoplay style={{ width: '100%', height: '100%' }} />
         </div>
       </div>
     )
@@ -787,9 +824,14 @@ function SlideRenderer({ data, quizState, onQuizAnswer }) {
     )
 
     case 'quote': return (
-      <div style={{ ...inner, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', textAlign: 'center', gap: 40 }}>
-        {data.source && <p className="anim-fade d1" style={{ fontSize: T.caption, color: C.accent, textTransform: 'uppercase', letterSpacing: 3, fontWeight: 600 }}>{data.source}</p>}
-        <p className="anim-fade d2" style={{ fontSize: T.subtitle, color: C.white, fontWeight: 500, lineHeight: 1.6, maxWidth: 800, whiteSpace: 'pre-line' }}>{data.text}</p>
+      <div style={{ ...inner, height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 60 }}>
+        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 40 }}>
+          {data.source && <p className="anim-fade d1" style={{ fontSize: T.caption, color: C.accent, textTransform: 'uppercase', letterSpacing: 3, fontWeight: 600 }}>{data.source}</p>}
+          <p className="anim-fade d2" style={{ fontSize: T.subtitle, color: C.white, fontWeight: 500, lineHeight: 1.6, maxWidth: 800, whiteSpace: 'pre-line' }}>{data.text}</p>
+        </div>
+        <div className="anim-fade d3" style={{ width: 280, height: 280, opacity: 0.5, flexShrink: 0 }}>
+          <DotLottieReact src={LOTTIE.clock} loop autoplay style={{ width: '100%', height: '100%' }} />
+        </div>
       </div>
     )
 

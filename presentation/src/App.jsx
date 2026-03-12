@@ -125,7 +125,10 @@ const TAKEAWAYS = [
   /* 63b monday fin */     'Finanzas: la síntesis ejecutiva con IA ahorra −40% de tiempo. La regla de oro: IA nunca aprueba ni decide riesgo — solo propone y documenta.',
   /* 63b monday prod */    'Producción y supervisión: un sprint de 2 semanas con daily, entregable y retrospectiva es el formato más probado para resolver problemas operativos.',
   /* 63b monday com */     'Comercial y marketing: IA acelera propuestas y análisis, pero el criterio de marca y relación con el cliente nunca se delega a la máquina.',
-  /* 63c tools */          'Kanban, retrospectivas, dailies y backlogs ya no requieren expertise — la IA democratiza estas prácticas. La ventaja competitiva pasa de "saber la herramienta" a "aplicarla con criterio en tu contexto".',
+  /* 63c tools mfg */      'Manufactura: kanban visual, daily de 15 min y retrospectiva son las prácticas ágiles más naturales para planta. Con IA, la gestión de riesgos se alimenta de históricos automáticamente.',
+  /* 63d tools pharma */   'Farmacéutica: el backlog regulatorio priorizado por IA y el Definition of Done basado en normativa GMP son prácticas que antes requerían consultores — ahora las genera la IA.',
+  /* 63e tools banca */    'Banca y servicios: estimación basada en históricos y métricas de flujo en tiempo real eliminan el sesgo de planificación que cuesta millones en proyectos grandes.',
+  /* 63f tools retail */   'Retail y educación: el ciclo de feedback (encuesta → insight → backlog) que antes tomaba semanas ahora se cierra en horas con IA. La velocidad de aprendizaje es la ventaja.',
   /* 64 section impl */   'PMI Sweden: 64% recomienda iniciar pequeño y escalar gradualmente. El ciclo empírico aplica a la propia adopción de IA: experimentar, medir, ajustar.',
   /* 65 checklist 1 */    'Antes de comprar herramientas: ¿hay liderazgo protector? ¿Equipos multifuncionales reales? ¿Cadencias de inspección? Sin esto, la IA amplifica la disfunción existente.',
   /* 66 checklist 2 */    'EU AI Act entra en vigor progresivamente 2025-2027. Definir guardrails ahora no es anticipación — es cumplimiento. Las obligaciones para GPAI aplican desde agosto 2025.',
@@ -445,7 +448,10 @@ const slides = [
   { type: 'monday', areaIndex: 2 },
   { type: 'monday', areaIndex: 3 },
 
-  { type: 'toolsBySector' },
+  { type: 'toolsBySector', sectorIdx: 0 },
+  { type: 'toolsBySector', sectorIdx: 1 },
+  { type: 'toolsBySector', sectorIdx: 2 },
+  { type: 'toolsBySector', sectorIdx: 3 },
 
   // ── CHECKLIST ──
   { type: 'section', title: 'Implementación', subtitle: 'Checklist de 30 días' },
@@ -1360,8 +1366,8 @@ function SlideRenderer({ data, quizState, onQuizAnswer }) {
     }
 
     case 'toolsBySector': {
-      const sectors = [
-        { sector: 'Manufactura\ny Alimentos', color: C.accent, orgs: 'Crustissimo · Polar · Botalón · Pilperca · Cabel', tools: [
+      const allSectors = [
+        { sector: 'Manufactura y Alimentos', color: C.accent, orgs: 'Crustissimo · Polar · Botalón · Pilperca · Cabel', tools: [
           { practice: 'Kanban visual', ai: 'IA genera tablero desde lista de tareas y sugiere WIP limits por capacidad del equipo' },
           { practice: 'Daily 15 min', ai: 'IA resume avances del día anterior y detecta bloqueos antes de la reunión' },
           { practice: 'Retrospectiva', ai: 'IA consolida incidentes, métricas de ciclo y sugiere 3 acciones priorizadas' },
@@ -1373,37 +1379,36 @@ function SlideRenderer({ data, quizState, onQuizAnswer }) {
           { practice: 'Sprint Review', ai: 'IA genera resumen ejecutivo de entregables del ciclo para comité de calidad' },
           { practice: 'Acción correctiva', ai: 'Desviación → causa raíz → plan correctivo generado por IA en minutos, no semanas' },
         ]},
-        { sector: 'Banca\ny Servicios', color: C.highlight, orgs: 'Bancrecer · Fulldata · Damasco · Netnovation', tools: [
+        { sector: 'Banca y Servicios', color: C.highlight, orgs: 'Bancrecer · Fulldata · Damasco · Netnovation', tools: [
           { practice: 'User Story Mapping', ai: 'IA mapea journey del cliente desde datos de atención y genera historias priorizadas' },
           { practice: 'Estimación', ai: 'Rangos de esfuerzo basados en históricos similares — reduce sesgo de planificación' },
           { practice: 'Métricas de flujo', ai: 'Lead time, cycle time y throughput calculados en tiempo real desde herramientas existentes' },
           { practice: 'Reporte a stakeholders', ai: 'De 30 páginas a 1 resumen accionable — síntesis ejecutiva lista para comité' },
         ]},
-        { sector: 'Retail, Educación\ny Comercio', color: '#A855F7', orgs: 'Tiendas Ciro · IESA · Promoting · Link 1720', tools: [
+        { sector: 'Retail, Educación y Comercio', color: '#A855F7', orgs: 'Tiendas Ciro · IESA · Promoting · Link 1720', tools: [
           { practice: 'Roadmap de producto', ai: 'IA prioriza backlog por impacto en ingreso y satisfacción con datos de mercado' },
           { practice: 'Ciclo de feedback', ai: 'Encuestas analizadas por IA → insights → backlog actualizado en horas, no semanas' },
           { practice: 'Planificación de sprint', ai: 'IA cruza capacidad del equipo + prioridades + dependencias para proponer plan' },
           { practice: 'Lecciones aprendidas', ai: 'IA consolida retros anteriores y sugiere patrones recurrentes a resolver' },
         ]},
       ]
+      const s = allSectors[data.sectorIdx] || allSectors[0]
       return (
-        <motion.div variants={stagger} initial="hidden" animate="visible" style={{ ...inner, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 16 }}>
-          <motion.h2 variants={fadeUp} style={{ fontSize: T.title, fontWeight: 700, color: C.white }}>Herramientas ágiles × IA por sector</motion.h2>
-          <motion.p variants={fadeUp} style={{ fontSize: 19, color: C.dim }}>Prácticas que ya se democratizan — aplicadas a los sectores de este grupo</motion.p>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginTop: 4 }}>
-            {sectors.map((s, i) => (
-              <motion.div key={i} variants={popIn} style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 14, padding: '18px 20px', borderLeft: `3px solid ${s.color}` }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 10 }}>
-                  <p style={{ fontSize: 19, fontWeight: 700, color: s.color, whiteSpace: 'pre-line', lineHeight: 1.2 }}>{s.sector}</p>
-                  <p style={{ fontSize: 13, color: C.dim, textAlign: 'right', maxWidth: 260 }}>{s.orgs}</p>
+        <motion.div variants={stagger} initial="hidden" animate="visible" style={{ ...inner, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 28 }}>
+          <div>
+            <motion.p variants={fadeUp} style={{ fontSize: T.caption, color: C.dim, textTransform: 'uppercase', letterSpacing: 3, fontWeight: 600, marginBottom: 8 }}>Herramientas ágiles × IA · {data.sectorIdx + 1}/4</motion.p>
+            <motion.h2 variants={fadeUp} style={{ fontSize: 52, fontWeight: 700, color: s.color }}>{s.sector}</motion.h2>
+            <motion.p variants={fadeUp} style={{ fontSize: 20, color: C.dim, marginTop: 6 }}>{s.orgs}</motion.p>
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+            {s.tools.map((t, j) => (
+              <motion.div key={j} variants={popIn} style={{ display: 'flex', gap: 28, alignItems: 'flex-start', background: C.surface, border: `1px solid ${C.border}`, borderRadius: 16, padding: '26px 32px', borderLeft: `4px solid ${s.color}` }}>
+                <div style={{ minWidth: 200 }}>
+                  <p style={{ fontSize: 24, fontWeight: 700, color: C.white }}>{t.practice}</p>
                 </div>
-                <div style={{ display: 'grid', gridTemplateColumns: '140px 1fr', gap: '6px 12px' }}>
-                  {s.tools.map((t, j) => (
-                    <div key={j} style={{ display: 'contents' }}>
-                      <p style={{ fontSize: 15, fontWeight: 600, color: 'rgba(255,255,255,0.9)', lineHeight: 1.35, paddingTop: 2 }}>{t.practice}</p>
-                      <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.6)', lineHeight: 1.4, borderLeft: `2px solid ${s.color}25`, paddingLeft: 10 }}>{t.ai}</p>
-                    </div>
-                  ))}
+                <div style={{ flex: 1, paddingLeft: 20, borderLeft: `2px solid ${s.color}30` }}>
+                  <p style={{ fontSize: 12, color: s.color, fontWeight: 600, textTransform: 'uppercase', letterSpacing: 1, marginBottom: 4 }}>Con IA</p>
+                  <p style={{ fontSize: 20, color: 'rgba(255,255,255,0.75)', lineHeight: 1.55 }}>{t.ai}</p>
                 </div>
               </motion.div>
             ))}

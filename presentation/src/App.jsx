@@ -1554,6 +1554,7 @@ export default function App() {
       if (e.key === 'Home') { e.preventDefault(); goTo(0) }
       if (e.key === 'End') { e.preventDefault(); goTo(TOTAL - 1) }
       if (e.key === 'n' || e.key === 'N') { e.preventDefault(); setShowTakeaway(prev => !prev) }
+      if (e.key === 'f' || e.key === 'F') { e.preventDefault(); if (!document.fullscreenElement) { document.documentElement.requestFullscreen().catch(() => {}) } else { document.exitFullscreen().catch(() => {}) } }
     }
     window.addEventListener('keydown', handler)
     return () => window.removeEventListener('keydown', handler)
@@ -1603,7 +1604,8 @@ export default function App() {
 
         {/* N key hint */}
         <div style={{ position: 'absolute', bottom: 20, right: MARGIN, zIndex: 10, fontSize: 16, color: 'rgba(255,255,255,0.15)' }}>
-          <kbd style={{ padding: '2px 8px', borderRadius: 4, border: '1px solid rgba(255,255,255,0.1)', fontSize: 14 }}>N</kbd> takeaway
+          <kbd style={{ padding: '2px 8px', borderRadius: 4, border: '1px solid rgba(255,255,255,0.1)', fontSize: 14 }}>N</kbd> takeaway{' · '}
+          <kbd style={{ padding: '2px 8px', borderRadius: 4, border: '1px solid rgba(255,255,255,0.1)', fontSize: 14 }}>F</kbd> pantalla completa
         </div>
       </div>
     </div>

@@ -50,7 +50,9 @@ function LiveClock() {
 const TAKEAWAYS = [
   /* 0  hero */           'La competencia en 2026 no es entre marcos (Scrum vs Kanban) sino entre sistemas de entrega capaces de absorber incertidumbre y rediseñar trabajo cuando la IA acelera la ejecución.',
   /* 1  contexto */       'La evolución no invalida los fundamentos: retroalimentación, inspección y adaptación son más críticos que nunca. Lo que cambia es la velocidad de los ciclos y el riesgo de amplificación.',
-  /* 2  section fund */   'Estos principios no son "básicos" en el sentido de triviales — son prerrequisitos estructurales. Sin ellos, la IA no se adopta de forma efectiva, solo de forma caótica.',
+  /* 2  stats */          'Adopción masiva no es valor: el 17% que sí logra ≥5% EBIT lo hace porque rediseñó workflows, no porque compró herramientas. El resto está en "AI theater".',
+  /* 3  evidencia */      'Los datos convergen en un punto incómodo: la IA eleva productividad local pero no garantiza mejoras end-to-end. El EU AI Act obliga a gobernar, no es opcional.',
+  /* 4  section fund */   'Estos principios no son "básicos" en el sentido de triviales — son prerrequisitos estructurales. Sin ellos, la IA no se adopta de forma efectiva, solo de forma caótica.',
   /* 3  overview */       'Los fundamentos son condiciones necesarias pero no suficientes. Una organización sin ellos no puede adoptar IA agéntica — solo puede adoptar herramientas de forma desorganizada.',
   /* 4  ciclo emp */      'Los equipos que mejoran calidad de documentación y código (+7.5%/+3.4% en DORA) son los que inspeccionan. Los que pierden estabilidad (−7.2%) son los que no revisan.',
   /* 5  diagram cycle */  'Pregunta clave para tu equipo: ¿tienen cadencias reales de inspección que incluyan la calidad del output generado por IA? Si no, están volando a ciegas a mayor velocidad.',
@@ -128,13 +130,29 @@ const slides = [
   // ── 0: TITLE ──
   { type: 'hero' },
 
-  // ── 1: CONTEXTO ──
+  // ── 1: CONTEXTO NARRATIVO ──
   { type: 'content', title: 'Gestión ágil en 2026', bullets: [
     'Ya no compite entre marcos (Scrum vs Kanban)',
     'Compite entre sistemas de entrega capaces de absorber incertidumbre',
     'La IA acelera ejecución y amplifica errores',
-    'El liderazgo se vuelve el cuello de botella',
-  ], note: 'Contexto' },
+    'Solo 21% ha rediseñado workflows fundamentalmente',
+  ], note: 'El nuevo panorama' },
+
+  // ── 2: CONTEXTO DATOS ──
+  { type: 'stats', title: 'El contexto en números', items: [
+    { value: '71%', label: 'uso regular de genAI', source: 'McKinsey 2025' },
+    { value: '62%', label: 'experimenta con agentes', source: 'McKinsey 2025' },
+    { value: '&gt;80%', label: 'sin impacto en EBIT', source: 'McKinsey 2025' },
+    { value: '82%', label: 'punto de inflexión', source: 'Microsoft WTI 2025' },
+  ]},
+
+  // ── 3: CONTEXTO EVIDENCIA SISTÉMICA ──
+  { type: 'content', title: 'Lo que dice la evidencia', bullets: [
+    'DORA 2024: IA mejora calidad local pero la estabilidad cae −7.2%',
+    '62% de developers ya usa IA en su proceso (Stack Overflow)',
+    'Gartner: 40% de apps tendrá agentes por tarea en 2026',
+    'EU AI Act: obligaciones principales desde agosto 2026',
+  ], note: 'Datos duros', color: 'accent' },
 
   // ── SECTION: FUNDAMENTOS ──
   { type: 'section', title: 'Fundamentos ágiles', subtitle: 'La base que no cambia' },

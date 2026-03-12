@@ -122,11 +122,10 @@ const TAKEAWAYS = [
   /* 59 section metr */   'El tablero mínimo viable evita "local wins / system losses". Medir solo productividad individual es como medir solo goles sin ver el resultado del partido.',
   /* 58 metrics 1 */      'Lead time y estabilidad son las métricas que más rápido delatan la deuda oculta por IA. Si "más commits" no se traduce en más throughput, hay retrabajo invisible.',
   /* 59 metrics 2 */      'METR demostró que la percepción de productividad puede ser opuesta a la realidad (creen +20%, medido −19%). Sin ROI medido, estás en terreno de autoengaño organizacional.',
-  /* 60 section casos */  'Nota metodológica: los efectos varían por especificidad de tarea, experiencia del profesional, madurez del repo y controles de calidad. Esto explica resultados contradictorios.',
-  /* 61 copilot */        'La clave de Accenture no es Copilot — es que tenían telemetría y prácticas de revisión. Sin esos controles, el mismo tool produce "deuda acelerada" (coherente con DORA).',
-  /* 62 klarna */         'Caveat: métricas de "equivalente FTE" dependen de supuestos internos. Para replicar, exige método de cálculo interno. Los "best case" deben auditarse, no copiarse.',
-  /* 63 escritura */      'Transferencia directa a roles ágiles: PO para PRDs y criterios, SM para minutas y riesgos, liderazgo para síntesis ejecutiva. El mayor ROI está en la escritura estructurada.',
-  /* 63b monday */         'Elige un proyecto real, arma un equipo pequeño, define un ciclo corto y mide. No necesitas permiso para empezar — necesitas un entregable concreto y una retrospectiva honesta.',
+  /* 63b monday cal */     'Calidad y operaciones: el mayor ROI está en automatizar reportes y análisis de causa raíz con IA. Pero siempre: IA propone, el equipo valida y decide.',
+  /* 63b monday fin */     'Finanzas: la síntesis ejecutiva con IA ahorra −40% de tiempo. La regla de oro: IA nunca aprueba ni decide riesgo — solo propone y documenta.',
+  /* 63b monday prod */    'Producción y supervisión: un sprint de 2 semanas con daily, entregable y retrospectiva es el formato más probado para resolver problemas operativos.',
+  /* 63b monday com */     'Comercial y marketing: IA acelera propuestas y análisis, pero el criterio de marca y relación con el cliente nunca se delega a la máquina.',
   /* 63c tools */          'Kanban, retrospectivas, dailies y backlogs ya no requieren expertise — la IA democratiza estas prácticas. La ventaja competitiva pasa de "saber la herramienta" a "aplicarla con criterio en tu contexto".',
   /* 64 section impl */   'PMI Sweden: 64% recomienda iniciar pequeño y escalar gradualmente. El ciclo empírico aplica a la propia adopción de IA: experimentar, medir, ajustar.',
   /* 65 checklist 1 */    'Antes de comprar herramientas: ¿hay liderazgo protector? ¿Equipos multifuncionales reales? ¿Cadencias de inspección? Sin esto, la IA amplifica la disfunción existente.',
@@ -444,33 +443,11 @@ const slides = [
   ]},
 
   // ── CASOS ──
-  { type: 'section', title: 'Casos cuantificados', subtitle: 'Evidencia real' },
-
-  { type: 'case', title: 'Copilot + Accenture', subtitle: 'Experimento controlado en empresa global', items: [
-    { label: 'Entregables completados', value: '+8.69%' },
-    { label: 'Aprobados a la primera', value: '+15%' },
-    { label: 'Ejecuciones sin reproceso', value: '+84%' },
-    { label: 'Aceptación sugerencias', value: '30%' },
-    { label: 'Satisfacción', value: '90%' },
-    { label: 'Disfruta más', value: '95%' },
-  ], color: C.highlight },
-
-  { type: 'case', title: 'Klarna', subtitle: 'Atención al cliente con IA', items: [
-    { label: 'Consultas atendidas', value: '2.3M' },
-    { label: 'Equivalente personas', value: '700' },
-    { label: 'Resolución', value: '<2 min vs 11' },
-    { label: '−Casos repetidos', value: '25%' },
-    { label: 'Ingreso/empleado', value: '+73%' },
-    { label: 'Ganancia', value: '+$40M' },
-  ], color: C.accent },
-
-  { type: 'case', title: 'Escritura profesional', subtitle: 'Reportes, minutas, propuestas — aplica desde el lunes', items: [
-    { label: 'Tiempo', value: '−40%' },
-    { label: 'Calidad', value: '+18%' },
-  ], note: 'Reportes, minutas, propuestas, comunicaciones a stakeholders', color: C.highlight },
-
-  // ── ¿Y YO QUÉ HAGO EL LUNES? ──
-  { type: 'monday' },
+  // ── ¿Y YO QUÉ HAGO EL LUNES? (1 slide por área) ──
+  { type: 'monday', areaIndex: 0 },
+  { type: 'monday', areaIndex: 1 },
+  { type: 'monday', areaIndex: 2 },
+  { type: 'monday', areaIndex: 3 },
 
   { type: 'toolsBySector' },
 
@@ -1333,32 +1310,58 @@ function SlideRenderer({ data, quizState, onQuizAnswer }) {
       </motion.div>
     )
 
-    case 'monday': return (
-      <motion.div variants={stagger} initial="hidden" animate="visible" style={{ ...inner, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 20 }}>
-        <motion.h2 variants={fadeUp} style={{ fontSize: T.title, fontWeight: 700, color: C.white }}>¿Y yo qué hago el lunes?</motion.h2>
-        <motion.p variants={fadeUp} style={{ fontSize: 22, color: C.dim, maxWidth: 1100, lineHeight: 1.5 }}>
-          Elige <span style={{ color: C.white, fontWeight: 600 }}>un proyecto real</span> de tu área. Define un ciclo corto (2-4 semanas), un entregable medible y un equipo pequeño. Aplica estas acciones dentro de ese proyecto:
-        </motion.p>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20, marginTop: 4 }}>
-          {[
-            { role: 'Calidad / Operaciones', color: C.accent, items: ['Análisis de causa raíz con IA: alimenta datos de no conformidades\ny obtén patrones, Paretos y borradores de acción correctiva en minutos', 'Gestión de riesgos del proyecto: matriz de riesgos\ngenerada por IA, revisada por el equipo cada ciclo', 'Dashboards automáticos: % avance, SLA, defectos\n— IA arma el tablero, tú tomas decisiones'] },
-            { role: 'Finanzas / Administración', color: C.highlight, items: ['Estimación y costeo de proyectos: IA analiza históricos\ny genera rangos de estimación con supuestos explícitos', 'Síntesis ejecutiva: de 30 páginas a 1 resumen accionable\n(−40% tiempo documentado) — reporte listo para comité', 'Seguimiento de presupuesto vs. real: IA detecta\ndesviaciones y sugiere acciones correctivas'] },
-            { role: 'Producción / Supervisión', color: '#F59E0B', items: ['Sprint de mejora: ciclo de 2 semanas con daily\nde 15 min, entregable medible y retrospectiva', 'Planificación de capacidad: IA cruza carga de trabajo,\ndisponibilidad y prioridades para proponer asignaciones', 'Lecciones aprendidas automatizadas: IA consolida\nretros anteriores y sugiere acciones para el nuevo ciclo'] },
-            { role: 'Comercial / Marketing', color: '#A855F7', items: ['Propuestas y licitaciones: IA genera borradores\ncon análisis competitivo y pricing sugerido', 'Roadmap de producto/servicio: IA prioriza backlog\npor impacto estimado en ingreso y satisfacción', 'Seguimiento de pipeline: IA identifica cuellos de botella\nen el embudo y sugiere acciones por etapa'] },
-          ].map((block, i) => (
-            <motion.div key={i} variants={popIn} style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 16, padding: '22px 26px', borderTop: `3px solid ${block.color}` }}>
-              <p style={{ fontSize: 21, fontWeight: 700, color: block.color, marginBottom: 10 }}>{block.role}</p>
-              {block.items.map((item, j) => (
-                <p key={j} style={{ fontSize: 19, color: 'rgba(255,255,255,0.8)', lineHeight: 1.45, marginBottom: 8, whiteSpace: 'pre-line', paddingLeft: 16, borderLeft: `2px solid ${block.color}30` }}>{item}</p>
-              ))}
-            </motion.div>
-          ))}
-        </div>
-        <motion.p variants={fadeUp} style={{ fontSize: 17, color: C.dim, textAlign: 'center', marginTop: 4 }}>
-          Formato: proyecto acotado → equipo pequeño → ciclo corto → medir → decidir si escalar
-        </motion.p>
-      </motion.div>
-    )
+    case 'monday': {
+      const allAreas = [
+        { role: 'Calidad / Operaciones', color: C.accent, items: [
+          { title: 'Análisis de causa raíz con IA', desc: 'Alimenta datos de no conformidades y obtén patrones, diagramas de Pareto y borradores de acción correctiva en minutos — no en semanas.' },
+          { title: 'Gestión de riesgos del proyecto', desc: 'Matriz de riesgos generada por IA desde históricos, revisada por el equipo cada ciclo. Tú decides, la IA documenta.' },
+          { title: 'Dashboards automáticos', desc: '% avance, SLA, defectos — la IA arma el tablero desde tus datos. Tú interpretas y tomas decisiones.' },
+        ]},
+        { role: 'Finanzas / Administración', color: C.highlight, items: [
+          { title: 'Estimación y costeo de proyectos', desc: 'IA analiza históricos de proyectos anteriores y genera rangos de estimación con supuestos explícitos — menos sesgo, más trazabilidad.' },
+          { title: 'Síntesis ejecutiva', desc: 'De 30 páginas a 1 resumen accionable (−40% tiempo documentado). Reporte listo para comité en minutos.' },
+          { title: 'Seguimiento presupuesto vs. real', desc: 'IA detecta desviaciones antes que tú y sugiere acciones correctivas. Regla: IA nunca aprueba ni decide riesgo.' },
+        ]},
+        { role: 'Producción / Supervisión', color: '#F59E0B', items: [
+          { title: 'Sprint de mejora', desc: 'Ciclo de 2 semanas con daily de 15 min, un entregable medible y retrospectiva al cierre. El formato más probado para resolver problemas operativos.' },
+          { title: 'Planificación de capacidad', desc: 'IA cruza carga de trabajo, disponibilidad del equipo y prioridades para proponer asignaciones — tú ajustas según contexto real.' },
+          { title: 'Lecciones aprendidas automatizadas', desc: 'IA consolida retrospectivas anteriores, identifica patrones recurrentes y sugiere las 3 acciones con mayor impacto para el nuevo ciclo.' },
+        ]},
+        { role: 'Comercial / Marketing', color: '#A855F7', items: [
+          { title: 'Propuestas y licitaciones', desc: 'IA genera borradores con análisis competitivo y pricing sugerido. Tú aportas criterio de marca y relación con el cliente.' },
+          { title: 'Roadmap de producto/servicio', desc: 'IA prioriza backlog por impacto estimado en ingreso y satisfacción — con datos de mercado, no con intuición.' },
+          { title: 'Seguimiento de pipeline', desc: 'IA identifica cuellos de botella en el embudo comercial y sugiere acciones concretas por etapa del ciclo de venta.' },
+        ]},
+      ]
+      const area = allAreas[data.areaIndex] || allAreas[0]
+      return (
+        <motion.div variants={stagger} initial="hidden" animate="visible" style={{ ...inner, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 28 }}>
+          <div>
+            <motion.p variants={fadeUp} style={{ fontSize: T.caption, color: C.dim, textTransform: 'uppercase', letterSpacing: 3, fontWeight: 600, marginBottom: 8 }}>¿Y yo qué hago el lunes? · {data.areaIndex + 1}/4</motion.p>
+            <motion.h2 variants={fadeUp} style={{ fontSize: 52, fontWeight: 700, color: area.color }}>{area.role}</motion.h2>
+            <motion.p variants={fadeUp} style={{ fontSize: 20, color: C.dim, marginTop: 8 }}>
+              Elige <span style={{ color: C.white, fontWeight: 600 }}>un proyecto real</span> de tu área. Define un ciclo corto (2-4 semanas), un entregable medible y un equipo pequeño.
+            </motion.p>
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+            {area.items.map((item, j) => (
+              <motion.div key={j} variants={popIn} style={{ display: 'flex', gap: 28, alignItems: 'flex-start', background: C.surface, border: `1px solid ${C.border}`, borderRadius: 16, padding: '28px 32px', borderLeft: `4px solid ${area.color}` }}>
+                <div style={{ minWidth: 48, height: 48, borderRadius: 12, background: `${area.color}15`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <span style={{ fontSize: 24, fontWeight: 800, color: area.color, fontFamily: "'JetBrains Mono', monospace" }}>{j + 1}</span>
+                </div>
+                <div>
+                  <p style={{ fontSize: 24, fontWeight: 700, color: C.white, marginBottom: 8 }}>{item.title}</p>
+                  <p style={{ fontSize: 20, color: 'rgba(255,255,255,0.7)', lineHeight: 1.6 }}>{item.desc}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+          <motion.p variants={fadeUp} style={{ fontSize: 16, color: C.dim, textAlign: 'center' }}>
+            Formato: proyecto acotado → equipo pequeño → ciclo corto → medir → decidir si escalar
+          </motion.p>
+        </motion.div>
+      )
+    }
 
     case 'toolsBySector': {
       const sectors = [

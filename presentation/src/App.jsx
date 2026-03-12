@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 
 /* ═══════════════════════════════════════════
    DESIGN SYSTEM — 1920×1080 Keynote
@@ -7,20 +7,115 @@ const C = { bg: '#0B0F14', white: '#FFFFFF', accent: '#4F8CFF', highlight: '#22C
 const T = { hero: 88, title: 72, subtitle: 44, text: 34, bullet: 32, caption: 26 }
 
 /* ═══════════════════════════════════════════
-   LOGO — Imagen original del programa
+   LOGO — Imagen original del programa (blanca)
    ═══════════════════════════════════════════ */
-function Logos({ height = 64 }) {
+function Logos({ height = 128 }) {
   return (
-    <div style={{ background: '#F0F0F0', borderRadius: 16, padding: '16px 32px', display: 'inline-flex' }}>
-      <img
-        src="./logo-programa.png"
-        alt="IESA — UniKemia"
-        style={{ height, objectFit: 'contain' }}
-        draggable={false}
-      />
-    </div>
+    <img
+      src="./logo-programa.png"
+      alt="IESA — UniKemia"
+      style={{ height, objectFit: 'contain', filter: 'brightness(0) invert(1)' }}
+      draggable={false}
+    />
   )
 }
+
+/* ═══════════════════════════════════════════
+   LIVE CLOCK
+   ═══════════════════════════════════════════ */
+function LiveClock() {
+  const [now, setNow] = useState(new Date())
+  useEffect(() => { const t = setInterval(() => setNow(new Date()), 1000); return () => clearInterval(t) }, [])
+  const fmt = (n) => String(n).padStart(2, '0')
+  const dias = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado']
+  const meses = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre']
+  return (
+    <span style={{ fontSize: 18, color: C.dim, fontWeight: 400 }}>
+      {dias[now.getDay()]} {now.getDate()} de {meses[now.getMonth()]} de {now.getFullYear()} — {fmt(now.getHours())}:{fmt(now.getMinutes())}:{fmt(now.getSeconds())}
+    </span>
+  )
+}
+
+/* ═══════════════════════════════════════════
+   TAKEAWAY NOTES (per slide)
+   ═══════════════════════════════════════════ */
+const TAKEAWAYS = [
+  /* 0  hero */           'Los fundamentos ágiles son prerrequisito para adoptar IA agéntica de forma efectiva.',
+  /* 1  stats */          'La adopción de IA es masiva, pero más del 80% de las organizaciones aún no ven impacto real en EBIT.',
+  /* 2  section fund */   'Sin fundamentos sólidos, la IA amplifica disfunción en lugar de valor.',
+  /* 3  overview */       'Los cinco fundamentos son condiciones necesarias — no suficientes — para operar con IA agéntica.',
+  /* 4  ciclo emp */      'El ciclo empírico (transparencia → inspección → adaptación) es el mecanismo central de control ágil.',
+  /* 5  diagram cycle */  'Sin inspección frecuente, los errores generados por IA se propagan más rápido y se acumulan como deuda.',
+  /* 6  IA amplifica */   'La IA acelera ejecución, pero sin revisión humana, los errores se propagan exponencialmente.',
+  /* 7  cuándo sí */      '¿Cuándo usar agilidad? Cuando hay grandes brechas de satisfacción o cambio rápido.',
+  /* 8  cuándo no */      'No todo requiere agilidad: procesos estables o automatizables tienen su propio espacio.',
+  /* 9  triangle */       'La decisión organizacional en 2026 es un triángulo: ágil vs. estable vs. automatizado.',
+  /* 10 section lid */    'El liderazgo es el mayor predictor de éxito en adopción de IA — más que la tecnología.',
+  /* 11 proteger */       'Sin protección del liderazgo, los equipos son reabsorbidos por la inercia burocrática.',
+  /* 12 crear esp */      'La diversidad de enfoques es fortaleza. No existe un camino único hacia la entrega de valor.',
+  /* 13 confiar */        'El líder da paso atrás en ejecución táctica, pero intensifica en gobernanza y diseño del sistema.',
+  /* 14 gobernar */       'Rediseño de workflows y gobierno ejecutivo visible son los dos factores con mayor correlación con EBIT.',
+  /* 15 diagram lid */    'El liderazgo ágil en 2026 tiene cuatro pilares: proteger, habilitar, soltar y gobernar.',
+  /* 16 >80% */           'Sin gobierno ejecutivo visible, más del 80% de las organizaciones no logra retorno tangible de genAI.',
+  /* 17 equipos */        'Los equipos deben ser multifuncionales y dinámicos — la composición cambia según la etapa.',
+  /* 18 centrado usr */   'Un agente 5x más rápido que degrada la satisfacción del cliente destruye valor, no lo crea.',
+  /* 19 DM base */        'El Delivery Manager configura el entorno que el equipo necesita para iterar.',
+  /* 20 DM 2026 */        'Si el SM no configura prácticas de revisión de outputs IA, la inspección simplemente no ocurre.',
+  /* 21 section quiz1 */  'La autocomprobación permite validar la comprensión de los fundamentos ágiles.',
+  /* 22 quiz 1 */         'El ciclo empírico es más necesario, no menos, cuando la IA acelera la ejecución.',
+  /* 23 quiz 2 */         'El liderazgo debe transferir poder a los equipos, no solo delegar tareas.',
+  /* 24 quiz 3 */         'El apoyo ejecutivo es condición estructural para cualquier transformación ágil.',
+  /* 25 quiz 4 */         'En 2026 la decisión incluye una tercera dimensión: automatización directa.',
+  /* 26 quiz 5 */         'El error es "agilizar" lo que funciona bien, generando fricción sin valor.',
+  /* 27 section era */    'La era agéntica no es un eslogan: los agentes están reconfigurando cómo se organiza el trabajo.',
+  /* 28 qué es agente */  'Un agente planifica y ejecuta múltiples pasos. El riesgo real es agencia excesiva sin control.',
+  /* 29 diagram agen */   'La evolución va de asistente a ecosistema, pero cada nivel agrega riesgo de agency sin control.',
+  /* 30 section roles */  'Los roles Scrum no desaparecen — se reubica la accountability y se expande el contenido.',
+  /* 31 PO */             'El Product Owner maximiza valor y gestiona el Backlog con transparencia.',
+  /* 32 SM */             'El Scrum Master es líder servidor: establece Scrum, coach en autogestión, elimina impedimentos.',
+  /* 33 Devs */           'Los Developers son responsables de crear un Increment utilizable cada Sprint con calidad.',
+  /* 34 section adopt */  'La adopción de IA cruzó el umbral, pero uso no es igual a valor enterprise.',
+  /* 35 bars adopción */  'De 65% a 71% uso regular en un año. 62% ya experimenta con agentes.',
+  /* 36 lo que sube */    'Productividad local sube: +55.8% programación, −40% tiempo escritura, +84% builds exitosos.',
+  /* 37 METR */           'Alerta: los devs expertos tardan 19% más con IA, pese a creer que son 20% más rápidos.',
+  /* 38 DORA mejoras */   'DORA muestra mejoras en calidad de documentación, código y velocidad de review.',
+  /* 39 DORA pérdidas */  'Pero el throughput cae −1.5% y la estabilidad cae −7.2%. Las mejoras locales no son sistémicas.',
+  /* 40 vacuum */         'El tiempo liberado por IA se rellena con burocracia si no hay rediseño intencional.',
+  /* 41 diagram E2E */    'Agentes aceleran cada fase del pipeline. El control se desplaza a reglas, pruebas y políticas.',
+  /* 42 section roles2 */ 'De "hacer" a "orquestar y asegurar": los roles Scrum permanecen, cambia el contenido.',
+  /* 43 PO 2026 */        'El PO diseña value + guardrails: decide qué se delega a agentes y con qué límites.',
+  /* 44 SM/DM 2026 */     'El SM se convierte en "flow & adoption architect": entrena, baja fricción, protege foco.',
+  /* 45 Devs 2026 */      'Los Developers se vuelven "engineer + evaluator": orquestan agentes, revisan, aseguran seguridad.',
+  /* 46 Líderes 2026 */   'Los líderes definen human-agent ratio, work charts y la tensión centralización vs. federación.',
+  /* 47 section quiz2 */  'La autocomprobación permite validar la comprensión de roles y liderazgo agéntico.',
+  /* 48 quiz 6 */         'La autonomía por nivel y work charts dinámicos son la traducción agéntica de "crear espacio".',
+  /* 49 quiz 7 */         'Paso atrás en ejecución, intensificación en gobernanza. Ese es el matiz 2026.',
+  /* 50 quiz 8 */         'Nuevos roles IA (AI Security, AI Agent Specialist) surgen según la madurez organizacional.',
+  /* 51 quiz 9 */         'Los agentes se evalúan por impacto en experiencia de usuario, no solo por eficiencia.',
+  /* 52 quiz 10 */        'En 2026, el entorno ágil que configura el SM incluye agentes IA gobernados.',
+  /* 53 section gob */    'Solo el 18% tenía un council con autoridad para IA responsable en 2024. Gap crítico.',
+  /* 54 centralizado */   'El modelo centralizado prioriza consistencia y cumplimiento, pero crea cuellos de botella.',
+  /* 55 federado */       'El modelo federado balancea velocidad y control, pero riesgo de "shadow AI".',
+  /* 56 product-align */  'Product-aligned conecta IA con outcomes, pero requiere madurez de medición.',
+  /* 57 section metr */   'Medir impacto neto: productividad menos retrabajo menos incidentes menos drift de calidad.',
+  /* 58 metrics 1 */      'Velocidad, estabilidad y calidad son las tres dimensiones sistémicas a monitorear.',
+  /* 59 metrics 2 */      'Productividad percibida no es igual a productividad real. ROI y riesgo completan el tablero.',
+  /* 60 section casos */  'La evidencia cuantificada muestra que la IA funciona cuando hay telemetría y prácticas de calidad.',
+  /* 61 copilot */        'Copilot + Accenture: +84% builds exitosos con telemetría y prácticas de revisión.',
+  /* 62 klarna */         'Klarna: 2.3M conversaciones, resolución en menos de 2 min vs. 11. +$40M en profit.',
+  /* 63 escritura */      'Escritura profesional: −40% tiempo, +18% calidad. Transferible directamente a PO y SM.',
+  /* 64 section impl */   'Implementar en 30 días: verificar fundamentos, medir, definir guardrails, empezar pequeño.',
+  /* 65 checklist 1 */    'Verificar fundamentos, medir baseline y definir guardrails antes de adoptar herramientas IA.',
+  /* 66 checklist 2 */    '64% recomienda iniciar pequeño. Aplicar el ciclo empírico a la propia adopción de IA.',
+  /* 67 cierre */         'La IA agéntica amplifica lo que ya tienen. Fundamentos sólidos = valor amplificado.',
+  /* 68 section bib */    'Toda la evidencia presentada proviene de fuentes verificables y actualizadas.',
+  /* 69 bib 1 */          '',
+  /* 70 bib 2 */          '',
+  /* 71 bib 3 */          '',
+  /* 72 bib 4 */          '',
+  /* 73 bib 5 */          '',
+  /* 74 end */            '',
+]
 
 /* ═══════════════════════════════════════════
    SLIDE DATA
@@ -31,7 +126,7 @@ const slides = [
   { type: 'hero' },
 
   // ── 1: KEY METRICS ──
-  { type: 'stats', items: [
+  { type: 'stats', title: 'El contexto en números', items: [
     { value: '71%', label: 'uso regular de genAI', source: 'McKinsey 2025' },
     { value: '62%', label: 'experimenta con agentes', source: 'McKinsey 2025' },
     { value: '>80%', label: 'sin impacto en EBIT', source: 'McKinsey 2025' },
@@ -40,6 +135,9 @@ const slides = [
 
   // ── SECTION: FUNDAMENTOS ──
   { type: 'section', title: 'Fundamentos ágiles', subtitle: 'La base que no cambia' },
+
+  // ── OVERVIEW: 5 FUNDAMENTOS ──
+  { type: 'overview' },
 
   // ── CICLO EMPÍRICO ──
   { type: 'content', title: 'El ciclo empírico', bullets: [
@@ -50,23 +148,23 @@ const slides = [
 
   { type: 'diagram', id: 'cycle' },
 
-  { type: 'content', title: 'IA amplifica el ciclo', bullets: [
-    'Sin inspección, errores de IA se propagan',
+  { type: 'content', title: '¿Qué pasa sin inspección?', bullets: [
+    'Los errores de IA se propagan sin freno',
     'La velocidad de ejecución supera la revisión',
     'La deuda técnica se acumula más rápido',
   ], note: 'Conexión agéntica', color: 'accent' },
 
   // ── CUÁNDO SÍ / CUÁNDO NO ──
-  { type: 'content', title: 'Cuándo la agilidad es esencial', bullets: [
+  { type: 'content', title: '¿Cuándo es esencial la agilidad?', bullets: [
     'Grandes brechas de satisfacción del cliente',
     'Necesidades cambiando rápidamente',
     'Capacidad de iterar genera ventaja directa',
   ], note: 'Fundamento 2' },
 
-  { type: 'content', title: 'Cuándo no es necesaria', bullets: [
+  { type: 'content', title: '¿Cuándo no es necesaria?', bullets: [
     'Brechas pequeñas y necesidades estables',
     'Procesos predecibles satisfacen mejor',
-    'En 2026: automatización directa es opción',
+    'En 2026: ¡la automatización directa es opción!',
   ], color: 'highlight' },
 
   { type: 'diagram', id: 'triangle' },
@@ -78,28 +176,28 @@ const slides = [
     'Blindar de interferencia burocrática',
     'Eliminar deadlines arbitrarios',
     'Establecer políticas claras sobre agentes IA',
-    'Sin protección, equipos son reabsorbidos',
+    'Sin protección, los equipos son reabsorbidos',
   ], note: 'Fundamento 3 — Pilar 1', color: 'accent' },
 
   { type: 'content', title: 'Crear espacio', bullets: [
     'Diferentes equipos, diferentes caminos',
-    'Diversidad de enfoques es fortaleza',
+    'La diversidad de enfoques es fortaleza',
     'Transferir mecanismos de poder a equipos',
     'No existe un "camino único"',
   ], note: 'Fundamento 3 — Pilar 2', color: 'accent' },
 
   { type: 'content', title: 'Confiar y soltar', bullets: [
-    'Inteligencia ascendente cambia el rol gerencial',
+    'La inteligencia ascendente cambia el rol gerencial',
     'Crear condiciones, luego dar paso atrás',
     'Matiz 2026: paso atrás en ejecución',
-    'Intensifica en gobernanza y diseño de sistema',
+    'Intensificar en gobernanza y diseño de sistema',
   ], note: 'Fundamento 3 — Pilar 3', color: 'accent' },
 
   { type: 'content', title: 'Gobernar (2026)', bullets: [
     'Definir límites de autonomía humana y de agentes',
     'Diseñar el sistema de trabajo',
     'Rediseño de workflows = mayor correlación con EBIT',
-    'Gobierno ejecutivo visible es condición necesaria',
+    '¡Gobierno ejecutivo visible es condición necesaria!',
   ], note: 'Fundamento 3 — Pilar 4 (nuevo)', color: 'highlight' },
 
   { type: 'diagram', id: 'leadership' },
@@ -108,21 +206,21 @@ const slides = [
 
   // ── EQUIPOS ──
   { type: 'content', title: 'Equipos multifuncionales', bullets: [
-    'Composición dinámica según etapa',
+    'Composición dinámica según la etapa',
     'Diseñadores, investigadores, desarrolladores juntos',
     'Evaluar agentes por impacto en usuario',
     'No solo por eficiencia interna',
   ], note: 'Fundamento 4' },
 
-  { type: 'content', title: 'Centrado en usuario, siempre', bullets: [
-    'Multifuncionalidad evita silos',
+  { type: 'content', title: 'Centrado en el usuario, siempre', bullets: [
+    'La multifuncionalidad evita silos',
     'Decisiones conectadas al usuario final',
-    'Un agente 5x más rápido que degrada CSAT\ndestruye valor',
+    'Un agente 5x más rápido que degrada CSAT\n¡destruye valor!',
   ], color: 'accent' },
 
   // ── DELIVERY MANAGER ──
   { type: 'content', title: 'El Delivery Manager', bullets: [
-    'Cadencias de trabajo e impedimentos',
+    'Cadencias de trabajo y eliminación de impedimentos',
     'Colaboración entre disciplinas',
     'Acceso a recursos, datos y herramientas',
   ], note: 'Fundamento 5 — Responsabilidades base' },
@@ -131,24 +229,24 @@ const slides = [
     'Integración gobernada de IA',
     'Entrenamiento en validación de outputs',
     'Prácticas de revisión de código generado',
-    'Si no configura revisión, la inspección no ocurre',
+    'Si no configura revisión, ¡la inspección no ocurre!',
   ], note: 'Extensión agéntica', color: 'highlight' },
 
   // ── QUIZ 1 ──
   { type: 'section', title: 'Autocomprobación', subtitle: 'Fundamentos ágiles', quiz: true },
   { type: 'quiz', idx: 0, q: 'El objetivo principal de la agilidad es\nofrecer mejores resultados mediante\nretroalimentación frecuente, inspección\ny adaptación.', explanation: 'El ciclo empírico es el mecanismo central.\nEn era agéntica se amplifica.' },
-  { type: 'quiz', idx: 1, q: 'El liderazgo debe proteger equipos ágiles\nde ser arrastrados a viejas formas de trabajo\ny transferir poder a los equipos.', explanation: 'Sin liderazgo protector, los equipos\nson reabsorbidos por inercia burocrática.' },
+  { type: 'quiz', idx: 1, q: 'El liderazgo debe proteger a los equipos\nágiles de ser arrastrados a viejas formas\nde trabajo y transferir poder a los equipos.', explanation: 'Sin liderazgo protector, los equipos\nson reabsorbidos por la inercia burocrática.' },
   { type: 'quiz', idx: 2, q: 'Las transformaciones ágiles fracasan\ncuando no cuentan con apoyo ejecutivo\no de mandos medios.', explanation: 'El apoyo ejecutivo es condición estructural.\n>80% sin gobierno visible no logra retorno.' },
   { type: 'quiz', idx: 3, q: 'La agilidad es esencial cuando existen\ngrandes brechas de satisfacción\no necesidades cambiando rápidamente.', explanation: 'En 2026 se agrega automatización directa.\nTriángulo: ágil vs. estable vs. automatizado.' },
-  { type: 'quiz', idx: 4, q: 'Procesos estables satisfacen mejor\ncuando las brechas son pequeñas\ny las necesidades son estables.', explanation: 'No todo requiere agilidad.\nEl error es "agilizar" lo que funciona bien.' },
+  { type: 'quiz', idx: 4, q: 'Los procesos estables satisfacen mejor\ncuando las brechas son pequeñas\ny las necesidades son estables.', explanation: 'No todo requiere agilidad.\nEl error es "agilizar" lo que funciona bien.' },
 
   // ── ERA AGÉNTICA ──
   { type: 'section', title: 'Era agéntica', subtitle: 'Lo que cambia en 2026' },
 
-  { type: 'content', title: 'Qué es un agente', bullets: [
+  { type: 'content', title: '¿Qué es un agente?', bullets: [
     'Sistema que planifica y ejecuta múltiples pasos',
     'No solo chat — ejecuta, coordina, decide',
-    'Problema real: agencia excesiva + bajo control',
+    'Problema real: ¡agencia excesiva + bajo control!',
   ] },
 
   { type: 'diagram', id: 'agentic' },
@@ -157,9 +255,9 @@ const slides = [
   { type: 'section', title: 'Roles Scrum', subtitle: 'El punto de partida canónico', emphasis: true },
 
   { type: 'content', title: 'Product Owner', bullets: [
-    'Maximizar valor del producto',
-    'Gestionar Product Backlog',
-    'Comunicar Objetivo del Producto',
+    'Maximizar el valor del producto',
+    'Gestionar el Product Backlog',
+    'Comunicar el Objetivo del Producto',
     'Asegurar transparencia y orden',
   ], color: 'accent' },
 
@@ -167,13 +265,13 @@ const slides = [
     'Establecer Scrum; lograr efectividad',
     'Líder servidor del equipo',
     'Coach en autogestión y multifuncionalidad',
-    'Eliminar impedimentos; servir a la org',
+    'Eliminar impedimentos; servir a la organización',
   ], color: 'highlight' },
 
   { type: 'content', title: 'Developers', bullets: [
-    'Crear Increment utilizable cada Sprint',
-    'Plan del Sprint y calidad en DoD',
-    'Adaptar plan diariamente',
+    'Crear un Increment utilizable cada Sprint',
+    'Plan del Sprint y calidad en la DoD',
+    'Adaptar el plan diariamente',
     'Responsabilidad mutua como profesionales',
   ], color: 'accent' },
 
@@ -183,24 +281,24 @@ const slides = [
   { type: 'bars', title: 'Curva de adopción', items: [
     { label: 'Uso regular genAI (2024)', value: 65, color: C.highlight },
     { label: 'Uso regular genAI (2025)', value: 71, color: C.highlight },
-    { label: 'AI en ≥1 función (2025)', value: 88, color: C.accent },
+    { label: 'IA en ≥1 función (2025)', value: 88, color: C.accent },
     { label: 'Experimenta con agentes', value: 62, color: C.accent },
-  ], source: 'McKinsey 2024-2025' },
+  ], source: 'McKinsey 2024–2025' },
 
   // ── PRODUCTIVIDAD ──
-  { type: 'content', title: 'Lo que sube', bullets: [
+  { type: 'content', title: '¿Qué mejora con IA?', bullets: [
     'Programación (lab): +55.8% más rápido',
     'Escritura: −40% tiempo, +18% calidad',
-    'Contact center: +34% productividad novatos',
+    'Contact center: +34% productividad en novatos',
     'Copilot/Accenture: +84% builds exitosos',
   ], note: 'Evidencia positiva', color: 'highlight' },
 
-  { type: 'bigstat', value: '+19%', label: 'más lento para devs expertos\ncon IA (METR RCT 2025)', source: 'Pese a creer ser ~20% más rápidos', warn: true },
+  { type: 'bigstat', value: '+19%', label: 'más lento para devs expertos\ncon IA (METR RCT 2025)', source: '¡Pese a creer ser ~20% más rápidos!', warn: true },
 
   { type: 'bars', title: 'DORA: mejoras locales', items: [
-    { label: 'Calidad documentación', value: 7.5, max: 12, color: C.highlight, suffix: '%' },
-    { label: 'Calidad código', value: 3.4, max: 12, color: C.highlight, suffix: '%' },
-    { label: 'Velocidad code review', value: 3.1, max: 12, color: C.highlight, suffix: '%' },
+    { label: 'Calidad de documentación', value: 7.5, max: 12, color: C.highlight, suffix: '%' },
+    { label: 'Calidad de código', value: 3.4, max: 12, color: C.highlight, suffix: '%' },
+    { label: 'Velocidad de code review', value: 3.1, max: 12, color: C.highlight, suffix: '%' },
     { label: 'Flow individual', value: 2.6, max: 12, color: C.accent, suffix: '%' },
   ], source: 'DORA 2024 — por +25% adopción IA', note: 'Lo que sube' },
 
@@ -210,7 +308,7 @@ const slides = [
   ], source: 'DORA 2024 — por +25% adopción IA', note: 'Lo que baja', warn: true },
 
   // ── VACUUM ──
-  { type: 'quote', text: 'Si IA acelera tareas valiosas,\nse crea un "vacío de tiempo".\nSin rediseño, ese vacío\nse rellena con burocracia.', source: 'El "Vacuum Effect"' },
+  { type: 'quote', text: 'Si la IA acelera tareas valiosas,\nse crea un "vacío de tiempo".\nSin rediseño, ese vacío\nse rellena con burocracia.', source: 'El "Vacuum Effect"' },
 
   // ── SISTEMA E2E ──
   { type: 'diagram', id: 'system' },
@@ -222,37 +320,37 @@ const slides = [
 
   { type: 'role', role: 'SM / Delivery Manager', base: 'Establecer Scrum;\nlograr efectividad;\nconfigurar entorno ágil', upgrade: 'Flow & adoption architect:\nentrenar uso/validación,\nbajar fricción, proteger foco', artifacts: 'Guías de uso, checklists,\nmétricas DevEx/Flow', color: C.highlight },
 
-  { type: 'role', role: 'Developers', base: 'Entregar Increment;\ncalidad en DoD;\nplan del Sprint', upgrade: 'Engineer + evaluator:\norquestar agentes, revisar,\nasegurar seguridad, testear', artifacts: 'Suites de pruebas,\nlinters/SAST, revisión prompts', color: C.accent },
+  { type: 'role', role: 'Developers', base: 'Entregar Increment;\ncalidad en DoD;\nplan del Sprint', upgrade: 'Engineer + evaluator:\norquestar agentes, revisar,\nasegurar seguridad, testear', artifacts: 'Suites de pruebas,\nlinters/SAST, revisión de prompts', color: C.accent },
 
-  { type: 'role', role: 'Líderes', base: 'Crear condiciones;\nproteger equipos;\ntransferir poder', upgrade: 'Agent-boss / system steward:\nhuman-agent ratio, work charts,\ncentralización vs federación', artifacts: 'Modelo gobernanza,\nmétricas EBIT/ROI, controles', color: C.highlight },
+  { type: 'role', role: 'Líderes', base: 'Crear condiciones;\nproteger equipos;\ntransferir poder', upgrade: 'Agent-boss / system steward:\nhuman-agent ratio, work charts,\ncentralización vs. federación', artifacts: 'Modelo de gobernanza,\nmétricas EBIT/ROI, controles', color: C.highlight },
 
   // ── QUIZ 2 ──
   { type: 'section', title: 'Autocomprobación', subtitle: 'Roles y liderazgo', quiz: true },
   { type: 'quiz', idx: 5, q: 'Los líderes ágiles necesitan\ncrear espacio para que todos\ncontribuyan — diferentes equipos,\ndiferentes caminos.', explanation: 'En era agéntica: autonomía por nivel\ny work charts dinámicos.' },
   { type: 'quiz', idx: 6, q: 'Confiar en la inteligencia ascendente\ncambia el papel de los gerentes.\nCrean condiciones y dan paso atrás.', explanation: 'Matiz 2026: paso atrás en ejecución,\nintensifica en gobernanza.' },
   { type: 'quiz', idx: 7, q: 'El tamaño del equipo y los roles\ncambiarán según la etapa\nde desarrollo del servicio.', explanation: 'En 2026 es dinámico a nivel de sprint.\nNuevos roles IA según madurez.' },
-  { type: 'quiz', idx: 8, q: 'Todo el equipo debe trabajar junto\npara diseñar, construir e iterar\nun servicio centrado en el usuario.', explanation: 'Agentes se evalúan por impacto\nen experiencia de usuario.' },
-  { type: 'quiz', idx: 9, q: 'El delivery manager configura\nel entorno ágil que su equipo\nnecesita para iterar.', explanation: 'En 2026 ese entorno incluye agentes.\nSM asegura integración gobernada.' },
+  { type: 'quiz', idx: 8, q: 'Todo el equipo debe trabajar junto\npara diseñar, construir e iterar\nun servicio centrado en el usuario.', explanation: 'Los agentes se evalúan por impacto\nen experiencia de usuario.' },
+  { type: 'quiz', idx: 9, q: 'El delivery manager configura\nel entorno ágil que su equipo\nnecesita para iterar.', explanation: 'En 2026 ese entorno incluye agentes.\nEl SM asegura integración gobernada.' },
 
   // ── GOBERNANZA ──
   { type: 'section', title: 'Gobernanza', subtitle: 'Modelos operativos' },
 
   { type: 'governance', model: 'Centralizado', subtitle: 'AI CoE fuerte', pros: 'Consistencia, control, cumplimiento', cons: 'Cuellos de botella, baja adopción', when: 'Industrias reguladas, riesgo alto', color: C.accent },
 
-  { type: 'governance', model: 'Federado', subtitle: 'Centro define; unidades ejecutan', pros: 'Balance velocidad / control', cons: 'Inconsistencia, "shadow AI"', when: 'Empresas multi-unidad por productos', color: C.highlight },
+  { type: 'governance', model: 'Federado', subtitle: 'Centro define; unidades ejecutan', pros: 'Balance entre velocidad y control', cons: 'Inconsistencia, "shadow AI"', when: 'Empresas multi-unidad por productos', color: C.highlight },
 
   { type: 'governance', model: 'Product-aligned', subtitle: 'Governance en el flujo de producto', pros: 'Conecta IA con outcomes', cons: 'Requiere madurez de medición', when: 'Agile escalado con telemetría', color: C.accent },
 
   // ── MÉTRICAS ──
   { type: 'section', title: 'Métricas', subtitle: 'Tablero mínimo viable' },
 
-  { type: 'metrics', items: [
+  { type: 'metrics', title: 'Dimensiones sistémicas', items: [
     { dim: 'Velocidad E2E', metric: 'Lead time / throughput', alert: 'Baja con "más commits"' },
     { dim: 'Estabilidad', metric: 'Change failure rate', alert: 'Cae con IA (−7.2%)' },
     { dim: 'Calidad', metric: 'Build success, merge rate', alert: 'Volumen sube, calidad baja' },
   ]},
 
-  { type: 'metrics', items: [
+  { type: 'metrics', title: 'Dimensiones de impacto', items: [
     { dim: 'Productividad', metric: 'Flow / percepción', alert: 'Percepción ≠ realidad' },
     { dim: 'ROI', metric: '% EBIT atribuible', alert: '>80% sin impacto enterprise' },
     { dim: 'Riesgo', metric: 'Incidentes IA', alert: 'Privacidad, IP, sesgo' },
@@ -265,14 +363,14 @@ const slides = [
     { label: 'Pull Requests', value: '+8.69%' },
     { label: 'Merge rate', value: '+15%' },
     { label: 'Builds exitosos', value: '+84%' },
-    { label: 'Satisfacción', value: '90% más fulfilled' },
+    { label: 'Satisfacción', value: '90%' },
   ], color: C.highlight },
 
   { type: 'case', title: 'Klarna', subtitle: 'Agente end-to-end', items: [
     { label: 'Conversaciones', value: '2.3M' },
     { label: 'Equivalente FTE', value: '700' },
-    { label: 'Resolución', value: '<2 min vs 11' },
-    { label: 'Profit improvement', value: '+$40M' },
+    { label: 'Resolución', value: '<2 min' },
+    { label: 'Profit', value: '+$40M' },
   ], color: C.accent },
 
   { type: 'case', title: 'Escritura profesional', subtitle: 'Transferible a PO/SM', items: [
@@ -281,16 +379,16 @@ const slides = [
   ], note: 'PRDs, historias, minutas, síntesis ejecutiva', color: C.highlight },
 
   // ── CHECKLIST ──
-  { type: 'section', title: 'Implementación', subtitle: 'Checklist 30 días' },
+  { type: 'section', title: 'Implementación', subtitle: 'Checklist de 30 días' },
 
-  { type: 'checklist', items: [
+  { type: 'checklist', title: 'Primeros pasos', items: [
     { step: 1, text: 'Verificar fundamentos:\nliderazgo, equipos, inspección' },
     { step: 2, text: 'Medir baseline:\nDORA + DevEx + calidad' },
     { step: 3, text: 'Definir guardrails:\ndatos, IP, seguridad' },
   ]},
 
-  { type: 'checklist', items: [
-    { step: 4, text: 'Empezar con 1-2 workflows.\n64% recomienda iniciar pequeño.' },
+  { type: 'checklist', title: 'Escalar con evidencia', items: [
+    { step: 4, text: 'Empezar con 1–2 workflows.\n64% recomienda iniciar pequeño.' },
     { step: 5, text: 'Iterar con evidencia.\nRevisar en 30 días con datos.' },
   ]},
 
@@ -356,20 +454,17 @@ function CycleDiagram() {
             <text x={n.x + 110} y="108" textAnchor="middle" fill={n.color} fontSize="28" fontWeight="600" fontFamily="Inter">{n.label}</text>
           </g>
         ))}
-        {/* Arrows */}
         <g className="anim-fade d3">
           <line x1="260" y1="100" x2="330" y2="100" stroke={C.accent} strokeWidth="2" markerEnd="url(#a1)" />
           <line x1="560" y1="100" x2="630" y2="100" stroke={C.accent} strokeWidth="2" markerEnd="url(#a1)" />
         </g>
-        {/* Feedback arc */}
         <g className="anim-fade d4">
           <path d="M750 145 C750 260, 150 260, 150 145" fill="none" stroke={C.highlight} strokeWidth="2" strokeDasharray="8 4" markerEnd="url(#a2)" />
           <text x="450" y="245" textAnchor="middle" fill={C.highlight} fontSize="22" fontFamily="Inter">feedback loop</text>
         </g>
-        {/* IA warning */}
         <g className="anim-pop d5">
           <rect x="270" y="275" width="360" height="40" rx="10" fill={C.surface} stroke="#F59E0B" strokeWidth="1" />
-          <text x="450" y="302" textAnchor="middle" fill="#F59E0B" fontSize="20" fontFamily="Inter">⚡ IA amplifica velocidad Y errores</text>
+          <text x="450" y="302" textAnchor="middle" fill="#F59E0B" fontSize="20" fontFamily="Inter">⚡ La IA amplifica velocidad Y errores</text>
         </g>
         <defs>
           <marker id="a1" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10" fill={C.accent} /></marker>
@@ -427,7 +522,7 @@ function LeadershipDiagram() {
       <svg viewBox="0 0 850 340" width={850} fill="none">
         <g className="anim-pop d1">
           <rect x="295" y="10" width="260" height="70" rx="14" fill={C.surface} stroke={C.accent} strokeWidth="2.5" />
-          <text x="425" y="53" textAnchor="middle" fill={C.accent} fontSize="30" fontWeight="700" fontFamily="Inter">Líder Ágil</text>
+          <text x="425" y="53" textAnchor="middle" fill={C.accent} fontSize="30" fontWeight="700" fontFamily="Inter">Líder ágil</text>
         </g>
         {pillars.map((p, i) => (
           <g key={i} className={`anim-pop d${i + 2}`}>
@@ -484,18 +579,12 @@ function AgenticDiagram() {
 
 function SystemDiagram() {
   const phases = [
-    { label: 'Discovery', x: 20 },
-    { label: 'Backlog', x: 170 },
-    { label: 'Build', x: 320 },
-    { label: 'Test', x: 470 },
-    { label: 'Release', x: 620 },
-    { label: 'Observe', x: 770 },
+    { label: 'Discovery', x: 20 }, { label: 'Backlog', x: 170 }, { label: 'Build', x: 320 },
+    { label: 'Test', x: 470 }, { label: 'Release', x: 620 }, { label: 'Observe', x: 770 },
   ]
   const agents = [
-    { label: 'Agent: PRD', x: 170 },
-    { label: 'Agent: Code', x: 320 },
-    { label: 'Agent: Test', x: 470 },
-    { label: 'Agent: Incidents', x: 770 },
+    { label: 'Agent: PRD', x: 170 }, { label: 'Agent: Code', x: 320 },
+    { label: 'Agent: Test', x: 470 }, { label: 'Agent: Incidents', x: 770 },
   ]
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 30 }}>
@@ -540,8 +629,8 @@ function SlideRenderer({ data, quizState, onQuizAnswer }) {
   switch (data.type) {
 
     case 'hero': return (
-      <div style={{ ...inner, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', textAlign: 'center', gap: 40 }}>
-        <div className="anim-fade d1"><Logos height={80} /></div>
+      <div style={{ ...inner, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', textAlign: 'center', gap: 36 }}>
+        <div className="anim-fade d1"><Logos height={128} /></div>
         <p className="anim-fade d2" style={{ fontSize: T.caption, color: C.dim, letterSpacing: 4, textTransform: 'uppercase', fontWeight: 500 }}>Gestión Ágil de Proyectos</p>
         <h1 className="anim-fade d3" style={{ fontSize: T.hero, fontWeight: 800, lineHeight: 1.1, color: C.white, maxWidth: 900 }}>
           Roles y <span style={{ color: C.accent }}>Liderazgo</span>
@@ -549,14 +638,16 @@ function SlideRenderer({ data, quizState, onQuizAnswer }) {
         <p className="anim-fade d4" style={{ fontSize: T.text, color: C.dim, maxWidth: 700, lineHeight: 1.4 }}>
           En la era de la IA agéntica
         </p>
+        <div className="anim-fade d5"><LiveClock /></div>
       </div>
     )
 
     case 'end': return (
-      <div style={{ ...inner, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', textAlign: 'center', gap: 60 }}>
-        <div className="anim-fade d1"><Logos height={80} /></div>
+      <div style={{ ...inner, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', textAlign: 'center', gap: 48 }}>
+        <div className="anim-fade d1"><Logos height={128} /></div>
         <p className="anim-fade d2" style={{ fontSize: T.subtitle, color: C.dim, fontWeight: 500 }}>Gestión Ágil de Proyectos</p>
-        <p className="anim-fade d3" style={{ fontSize: T.title, fontWeight: 700, color: C.white }}>Gracias</p>
+        <p className="anim-fade d3" style={{ fontSize: T.title, fontWeight: 700, color: C.white }}>¡Gracias!</p>
+        <div className="anim-fade d4"><LiveClock /></div>
       </div>
     )
 
@@ -569,8 +660,31 @@ function SlideRenderer({ data, quizState, onQuizAnswer }) {
       </div>
     )
 
+    case 'overview': return (
+      <div style={{ ...inner, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 20 }}>
+        <p className="anim-fade d1" style={{ fontSize: 20, color: C.dim, textTransform: 'uppercase', letterSpacing: 3, fontWeight: 600 }}>Agenda</p>
+        <h2 className="anim-fade d1" style={{ fontSize: T.subtitle, fontWeight: 700, color: C.white, marginBottom: 12 }}>Cinco fundamentos</h2>
+        {[
+          { n: '01', title: 'El ciclo empírico', sub: 'Transparencia → inspección → adaptación' },
+          { n: '02', title: '¿Cuándo sí, cuándo no?', sub: 'Ágil vs. estable vs. automatizado' },
+          { n: '03', title: 'Liderazgo ágil', sub: 'Proteger, habilitar, soltar, gobernar' },
+          { n: '04', title: 'Equipos multifuncionales', sub: 'Centrados en el usuario, no en eficiencia' },
+          { n: '05', title: 'El Delivery Manager', sub: 'Configurar el entorno — ahora con agentes IA' },
+        ].map((f, i) => (
+          <div key={i} className={`anim-fade d${i + 2}`} style={{ display: 'flex', alignItems: 'center', gap: 24 }}>
+            <span style={{ fontSize: 36, fontWeight: 800, color: C.accent, opacity: 0.4, minWidth: 60 }}>{f.n}</span>
+            <div>
+              <p style={{ fontSize: T.bullet, fontWeight: 600, color: C.white }}>{f.title}</p>
+              <p style={{ fontSize: 22, color: C.dim }}>{f.sub}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    )
+
     case 'stats': return (
-      <div style={{ ...inner, height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <div style={{ ...inner, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', gap: 40 }}>
+        {data.title && <h2 className="anim-fade d1" style={{ fontSize: T.subtitle, fontWeight: 700, color: C.white }}>{data.title}</h2>}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 40, width: '100%', maxWidth: 1500 }}>
           {data.items.map((s, i) => (
             <div key={i} className={`anim-pop d${i + 1}`} style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 16, padding: '48px 32px', textAlign: 'center' }}>
@@ -590,7 +704,7 @@ function SlideRenderer({ data, quizState, onQuizAnswer }) {
         <ul style={{ listStyle: 'none', padding: 0, maxWidth: 900 }}>
           {data.bullets.map((b, i) => (
             <li key={i} className={`anim-fade d${i + 3}`} style={{ fontSize: T.bullet, color: 'rgba(255,255,255,0.85)', lineHeight: 1.5, paddingLeft: 36, position: 'relative', marginBottom: 12 }}>
-              <span style={{ position: 'absolute', left: 0, top: 6, width: 10, height: 10, borderRadius: '50%', background: data.color === 'highlight' ? C.highlight : data.color === 'accent' ? C.accent : C.accent, opacity: 0.6 }} />
+              <span style={{ position: 'absolute', left: 0, top: 6, width: 10, height: 10, borderRadius: '50%', background: data.color === 'highlight' ? C.highlight : C.accent, opacity: 0.6 }} />
               {b}
             </li>
           ))}
@@ -600,11 +714,7 @@ function SlideRenderer({ data, quizState, onQuizAnswer }) {
 
     case 'diagram': {
       const Comp = DIAGRAMS[data.id]
-      return (
-        <div style={{ ...inner, height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <Comp />
-        </div>
-      )
+      return <div style={{ ...inner, height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><Comp /></div>
     }
 
     case 'bigstat': return (
@@ -627,9 +737,7 @@ function SlideRenderer({ data, quizState, onQuizAnswer }) {
         {data.note && <p className="anim-fade d1" style={{ fontSize: 20, color: data.warn ? C.red : C.dim, textTransform: 'uppercase', letterSpacing: 3, fontWeight: 600 }}>{data.note}</p>}
         <h2 className="anim-fade d1" style={{ fontSize: T.subtitle, fontWeight: 700, color: C.white }}>{data.title}</h2>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 24, maxWidth: 1200 }}>
-          {data.items.map((item, i) => (
-            <BarRow key={i} item={item} delay={i} />
-          ))}
+          {data.items.map((item, i) => <BarRow key={i} item={item} delay={i} />)}
         </div>
         {data.source && <p className="anim-fade d6" style={{ fontSize: 20, color: C.dim }}>{data.source}</p>}
       </div>
@@ -639,7 +747,7 @@ function SlideRenderer({ data, quizState, onQuizAnswer }) {
       const state = quizState[data.idx]
       return (
         <div style={{ ...inner, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 32 }}>
-          <p className="anim-fade d1" style={{ fontSize: 20, color: C.highlight, textTransform: 'uppercase', letterSpacing: 3, fontWeight: 600 }}>Pregunta {data.idx + 1} de 10</p>
+          <p className="anim-fade d1" style={{ fontSize: 20, color: C.highlight, textTransform: 'uppercase', letterSpacing: 3, fontWeight: 600 }}>Pregunta {data.idx + 1} de 10 — ¿Verdadero o falso?</p>
           <p className="anim-fade d2" style={{ fontSize: T.text, color: C.white, lineHeight: 1.6, maxWidth: 900, whiteSpace: 'pre-line', fontWeight: 500 }}>{data.q}</p>
           {state === null ? (
             <div className="anim-fade d3" style={{ display: 'flex', gap: 24, marginTop: 20 }}>
@@ -655,7 +763,7 @@ function SlideRenderer({ data, quizState, onQuizAnswer }) {
           ) : (
             <div className="anim-fade" style={{ marginTop: 20 }}>
               <p style={{ fontSize: T.bullet, fontWeight: 700, color: state ? C.highlight : C.red, marginBottom: 16 }}>
-                {state ? '✓ Correcto' : '✗ Incorrecto'} — La respuesta es Verdadero
+                {state ? '✓ ¡Correcto!' : '✗ Incorrecto'} — La respuesta es Verdadero
               </p>
               <p style={{ fontSize: T.caption, color: 'rgba(255,255,255,0.7)', whiteSpace: 'pre-line', lineHeight: 1.6, maxWidth: 800 }}>{data.explanation}</p>
             </div>
@@ -689,24 +797,23 @@ function SlideRenderer({ data, quizState, onQuizAnswer }) {
         <h2 className="anim-fade d1" style={{ fontSize: T.title, fontWeight: 700, color: data.color }}>{data.model}</h2>
         <p className="anim-fade d2" style={{ fontSize: T.text, color: 'rgba(255,255,255,0.7)' }}>{data.subtitle}</p>
         <div style={{ display: 'flex', gap: 40, marginTop: 16 }}>
-          <div className="anim-pop d3" style={{ flex: 1, background: C.surface, borderRadius: 16, padding: 32, border: `1px solid ${C.border}` }}>
-            <p style={{ fontSize: 20, color: C.highlight, textTransform: 'uppercase', letterSpacing: 2, marginBottom: 12, fontWeight: 600 }}>Ventajas</p>
-            <p style={{ fontSize: T.caption, color: 'rgba(255,255,255,0.85)', lineHeight: 1.6 }}>{data.pros}</p>
-          </div>
-          <div className="anim-pop d4" style={{ flex: 1, background: C.surface, borderRadius: 16, padding: 32, border: `1px solid ${C.border}` }}>
-            <p style={{ fontSize: 20, color: C.red, textTransform: 'uppercase', letterSpacing: 2, marginBottom: 12, fontWeight: 600 }}>Riesgos</p>
-            <p style={{ fontSize: T.caption, color: 'rgba(255,255,255,0.85)', lineHeight: 1.6 }}>{data.cons}</p>
-          </div>
-          <div className="anim-pop d5" style={{ flex: 1, background: C.surface, borderRadius: 16, padding: 32, border: `1px solid ${C.border}` }}>
-            <p style={{ fontSize: 20, color: C.accent, textTransform: 'uppercase', letterSpacing: 2, marginBottom: 12, fontWeight: 600 }}>Cuándo usar</p>
-            <p style={{ fontSize: T.caption, color: 'rgba(255,255,255,0.85)', lineHeight: 1.6 }}>{data.when}</p>
-          </div>
+          {[
+            { label: 'Ventajas', content: data.pros, color: C.highlight },
+            { label: 'Riesgos', content: data.cons, color: C.red },
+            { label: '¿Cuándo usar?', content: data.when, color: C.accent },
+          ].map((col, i) => (
+            <div key={i} className={`anim-pop d${i + 3}`} style={{ flex: 1, background: C.surface, borderRadius: 16, padding: 32, border: `1px solid ${C.border}` }}>
+              <p style={{ fontSize: 20, color: col.color, textTransform: 'uppercase', letterSpacing: 2, marginBottom: 12, fontWeight: 600 }}>{col.label}</p>
+              <p style={{ fontSize: T.caption, color: 'rgba(255,255,255,0.85)', lineHeight: 1.6 }}>{col.content}</p>
+            </div>
+          ))}
         </div>
       </div>
     )
 
     case 'metrics': return (
       <div style={{ ...inner, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 28 }}>
+        {data.title && <h2 className="anim-fade d1" style={{ fontSize: T.subtitle, fontWeight: 700, color: C.white }}>{data.title}</h2>}
         <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
           {data.items.map((m, i) => (
             <div key={i} className={`anim-fade d${i + 1}`} style={{ display: 'flex', alignItems: 'center', gap: 32, background: C.surface, border: `1px solid ${C.border}`, borderRadius: 16, padding: '28px 40px' }}>
@@ -738,6 +845,7 @@ function SlideRenderer({ data, quizState, onQuizAnswer }) {
 
     case 'checklist': return (
       <div style={{ ...inner, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 32 }}>
+        {data.title && <h2 className="anim-fade d1" style={{ fontSize: T.subtitle, fontWeight: 700, color: C.white, marginBottom: 8 }}>{data.title}</h2>}
         {data.items.map((item, i) => (
           <div key={i} className={`anim-fade d${i + 1}`} style={{ display: 'flex', alignItems: 'flex-start', gap: 28, maxWidth: 900 }}>
             <div style={{ width: 64, height: 64, borderRadius: 14, background: C.surface, border: `2px solid ${C.accent}`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
@@ -766,7 +874,7 @@ function SlideRenderer({ data, quizState, onQuizAnswer }) {
 function BarRow({ item, delay }) {
   const [w, setW] = useState(0)
   const max = item.max || 100
-  useEffect(() => { const t = setTimeout(() => setW(Math.min(Math.abs(item.value) / max * 100, 100)), 200 + delay * 150); return () => clearTimeout(t) }, [item.value, max, delay])
+  useEffect(() => { const t = setTimeout(() => setW(Math.min(Math.abs(item.value) / max * 100, 100)), 200 + delay * 150); return () => clearInterval(t) }, [item.value, max, delay])
   return (
     <div className={`anim-fade d${delay + 2}`} style={{ display: 'flex', alignItems: 'center', gap: 24 }}>
       <span style={{ fontSize: 24, color: 'rgba(255,255,255,0.7)', width: 320, textAlign: 'right', flexShrink: 0 }}>{item.label}</span>
@@ -774,6 +882,21 @@ function BarRow({ item, delay }) {
         <div style={{ height: '100%', borderRadius: 12, transition: 'width 1s cubic-bezier(0.16,1,0.3,1)', width: `${w}%`, background: item.color, display: 'flex', alignItems: 'center', justifyContent: 'flex-end', paddingRight: 16 }}>
           <span style={{ fontSize: 22, fontWeight: 700, color: 'white' }}>{item.prefix || '+'}{item.value}{item.suffix || '%'}</span>
         </div>
+      </div>
+    </div>
+  )
+}
+
+/* ═══════════════════════════════════════════
+   TAKEAWAY OVERLAY
+   ═══════════════════════════════════════════ */
+function TakeawayOverlay({ text, visible }) {
+  if (!visible || !text) return null
+  return (
+    <div style={{ position: 'absolute', bottom: 60, left: MARGIN, right: MARGIN, zIndex: 20, display: 'flex', justifyContent: 'center' }}>
+      <div className="anim-fade" style={{ background: 'rgba(79,140,255,0.12)', border: `1px solid rgba(79,140,255,0.3)`, borderRadius: 16, padding: '20px 40px', maxWidth: 1200, backdropFilter: 'blur(16px)' }}>
+        <p style={{ fontSize: 22, color: C.accent, fontWeight: 600, marginBottom: 4, textTransform: 'uppercase', letterSpacing: 2 }}>Takeaway</p>
+        <p style={{ fontSize: T.caption, color: 'rgba(255,255,255,0.9)', lineHeight: 1.5 }}>{text}</p>
       </div>
     </div>
   )
@@ -788,15 +911,11 @@ export default function App() {
   const [current, setCurrent] = useState(0)
   const [anim, setAnim] = useState(false)
   const [quizState, setQuizState] = useState(Array(10).fill(null))
-  const containerRef = useRef(null)
   const [scale, setScale] = useState(1)
+  const [showTakeaway, setShowTakeaway] = useState(false)
 
-  // Responsive scaling
   useEffect(() => {
-    const resize = () => {
-      const s = Math.min(window.innerWidth / 1920, window.innerHeight / 1080)
-      setScale(s)
-    }
+    const resize = () => setScale(Math.min(window.innerWidth / 1920, window.innerHeight / 1080))
     resize()
     window.addEventListener('resize', resize)
     return () => window.removeEventListener('resize', resize)
@@ -807,12 +926,14 @@ export default function App() {
     const next = dir === 1 ? Math.min(current + 1, TOTAL - 1) : Math.max(current - 1, 0)
     if (next === current) return
     setAnim(true)
+    setShowTakeaway(false)
     setTimeout(() => { setCurrent(next); setAnim(false) }, 150)
   }, [current, anim])
 
   const goTo = useCallback((idx) => {
     if (anim || idx === current) return
     setAnim(true)
+    setShowTakeaway(false)
     setTimeout(() => { setCurrent(idx); setAnim(false) }, 150)
   }, [current, anim])
 
@@ -822,56 +943,59 @@ export default function App() {
       if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); go(-1) }
       if (e.key === 'Home') { e.preventDefault(); goTo(0) }
       if (e.key === 'End') { e.preventDefault(); goTo(TOTAL - 1) }
+      if (e.key === 'n' || e.key === 'N') { e.preventDefault(); setShowTakeaway(prev => !prev) }
     }
     window.addEventListener('keydown', handler)
     return () => window.removeEventListener('keydown', handler)
   }, [go, goTo])
 
-  const handleQuizAnswer = (idx, val) => {
-    setQuizState(prev => { const n = [...prev]; n[idx] = val; return n })
-  }
-
   return (
-    <div style={{ width: '100vw', height: '100vh', background: C.bg, overflow: 'hidden', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-      {/* Slide canvas */}
+    <div style={{ width: '100vw', height: '100vh', background: C.bg, overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
       <div style={{ width: 1920, height: 1080, transform: `scale(${scale})`, transformOrigin: 'center center', position: 'relative', flexShrink: 0 }}>
         {/* Progress bar */}
         <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: 'rgba(255,255,255,0.04)', zIndex: 10 }}>
           <div style={{ height: '100%', background: C.accent, transition: 'width 400ms ease-out', width: `${((current + 1) / TOTAL) * 100}%` }} />
         </div>
 
-        {/* Slide counter */}
-        <div style={{ position: 'absolute', top: 24, right: MARGIN, zIndex: 10, fontSize: 20, color: C.dim, fontWeight: 500 }}>
-          {String(current + 1).padStart(2, '0')} / {String(TOTAL).padStart(2, '0')}
+        {/* Header: counter + clock */}
+        <div style={{ position: 'absolute', top: 20, left: MARGIN, right: MARGIN, zIndex: 10, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <span style={{ fontSize: 20, color: C.dim, fontWeight: 500 }}>
+            {String(current + 1).padStart(2, '0')} / {String(TOTAL).padStart(2, '0')}
+          </span>
+          <LiveClock />
         </div>
 
         {/* Slide content */}
         <div key={current} className="slide-enter" style={{ width: 1920, height: 1080 }}>
-          <SlideRenderer data={slides[current]} quizState={quizState} onQuizAnswer={handleQuizAnswer} />
+          <SlideRenderer data={slides[current]} quizState={quizState} onQuizAnswer={(idx, val) => setQuizState(prev => { const n = [...prev]; n[idx] = val; return n })} />
         </div>
 
-        {/* Navigation arrows */}
+        {/* Takeaway overlay */}
+        <TakeawayOverlay text={TAKEAWAYS[current]} visible={showTakeaway} />
+
+        {/* Nav arrows */}
         {current > 0 && (
           <button onClick={() => go(-1)} style={{ position: 'absolute', left: 32, top: '50%', transform: 'translateY(-50%)', width: 56, height: 56, borderRadius: 14, border: `1px solid ${C.border}`, background: 'rgba(255,255,255,0.03)', color: C.dim, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 28, transition: 'all 300ms', zIndex: 10 }}
-            onMouseEnter={e => { e.target.style.background = 'rgba(255,255,255,0.08)'; e.target.style.color = C.white }}
-            onMouseLeave={e => { e.target.style.background = 'rgba(255,255,255,0.03)'; e.target.style.color = C.dim }}>
-            ‹
-          </button>
+            onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.08)'; e.currentTarget.style.color = C.white }}
+            onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.03)'; e.currentTarget.style.color = C.dim }}>‹</button>
         )}
         {current < TOTAL - 1 && (
           <button onClick={() => go(1)} style={{ position: 'absolute', right: 32, top: '50%', transform: 'translateY(-50%)', width: 56, height: 56, borderRadius: 14, border: `1px solid ${C.border}`, background: 'rgba(255,255,255,0.03)', color: C.dim, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 28, transition: 'all 300ms', zIndex: 10 }}
-            onMouseEnter={e => { e.target.style.background = 'rgba(255,255,255,0.08)'; e.target.style.color = C.white }}
-            onMouseLeave={e => { e.target.style.background = 'rgba(255,255,255,0.03)'; e.target.style.color = C.dim }}>
-            ›
-          </button>
+            onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.08)'; e.currentTarget.style.color = C.white }}
+            onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.03)'; e.currentTarget.style.color = C.dim }}>›</button>
         )}
 
-        {/* Bottom dot nav */}
-        <div style={{ position: 'absolute', bottom: 24, left: '50%', transform: 'translateX(-50%)', display: 'flex', gap: 6, zIndex: 10 }}>
+        {/* Dot nav */}
+        <div style={{ position: 'absolute', bottom: 20, left: '50%', transform: 'translateX(-50%)', display: 'flex', gap: 5, zIndex: 10 }}>
           {slides.map((s, i) => (
             <button key={i} onClick={() => goTo(i)} title={`Slide ${i + 1}`}
-              style={{ width: i === current ? 28 : 8, height: 8, borderRadius: 4, border: 'none', cursor: 'pointer', transition: 'all 300ms', background: i === current ? C.accent : s.type === 'quiz' ? 'rgba(34,197,94,0.35)' : 'rgba(255,255,255,0.12)' }} />
+              style={{ width: i === current ? 24 : 7, height: 7, borderRadius: 4, border: 'none', cursor: 'pointer', transition: 'all 300ms', background: i === current ? C.accent : s.type === 'quiz' ? 'rgba(34,197,94,0.35)' : 'rgba(255,255,255,0.12)' }} />
           ))}
+        </div>
+
+        {/* N key hint */}
+        <div style={{ position: 'absolute', bottom: 20, right: MARGIN, zIndex: 10, fontSize: 16, color: 'rgba(255,255,255,0.15)' }}>
+          <kbd style={{ padding: '2px 8px', borderRadius: 4, border: '1px solid rgba(255,255,255,0.1)', fontSize: 14 }}>N</kbd> takeaway
         </div>
       </div>
     </div>

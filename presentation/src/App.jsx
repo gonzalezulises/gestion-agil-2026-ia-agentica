@@ -115,8 +115,7 @@ const TAKEAWAYS = [
   /* 57 centralizar */    'La distinción es operacional: los equipos deciden cómo usar herramientas, pero el liderazgo centraliza políticas, evaluación e incidentes. Sin esto, "shadow AI" es inevitable.',
   /* 58 GMV */            'Estos 4 componentes son operables en 90 días. La gobernanza mínima viable no es burocracia — es el mínimo para que la adopción de IA no sea un riesgo sistémico.',
   /* 59 section metr */   'El tablero mínimo viable evita "local wins / system losses". Medir solo productividad individual es como medir solo goles sin ver el resultado del partido.',
-  /* 58 metrics 1 */      'Lead time y estabilidad son las métricas que más rápido delatan la deuda oculta por IA. Si "más commits" no se traduce en más throughput, hay retrabajo invisible.',
-  /* 59 metrics 2 */      'METR demostró que la percepción de productividad puede ser opuesta a la realidad (creen +20%, medido −19%). Sin ROI medido, estás en terreno de autoengaño organizacional.',
+  /* 58 doramodel */      'El modelo DORA demuestra que capabilities técnicas, de proceso y culturales predicen software delivery performance, que a su vez predice resultados organizacionales. No se puede mejorar el outcome sin mejorar el sistema completo.',
   /* 60 section casos */  'Nota metodológica: los efectos varían por especificidad de tarea, experiencia del profesional, madurez del repo y controles de calidad. Esto explica resultados contradictorios.',
   /* 61 copilot */        'La clave de Accenture no es Copilot — es que tenían telemetría y prácticas de revisión. Sin esos controles, el mismo tool produce "deuda acelerada" (coherente con DORA).',
   /* 62 klarna */         'Caveat: métricas de "equivalente FTE" dependen de supuestos internos. Para replicar, exige método de cálculo interno. Los "best case" deben auditarse, no copiarse.',
@@ -418,17 +417,7 @@ const slides = [
   // ── MÉTRICAS ──
   { type: 'section', title: 'Métricas', subtitle: 'Tablero mínimo viable' },
 
-  { type: 'metrics', title: 'Dimensiones sistémicas', items: [
-    { dim: 'Velocidad E2E', metric: 'Lead time / throughput', alert: 'Baja con "más commits"' },
-    { dim: 'Estabilidad', metric: 'Change failure rate', alert: 'Cae con IA (−7.2%)' },
-    { dim: 'Calidad', metric: 'Build success, merge rate', alert: 'Volumen sube, calidad baja' },
-  ]},
-
-  { type: 'metrics', title: 'Dimensiones de impacto', items: [
-    { dim: 'Productividad', metric: 'Flow / percepción', alert: 'Percepción ≠ realidad' },
-    { dim: 'ROI', metric: '% EBIT atribuible', alert: '>80% sin impacto enterprise' },
-    { dim: 'Riesgo', metric: 'Incidentes IA', alert: 'Privacidad, IP, sesgo' },
-  ]},
+  { type: 'doramodel' },
 
   // ── CASOS ──
   { type: 'section', title: 'Casos cuantificados', subtitle: 'Evidencia real' },
@@ -681,6 +670,114 @@ function SystemDiagram() {
   )
 }
 
+function DORAModelDiagram() {
+  const capGroups = [
+    { label: 'Técnicas', color: C.accent, items: ['CI/CD', 'Trunk-based dev', 'Arquitectura desacoplada', 'Automatización de tests', 'Monitoreo y observabilidad', 'Calidad de documentación'] },
+    { label: 'Proceso', color: C.highlight, items: ['Trabajo en lotes pequeños', 'Feedback de clientes', 'Visibilidad del trabajo', 'Límites de WIP'] },
+    { label: 'Culturales', color: '#A855F7', items: ['Cultura Westrum', 'Liderazgo transformacional', 'Clima de aprendizaje'] },
+  ]
+  const metrics = [
+    { label: 'Deployment\nFrequency', sub: 'Velocidad', color: C.accent },
+    { label: 'Lead Time\nfor Changes', sub: 'Velocidad', color: C.accent },
+    { label: 'Change\nFailure Rate', sub: 'Estabilidad', color: '#F59E0B' },
+    { label: 'Time to\nRestore', sub: 'Estabilidad', color: '#F59E0B' },
+  ]
+  const outcomes = [
+    { label: 'Rendimiento\norganizacional', sub: 'Rentabilidad, productividad', color: C.highlight },
+    { label: 'Bienestar', sub: 'Menos burnout', color: '#A855F7' },
+  ]
+
+  return (
+    <motion.div variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.08, delayChildren: 0.1 } } }} initial="hidden" animate="visible"
+      style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 20, width: '100%' }}>
+      <motion.p variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0 } }}
+        style={{ fontSize: 40, fontWeight: 700, color: C.white, marginBottom: 8 }}>DORA Core Model</motion.p>
+
+      <div style={{ display: 'flex', alignItems: 'center', gap: 0, width: '100%', maxWidth: 1680 }}>
+        {/* ── CAPABILITIES ── */}
+        <motion.div variants={{ hidden: { opacity: 0, x: -30 }, visible: { opacity: 1, x: 0, transition: { duration: 0.6 } } }}
+          style={{ flex: '0 0 420px', display: 'flex', flexDirection: 'column', gap: 12 }}>
+          <p style={{ fontSize: 14, color: C.dim, textTransform: 'uppercase', letterSpacing: 3, fontWeight: 600, textAlign: 'center', marginBottom: 4 }}>Capabilities</p>
+          {capGroups.map((g, gi) => (
+            <div key={gi} style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 12, padding: '12px 16px', borderLeft: `3px solid ${g.color}` }}>
+              <p style={{ fontSize: 15, fontWeight: 700, color: g.color, marginBottom: 6 }}>{g.label}</p>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
+                {g.items.map((item, i) => (
+                  <span key={i} style={{ fontSize: 12, color: 'rgba(255,255,255,0.6)', background: 'rgba(255,255,255,0.04)', borderRadius: 6, padding: '3px 8px' }}>{item}</span>
+                ))}
+              </div>
+            </div>
+          ))}
+        </motion.div>
+
+        {/* ── ARROW 1 ── */}
+        <motion.div variants={{ hidden: { opacity: 0, scaleX: 0 }, visible: { opacity: 1, scaleX: 1, transition: { duration: 0.5, delay: 0.3 } } }}
+          style={{ flex: '0 0 80px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', transformOrigin: 'left center' }}>
+          <svg width="80" height="40" viewBox="0 0 80 40">
+            <defs><marker id="dora-a1" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8" fill={C.accent} /></marker></defs>
+            <line x1="0" y1="20" x2="68" y2="20" stroke={C.accent} strokeWidth="2" markerEnd="url(#dora-a1)" />
+          </svg>
+          <span style={{ fontSize: 11, color: C.dim, fontWeight: 500 }}>impulsan</span>
+        </motion.div>
+
+        {/* ── SOFTWARE DELIVERY PERFORMANCE ── */}
+        <motion.div variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.6, delay: 0.4 } } }}
+          style={{ flex: '1 1 auto', display: 'flex', flexDirection: 'column', gap: 10, alignItems: 'center' }}>
+          <p style={{ fontSize: 14, color: C.dim, textTransform: 'uppercase', letterSpacing: 3, fontWeight: 600, textAlign: 'center' }}>Software Delivery Performance</p>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, width: '100%' }}>
+            {metrics.map((m, i) => (
+              <motion.div key={i}
+                variants={{ hidden: { opacity: 0, scale: 0.9 }, visible: { opacity: 1, scale: 1, transition: { duration: 0.4, delay: 0.5 + i * 0.1 } } }}
+                whileHover={{ scale: 1.05, borderColor: m.color, transition: { duration: 0.2 } }}
+                style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 12, padding: '16px 14px', textAlign: 'center', cursor: 'default' }}>
+                <p style={{ fontSize: 16, fontWeight: 700, color: m.color, whiteSpace: 'pre-line', lineHeight: 1.25 }}>{m.label}</p>
+                <p style={{ fontSize: 12, color: C.dim, marginTop: 4 }}>{m.sub}</p>
+              </motion.div>
+            ))}
+          </div>
+          <motion.div
+            variants={{ hidden: { opacity: 0, scale: 0.9 }, visible: { opacity: 1, scale: 1, transition: { duration: 0.4, delay: 0.9 } } }}
+            style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 12, padding: '10px 24px', textAlign: 'center', width: '100%' }}>
+            <p style={{ fontSize: 14, fontWeight: 600, color: C.highlight }}>Reliability</p>
+            <p style={{ fontSize: 11, color: C.dim }}>Operational Performance</p>
+          </motion.div>
+        </motion.div>
+
+        {/* ── ARROW 2 ── */}
+        <motion.div variants={{ hidden: { opacity: 0, scaleX: 0 }, visible: { opacity: 1, scaleX: 1, transition: { duration: 0.5, delay: 0.8 } } }}
+          style={{ flex: '0 0 80px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', transformOrigin: 'left center' }}>
+          <svg width="80" height="40" viewBox="0 0 80 40">
+            <defs><marker id="dora-a2" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8" fill={C.highlight} /></marker></defs>
+            <line x1="0" y1="20" x2="68" y2="20" stroke={C.highlight} strokeWidth="2" markerEnd="url(#dora-a2)" />
+          </svg>
+          <span style={{ fontSize: 11, color: C.dim, fontWeight: 500 }}>predicen</span>
+        </motion.div>
+
+        {/* ── OUTCOMES ── */}
+        <motion.div variants={{ hidden: { opacity: 0, x: 30 }, visible: { opacity: 1, x: 0, transition: { duration: 0.6, delay: 1.0 } } }}
+          style={{ flex: '0 0 280px', display: 'flex', flexDirection: 'column', gap: 10 }}>
+          <p style={{ fontSize: 14, color: C.dim, textTransform: 'uppercase', letterSpacing: 3, fontWeight: 600, textAlign: 'center', marginBottom: 4 }}>Outcomes</p>
+          {outcomes.map((o, i) => (
+            <motion.div key={i}
+              whileHover={{ scale: 1.04, transition: { duration: 0.2 } }}
+              style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 12, padding: '20px 16px', textAlign: 'center', borderRight: `3px solid ${o.color}` }}>
+              <p style={{ fontSize: 18, fontWeight: 700, color: o.color, whiteSpace: 'pre-line', lineHeight: 1.3 }}>{o.label}</p>
+              <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.5)', marginTop: 6 }}>{o.sub}</p>
+            </motion.div>
+          ))}
+        </motion.div>
+      </div>
+
+      {/* ── FOOTER NOTE ── */}
+      <motion.div variants={{ hidden: { opacity: 0 }, visible: { opacity: 1, transition: { delay: 1.2 } } }}
+        style={{ display: 'flex', gap: 32, marginTop: 8 }}>
+        <span style={{ fontSize: 14, color: C.dim }}>dora.dev/research</span>
+        <span style={{ fontSize: 14, color: C.red }}>⚠ Con IA: +3.4% code, +7.5% docs pero −7.2% estabilidad, −1.5% throughput</span>
+      </motion.div>
+    </motion.div>
+  )
+}
+
 const DIAGRAMS = { cycle: CycleDiagram, triangle: TriangleDiagram, leadership: LeadershipDiagram, agentic: AgenticDiagram, system: SystemDiagram }
 
 /* ═══════════════════════════════════════════
@@ -907,6 +1004,12 @@ function SlideRenderer({ data, quizState, onQuizAnswer }) {
           ))}
         </div>
       </motion.div>
+    )
+
+    case 'doramodel': return (
+      <div style={{ ...inner, height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <DORAModelDiagram />
+      </div>
     )
 
     case 'metrics': return (

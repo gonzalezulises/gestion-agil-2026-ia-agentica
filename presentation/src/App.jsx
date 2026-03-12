@@ -331,7 +331,7 @@ const slides = [
   ], color: 'accent' },
 
   // ── ADOPCIÓN IA ──
-  { type: 'section', title: 'Adopción de IA', subtitle: 'Datos y evidencia' },
+  { type: 'section', title: 'Adopción de IA en proyectos', subtitle: 'Datos y evidencia' },
 
   { type: 'bars', title: 'Curva de adopción', items: [
     { label: 'Uso regular genAI (2024)', value: 65, color: C.highlight },

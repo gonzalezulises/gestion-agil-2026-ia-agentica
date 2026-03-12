@@ -51,8 +51,9 @@ const TAKEAWAYS = [
   /* 0  hero */           'La competencia en 2026 no es entre marcos (Scrum vs Kanban) sino entre sistemas de entrega capaces de absorber incertidumbre y rediseñar trabajo cuando la IA acelera la ejecución.',
   /* 1  contexto */       'La evolución no invalida los fundamentos: retroalimentación, inspección y adaptación son más críticos que nunca. Lo que cambia es la velocidad de los ciclos y el riesgo de amplificación.',
   /* 2  stats */          'Adopción masiva no es valor: el 17% que sí logra ≥5% EBIT lo hace porque rediseñó workflows, no porque compró herramientas. El resto está en "AI theater".',
-  /* 3  evidencia */      'Los datos convergen en un punto incómodo: la IA eleva productividad local pero no garantiza mejoras end-to-end. El EU AI Act obliga a gobernar, no es opcional.',
-  /* 4  section fund */   'Estos principios no son "básicos" en el sentido de triviales — son prerrequisitos estructurales. Sin ellos, la IA no se adopta de forma efectiva, solo de forma caótica.',
+  /* 3  evidencia */      'Los datos convergen en un punto incómodo: la IA eleva productividad local pero no garantiza mejoras end-to-end. 39% no confía en el código que genera la IA.',
+  /* 4  EU AI Act */      'El EU AI Act no es futuro — ya está en vigor. Cada hito del timeline agrega obligaciones concretas. Definir guardrails ahora es cumplimiento, no anticipación.',
+  /* 5  section fund */   'Estos principios no son "básicos" en el sentido de triviales — son prerrequisitos estructurales. Sin ellos, la IA no se adopta de forma efectiva, solo de forma caótica.',
   /* 3  overview */       'Los fundamentos son condiciones necesarias pero no suficientes. Una organización sin ellos no puede adoptar IA agéntica — solo puede adoptar herramientas de forma desorganizada.',
   /* 4  ciclo emp */      'Los equipos que mejoran calidad de documentación y código (+7.5%/+3.4% en DORA) son los que inspeccionan. Los que pierden estabilidad (−7.2%) son los que no revisan.',
   /* 5  diagram cycle */  'Pregunta clave para tu equipo: ¿tienen cadencias reales de inspección que incluyan la calidad del output generado por IA? Si no, están volando a ciegas a mayor velocidad.',
@@ -80,7 +81,9 @@ const TAKEAWAYS = [
   /* 27 section era */    'Gartner alerta sobre "agentwashing": llamar agente a lo que es solo un chatbot. La distinción matters porque cada nivel de autonomía requiere diferente gobernanza y control.',
   /* 28 qué es agente */  'OWASP Top 10 para LLM incluye "excessive agency" como riesgo crítico. El problema no es que los agentes ejecuten mal — es que ejecuten cosas que nadie les pidió, con datos que no debían tocar.',
   /* 29 diagram agen */   'Microsoft formaliza el concepto "agent boss": el 82% de líderes considera 2025-2026 un punto de inflexión. La pregunta no es si adoptar agentes sino cómo gobernarlos.',
-  /* 30 section roles */  'En era agéntica no se elimina la accountability — se reubica. La unidad de trabajo cambia de "tareas humanas" a "tareas orquestadas humano-agente".',
+  /* 30 autonomía */      'La mayoría opera en delegación con revisión. Saltar a autonomía alta sin pasar por acotada es la receta para incidentes de seguridad y compliance.',
+  /* 31 nuevos roles */   'Estos roles no "inflan headcount" — clarifican ownership de decisiones de alto riesgo que HOY nadie está tomando explícitamente en la mayoría de organizaciones.',
+  /* 32 section roles */  'En era agéntica no se elimina la accountability — se reubica. La unidad de trabajo cambia de "tareas humanas" a "tareas orquestadas humano-agente".',
   /* 31 PO */             'La accountability del PO no cambia pero su contexto sí: priorizar ya no es solo ordenar el backlog, es decidir qué trabajo se diseña para humanos, cuál para agentes y cuál es híbrido.',
   /* 32 SM */             'El Scrum Master como líder servidor cobra nueva dimensión: "servir" ahora incluye proteger al equipo de la sobreconfianza en outputs de IA y de la presión por adoptar sin evaluar.',
   /* 33 Devs */           'El Developer como "profesional" incluye juzgar cuándo el código generado por IA cumple el Definition of Done. La calidad no se delega — se verifica.',
@@ -88,7 +91,8 @@ const TAKEAWAYS = [
   /* 35 bars adopción */  'De 65% a 71% en un año no es gradual — es aceleración. Pero 88% usando IA en ≥1 función con >80% sin impacto EBIT significa que la brecha adopción-valor se está ampliando, no cerrando.',
   /* 36 lo que sube */    'La heterogeneidad importa: la mayor ganancia es en perfiles menos expertos (+34% novatos en contact center). Para expertos el efecto puede ser negativo (METR). No hay "efecto uniforme".',
   /* 37 METR */           'La brecha percepción-realidad es el riesgo de liderazgo más subestimado: si mides solo percepción de productividad, tu equipo puede estar destruyendo valor creyendo que lo crea.',
-  /* 38 DORA mejoras */   'Estas mejoras son "locales" — ocurren a nivel de tarea individual. El error es asumir que sumarlas produce mejora sistémica. DORA demuestra que no es así.',
+  /* 38 nota metod */     'No hay efecto uniforme. La variabilidad explica por qué coexisten +55% más rápido (lab) y +19% más lento (experto). Decisión: medir en tu contexto, no copiar benchmarks.',
+  /* 39 DORA mejoras */   'Estas mejoras son "locales" — ocurren a nivel de tarea individual. El error es asumir que sumarlas produce mejora sistémica. DORA demuestra que no es así.',
   /* 39 DORA pérdidas */  'Aquí está el "porqué" de toda la sesión: la gestión ágil debe convertir mejoras locales en outcomes sistémicos. Sin el ciclo inspección → adaptación, estas mejoras nunca escalan.',
   /* 40 vacuum */         'DORA confirma que el tiempo en "trabajo valioso" cae (−2.6% estimado) aun cuando suben flow y productividad. El liderazgo debe proteger ese vacío para que se convierta en innovación.',
   /* 41 diagram E2E */    'El diferencial competitivo ya no está en la ejecución (los agentes la aceleran) sino en el diseño del sistema: gobernanza, plataformas, calidad y seguridad.',
@@ -107,7 +111,9 @@ const TAKEAWAYS = [
   /* 54 centralizado */   'El trade-off real: en industrias reguladas, el costo de un incidente de IA (fuga de datos, sesgo en decisiones) supera con creces el costo de un cuello de botella por aprobación.',
   /* 55 federado */       'El riesgo de "shadow AI" no es teórico: equipos usando herramientas no autorizadas con datos sensibles ya es realidad en la mayoría de enterprises. El modelo federado lo contiene sin asfixiar.',
   /* 56 product-align */  'Este modelo solo funciona si ya tienes telemetría madura. Sin datos de impacto, "product-aligned governance" es solo un nombre bonito para "nadie gobierna".',
-  /* 57 section metr */   'El tablero mínimo viable evita "local wins / system losses". Medir solo productividad individual es como medir solo goles sin ver el resultado del partido.',
+  /* 57 centralizar */    'La distinción es operacional: los equipos deciden cómo usar herramientas, pero el liderazgo centraliza políticas, evaluación e incidentes. Sin esto, "shadow AI" es inevitable.',
+  /* 58 GMV */            'Estos 4 componentes son operables en 90 días. La gobernanza mínima viable no es burocracia — es el mínimo para que la adopción de IA no sea un riesgo sistémico.',
+  /* 59 section metr */   'El tablero mínimo viable evita "local wins / system losses". Medir solo productividad individual es como medir solo goles sin ver el resultado del partido.',
   /* 58 metrics 1 */      'Lead time y estabilidad son las métricas que más rápido delatan la deuda oculta por IA. Si "más commits" no se traduce en más throughput, hay retrabajo invisible.',
   /* 59 metrics 2 */      'METR demostró que la percepción de productividad puede ser opuesta a la realidad (creen +20%, medido −19%). Sin ROI medido, estás en terreno de autoengaño organizacional.',
   /* 60 section casos */  'Nota metodológica: los efectos varían por especificidad de tarea, experiencia del profesional, madurez del repo y controles de calidad. Esto explica resultados contradictorios.',
@@ -142,17 +148,26 @@ const slides = [
   { type: 'stats', title: 'El contexto en números', items: [
     { value: '71%', label: 'uso regular de genAI', source: 'McKinsey 2025' },
     { value: '62%', label: 'experimenta con agentes', source: 'McKinsey 2025' },
-    { value: '&gt;80%', label: 'sin impacto en EBIT', source: 'McKinsey 2025' },
+    { value: '17%', label: 'logra ≥5% EBIT atribuible', source: 'McKinsey 2025' },
     { value: '82%', label: 'punto de inflexión', source: 'Microsoft WTI 2025' },
   ]},
 
   // ── 3: CONTEXTO EVIDENCIA SISTÉMICA ──
   { type: 'content', title: 'Lo que dice la evidencia', bullets: [
-    'DORA 2024: IA mejora calidad local pero la estabilidad cae −7.2%',
-    '62% de developers ya usa IA en su proceso (Stack Overflow)',
+    'DORA 2024: IA mejora calidad local pero estabilidad cae −7.2%',
+    '39% reporta poca o ninguna confianza en código IA (DORA)',
     'Gartner: 40% de apps tendrá agentes por tarea en 2026',
-    'EU AI Act: obligaciones principales desde agosto 2026',
+    '62% de developers ya usa IA en su proceso (Stack Overflow)',
   ], note: 'Datos duros', color: 'accent' },
+
+  // ── 4: EU AI ACT TIMELINE ──
+  { type: 'content', title: 'EU AI Act: calendario regulatorio', bullets: [
+    'Ago 2024: en vigor la regulación',
+    'Feb 2025: prohibiciones y alfabetización IA',
+    'Ago 2025: obligaciones para GPAI',
+    'Ago 2026: obligaciones principales',
+    'Ago 2027: high-risk en productos regulados',
+  ], note: 'Regulación 2024/1689' },
 
   // ── SECTION: FUNDAMENTOS ──
   { type: 'section', title: 'Fundamentos ágiles', subtitle: 'La base que no cambia' },
@@ -171,7 +186,8 @@ const slides = [
 
   { type: 'content', title: '¿Qué pasa sin inspección?', bullets: [
     'Los errores de IA se propagan sin freno',
-    'La velocidad de ejecución supera la revisión',
+    '39% tiene poca o nula confianza en código IA (DORA)',
+    'Si se ignora: más defectos. Si se atiende sin proceso: más fricción',
     'La deuda técnica se acumula más rápido',
   ], note: 'Conexión agéntica', color: 'accent' },
 
@@ -272,6 +288,17 @@ const slides = [
 
   { type: 'diagram', id: 'agentic' },
 
+  // ── NIVELES DE AUTONOMÍA ──
+  { type: 'autonomy' },
+
+  // ── NUEVOS ROLES IA ──
+  { type: 'content', title: 'Roles IA emergentes', bullets: [
+    'AI Security Specialist — seguridad de agentes y datos',
+    'AI Agent Specialist — diseño y orquestación',
+    'AI ROI Analyst — medición de impacto real',
+    'Chief AI Officer — gobernanza estratégica',
+  ], note: 'Surgen por 3 tensiones: seguridad, cumplimiento, ROI' },
+
   // ── SCRUM ROLES (EMPHASIS) ──
   { type: 'section', title: 'Roles Scrum', subtitle: 'El punto de partida canónico', emphasis: true },
 
@@ -302,8 +329,8 @@ const slides = [
   { type: 'bars', title: 'Curva de adopción', items: [
     { label: 'Uso regular genAI (2024)', value: 65, color: C.highlight },
     { label: 'Uso regular genAI (2025)', value: 71, color: C.highlight },
-    { label: 'IA en ≥1 función (2025)', value: 88, color: C.accent },
-    { label: 'Experimenta con agentes', value: 62, color: C.accent },
+    { label: 'IA en ≥1 función (Nov 2025)', value: 88, color: C.accent },
+    { label: 'Experimenta con agentes (39% + 23% escala)', value: 62, color: C.accent },
   ], source: 'McKinsey 2024–2025' },
 
   // ── PRODUCTIVIDAD ──
@@ -315,6 +342,14 @@ const slides = [
   ], note: 'Evidencia positiva', color: 'highlight' },
 
   { type: 'bigstat', value: '+19%', label: 'más lento para devs expertos\ncon IA (METR RCT 2025)', source: '¡Pese a creer ser ~20% más rápidos!', warn: true },
+
+  { type: 'content', title: '¿Por qué resultados contradictorios?', bullets: [
+    'Varía por especificidad de la tarea',
+    'Varía por experiencia del profesional',
+    'Varía por madurez del repositorio/proceso',
+    'Varía por controles de calidad y contexto',
+    'No existe un "efecto uniforme" de la IA',
+  ], note: 'Nota metodológica' },
 
   { type: 'bars', title: 'DORA: mejoras locales', items: [
     { label: 'Calidad de documentación', value: 7.5, max: 12, color: C.highlight, suffix: '%' },
@@ -329,7 +364,7 @@ const slides = [
   ], source: 'DORA 2024 — por +25% adopción IA', note: 'Lo que baja', warn: true },
 
   // ── VACUUM ──
-  { type: 'quote', text: 'Si la IA acelera tareas valiosas,\nse crea un "vacío de tiempo".\nSin rediseño, ese vacío\nse rellena con burocracia.', source: 'El "Vacuum Effect"' },
+  { type: 'quote', text: 'Si la IA acelera tareas valiosas,\nse crea un "vacío de tiempo".\nSin rediseño, ese vacío\nse rellena con burocracia.\n\nDORA: tiempo en trabajo valioso\ncae −2.6% aun subiendo flow.', source: 'El "Vacuum Effect"' },
 
   // ── SISTEMA E2E ──
   { type: 'diagram', id: 'system' },
@@ -362,6 +397,23 @@ const slides = [
 
   { type: 'governance', model: 'Product-aligned', subtitle: 'Governance en el flujo de producto', pros: 'Conecta IA con outcomes', cons: 'Requiere madurez de medición', when: 'Agile escalado con telemetría', color: C.accent },
 
+  // ── QUÉ CENTRALIZAR ──
+  { type: 'content', title: '¿Qué centralizar?', bullets: [
+    'No centralices el uso de herramientas',
+    'Sí centraliza: políticas de datos, IP y seguridad',
+    'Sí centraliza: evaluación y métricas',
+    'Sí centraliza: gestión de incidentes con IA',
+    'Solo 18% tenía council con autoridad para IA responsable',
+  ], note: 'McKinsey 2024', color: 'accent' },
+
+  // ── GOBERNANZA MÍNIMA VIABLE ──
+  { type: 'checklist', title: 'Gobernanza mínima viable (90 días)', items: [
+    { step: 1, text: 'Política de datos e IP:\nqué entra a modelos, qué se anonimiza, qué se prohíbe' },
+    { step: 2, text: 'Guardrails técnicos:\npruebas automatizadas, revisión humana en alto impacto' },
+    { step: 3, text: 'Sistema de medición:\nDORA + calidad + ROI + riesgo, cadencia mensual' },
+    { step: 4, text: 'RACI de responsabilidad:\nquién responde si el agente introduce regresiones o fugas' },
+  ]},
+
   // ── MÉTRICAS ──
   { type: 'section', title: 'Métricas', subtitle: 'Tablero mínimo viable' },
 
@@ -384,13 +436,17 @@ const slides = [
     { label: 'Pull Requests', value: '+8.69%' },
     { label: 'Merge rate', value: '+15%' },
     { label: 'Builds exitosos', value: '+84%' },
+    { label: 'Aceptación sugerencias', value: '30%' },
     { label: 'Satisfacción', value: '90%' },
+    { label: 'Disfruta más', value: '95%' },
   ], color: C.highlight },
 
   { type: 'case', title: 'Klarna', subtitle: 'Agente end-to-end', items: [
     { label: 'Conversaciones', value: '2.3M' },
     { label: 'Equivalente FTE', value: '700' },
-    { label: 'Resolución', value: '<2 min' },
+    { label: 'Resolución', value: '<2 min vs 11' },
+    { label: '−Repetición', value: '25%' },
+    { label: 'Revenue/empleado', value: '+73%' },
     { label: 'Profit', value: '+$40M' },
   ], color: C.accent },
 
@@ -861,6 +917,34 @@ function SlideRenderer({ data, quizState, onQuizAnswer }) {
         ))}
       </div>
     )
+
+    case 'autonomy': {
+      const levels = [
+        { level: 'Asistencia', agent: 'Sugiere, resume, borradores', human: 'Decide y ejecuta', risk: 'Sobreconfianza', color: C.highlight },
+        { level: 'Delegación', agent: 'Ejecuta subtareas, PRs, tests', human: 'Revisa y aprueba', risk: 'Deuda por throughput', color: C.accent },
+        { level: 'Autonomía acotada', agent: 'Orquesta dentro de límites', human: 'Define límites, audita', risk: 'Agency excesiva', color: '#F59E0B' },
+        { level: 'Autonomía alta', agent: 'Decide y ejecuta E2E', human: 'Supervisión post-hoc', risk: 'Cumplimiento difuso', color: C.red },
+      ]
+      return (
+        <div style={{ ...inner, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 20 }}>
+          <h3 className="anim-fade d1" style={{ fontSize: T.subtitle, fontWeight: 700, color: C.white }}>Niveles de autonomía humano-agente</h3>
+          <div style={{ display: 'grid', gridTemplateColumns: '180px 1fr 1fr 1fr', gap: '0', border: `1px solid ${C.border}`, borderRadius: 12, overflow: 'hidden' }}>
+            {['Nivel', 'Agente hace', 'Humano hace', 'Riesgo'].map((h, i) => (
+              <div key={i} style={{ padding: '14px 16px', background: 'rgba(255,255,255,0.04)', fontSize: 18, fontWeight: 600, color: C.dim, borderBottom: `1px solid ${C.border}` }}>{h}</div>
+            ))}
+            {levels.map((l, i) => (
+              [
+                <div key={`n${i}`} className={`anim-fade d${i + 2}`} style={{ padding: '14px 16px', fontSize: 19, fontWeight: 600, color: l.color, borderBottom: i < 3 ? `1px solid ${C.border}` : 'none' }}>{l.level}</div>,
+                <div key={`a${i}`} className={`anim-fade d${i + 2}`} style={{ padding: '14px 16px', fontSize: 18, color: 'rgba(255,255,255,0.7)', borderBottom: i < 3 ? `1px solid ${C.border}` : 'none' }}>{l.agent}</div>,
+                <div key={`h${i}`} className={`anim-fade d${i + 2}`} style={{ padding: '14px 16px', fontSize: 18, color: 'rgba(255,255,255,0.7)', borderBottom: i < 3 ? `1px solid ${C.border}` : 'none' }}>{l.human}</div>,
+                <div key={`r${i}`} className={`anim-fade d${i + 2}`} style={{ padding: '14px 16px', fontSize: 18, color: l.color, fontWeight: 500, borderBottom: i < 3 ? `1px solid ${C.border}` : 'none' }}>{l.risk}</div>,
+              ]
+            ))}
+          </div>
+          <p className="anim-fade d6" style={{ fontSize: 16, color: C.dim }}>Autonomía alta es rara en 2026 — la mayoría opera en delegación con revisión</p>
+        </div>
+      )
+    }
 
     case 'bib': return null
 
